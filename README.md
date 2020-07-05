@@ -78,3 +78,22 @@ AllowedIPs = 172.27.224.2/32
 wg-quick up wg0
 
 systemctl enable wg-quick@wg0
+
+## 五、用户配置
+
+[Interface]
+
+Address = 172.27.224.2/24
+
+ListenPort = 21735
+
+PrivateKey = <Private Key>
+
+[Peer]
+
+PublicKey = Vluwx6KB+GWt/DZuPGnquwFn2OdQW0qMXzyQMWle01k=
+
+AllowedIPs = 172.27.224.1/32
+
+Endpoint = 服务器端的公网IP:21735
+
