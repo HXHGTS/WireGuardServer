@@ -49,3 +49,32 @@ chmod 777 -R /etc/wireguard
 
 vim /etc/wireguard/wg0.conf
 
+## 三、配置文件
+
+[Interface]
+
+Address = 172.27.224.1/24
+
+PrivateKey = qLQwqD6pzZ/+nCEOoTAyJzH2G8WS5dBi+87OwUrmT3Y=
+
+PostUp   = iptables -A FORWARD -i wg0 -j ACCEPT; iptables -A FORWARD -o wg0 -j ACCEPT; iptables -I FORWARD -s 172.27.224.1/24 -d 172.27.224.1/24 -j DROP; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+
+PostDown = iptables -D FORWARD -i wg0 -j ACCEPT; iptables -D FORWARD -o wg0 -j ACCEPT; iptables -D FORWARD -s 172.27.224.1/24 -d 172.27.224.1/24 -j DROP; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
+
+ListenPort = 21735
+
+DNS = 67.207.67.2
+
+MTU = 1492
+
+[Peer]
+
+PublicKey = Vluwx6KB+GWt/DZuPGnquwFn2OdQW0qMXzyQMWle01k=
+
+AllowedIPs = 172.27.224.2/32
+
+## 四、启动
+
+wg-quick up wg0
+
+systemctl enable wg-quick@wg0
