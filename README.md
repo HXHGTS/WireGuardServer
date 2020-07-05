@@ -79,6 +79,8 @@ wg-quick up wg0
 
 systemctl enable wg-quick@wg0
 
+wg set wg0 peer <NukXOCkwVan93RsbzfPFOe6HngO6GgFijIIi1AdKP3Q=> allowed-ips 172.27.224.1/32
+
 ## 五、用户配置
 
 [Interface]
@@ -87,7 +89,7 @@ Address = 172.27.224.2/24
 
 ListenPort = 21735
 
-PrivateKey = <Private Key>
+PrivateKey = 0KgCbg/c8oDxgylJ0gE9PvYZfN16DMxoW6/R8AtWs3Q=
 
 [Peer]
 
