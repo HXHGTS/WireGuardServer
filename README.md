@@ -39,63 +39,85 @@ echo "net.ipv4.ip_forward = 1" >> /etc/sysctl.conf
 
 sysctl -p
 
-mkdir /etc/wireguard
+mkdir -p /etc/wireguard && chmod 0777 /etc/wireguard
 
 cd /etc/wireguard
 
-wg genkey | tee privatekey | wg pubkey > publickey
+umask 077
 
-chmod 777 -R /etc/wireguard
+wg genkey | tee server_privatekey | wg pubkey > server_publickey
 
-vim /etc/wireguard/wg0.conf
+wg genkey | tee client_privatekey | wg pubkey > client_publickey
 
-## 三、配置文件
+参见 服务器配置文件
+
+参见 用户配置文件
+
+systemctl enable wg-quick@wg0
+
+
+### 启动WireGuard
+wg-quick up wg0
+
+### 停止WireGuard
+wg-quick down wg0
+
+### 查看WireGuard运行状态
+wg
+
+### 停止WireGuard
+wg-quick down wg0
+
+### 已经成功创建后，启动WireGuard
+wg-quick up wg0
+
+## 用户端配置文件模板client.conf（酌情修改）
 
 [Interface]
 
-Address = 172.27.224.1/24
+PrivateKey = gInWKSooaDEDXwai+KC6ole6bw/P5z21Q2pBIsQhxXw=
 
-PrivateKey = qLQwqD6pzZ/+nCEOoTAyJzH2G8WS5dBi+87OwUrmT3Y=
-
-PostUp   = iptables -A FORWARD -i wg0 -j ACCEPT; iptables -A FORWARD -o wg0 -j ACCEPT; iptables -I FORWARD -s 172.27.224.1/24 -d 172.27.224.1/24 -j DROP; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
-
-PostDown = iptables -D FORWARD -i wg0 -j ACCEPT; iptables -D FORWARD -o wg0 -j ACCEPT; iptables -D FORWARD -s 172.27.224.1/24 -d 172.27.224.1/24 -j DROP; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
-
-ListenPort = 21735
+Address = 10.0.0.2/24
 
 DNS = 67.207.67.2
+
+DNS = 67.207.67.3
 
 MTU = 1492
 
 [Peer]
 
-PublicKey = Vluwx6KB+GWt/DZuPGnquwFn2OdQW0qMXzyQMWle01k=
+PublicKey = SBah8iYP2mYv+5PlEAU9ZRwMllsdz6o+Slt2DDXu1yg=
 
-AllowedIPs = 172.27.224.2/32
+Endpoint = sqbgp.nat.coalcloud.xyz:21735
 
-## 四、启动
+AllowedIPs = 0.0.0.0/0
 
-wg-quick up wg0
+PersistentKeepalive = 25 
 
-systemctl enable wg-quick@wg0
-
-wg set wg0 peer <NukXOCkwVan93RsbzfPFOe6HngO6GgFijIIi1AdKP3Q=> allowed-ips 172.27.224.1/32
-
-## 五、用户配置
+## 服务器端配置模板wg0.conf（酌情修改）
 
 [Interface]
 
-Address = 172.27.224.2/24
+PrivateKey = UMez+xG0p9x5UUEnVQYieentswN90rRLbtHotaaL+nw=
+
+Address = 10.0.0.1/24
+
+PostUp = iptables -A FORWARD -i wg0 -j ACCEPT; iptables -A FORWARD -o wg0 -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+
+PostDown = iptables -D FORWARD -i wg0 -j ACCEPT; iptables -D FORWARD -o wg0 -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
 
 ListenPort = 21735
 
-PrivateKey = 0KgCbg/c8oDxgylJ0gE9PvYZfN16DMxoW6/R8AtWs3Q=
+DNS = 67.207.67.2
+
+DNS = 67.207.67.3
+
+MTU = 1492
 
 [Peer]
 
-PublicKey = Vluwx6KB+GWt/DZuPGnquwFn2OdQW0qMXzyQMWle01k=
+PublicKey = SHlCXsbxOLG8WuACzFR6Pm+zfCLeJlWEgcqELzYD4yU=
 
-AllowedIPs = 172.27.224.1/32
-
-Endpoint = 服务器端的公网IP:21735
+AllowedIPs = 10.0.0.2/32 
 
