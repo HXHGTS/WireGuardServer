@@ -29,3 +29,23 @@ reboot
 
 ## 二、安装WireGuard
 
+curl -Lo /etc/yum.repos.d/wireguard.repo https://copr.fedorainfracloud.org/coprs/jdoss/wireguard/repo/epel-7/jdoss-wireguard-epel-7.repo
+
+yum install epel-release -y
+
+yum install wireguard-dkms wireguard-tools -y
+
+echo "net.ipv4.ip_forward = 1" >> /etc/sysctl.conf
+
+sysctl -p
+
+mkdir /etc/wireguard
+
+cd /etc/wireguard
+
+wg genkey | tee privatekey | wg pubkey > publickey
+
+chmod 777 -R /etc/wireguard
+
+vim /etc/wireguard/wg0.conf
+
