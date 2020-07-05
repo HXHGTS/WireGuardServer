@@ -25,3 +25,7 @@ rpm -ivh kernel-ml-devel-4.19.1-1.el7.elrepo.x86_64.rpm
 
 yum -y --enablerepo=elrepo-kernel install kernel-ml-devel
 
+reboot
+
+## 二、安装WireGuard
+
