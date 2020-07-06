@@ -9,7 +9,7 @@ yum remove -y kernel-devel
 
 rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org
 
-rpm -Uvh http://www.elrepo.org/elrepo-release-7.0-2.el7.elrepo.noarch.rpm
+rpm -Uvh https://mirror.tuna.tsinghua.edu.cn/elrepo/elrepo/el7/x86_64/RPMS/elrepo-release-7.0-5.el7.elrepo.noarch.rpm
 
 yum --disablerepo="*" --enablerepo="elrepo-kernel" list available
 
