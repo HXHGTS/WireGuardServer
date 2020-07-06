@@ -83,8 +83,6 @@ DNS = 67.207.67.2
 
 DNS = 67.207.67.3
 
-MTU = 1492
-
 [Peer]
 
 PublicKey = SBah8iYP2mYv+5PlEAU9ZRwMllsdz6o+Slt2DDXu1yg=
@@ -112,8 +110,6 @@ ListenPort = 21735
 DNS = 67.207.67.2
 
 DNS = 67.207.67.3
-
-MTU = 1492
 
 [Peer]
 
