@@ -49,51 +49,6 @@ wg genkey | tee server_privatekey | wg pubkey > server_publickey
 
 wg genkey | tee client1_privatekey | wg pubkey > client1_publickey
 
-参见 服务器配置文件
-
-参见 用户配置文件
-
-wg-quick up wg0
-
-wg set wg0 peer $(client1_publickey) allowed-ips 10.0.0.2/32
-
-systemctl enable wg-quick@wg0
-
-### 启动WireGuard
-wg-quick up wg0
-
-### 停止WireGuard
-wg-quick down wg0
-
-### 查看WireGuard运行状态
-wg
-
-### 停止WireGuard
-wg-quick down wg0
-
-### 已经成功创建后，启动WireGuard
-wg-quick up wg0
-
-## 用户端配置文件模板client.conf（酌情修改）
-
-[Interface]
-
-PrivateKey = IJ4DEmcrwBXngTtDWHBOe9xPsRm9+fbwe8TbpINcXG8=
-
-Address = 10.0.0.2/32
-
-DNS = 100.100.2.136, 100.100.2.138
-
-PersistentKeepalive = 25
-
-[Peer]
-
-PublicKey = +GzVAjpZKkRh5Wz8EJur6a1JAgNGTd85lvPQW4d2AyI=
-
-AllowedIPs = 0.0.0.0/0, ::/0
-
-Endpoint = 1.2.3.4:21734
-
 ## 服务器端配置模板wg0.conf（酌情修改）
 
 [Interface]
@@ -119,3 +74,49 @@ DNS = 100.100.2.138
 PublicKey = tLg1EJH0bx/UiTclvQN3nM+aTS/72JgjM9O7qX0RKkc=
 
 AllowedIPs = 10.0.0.2/32
+
+## End
+
+## 用户端配置文件模板client.conf（酌情修改）
+
+[Interface]
+
+PrivateKey = IJ4DEmcrwBXngTtDWHBOe9xPsRm9+fbwe8TbpINcXG8=
+
+Address = 10.0.0.2/32
+
+DNS = 100.100.2.136, 100.100.2.138
+
+PersistentKeepalive = 25
+
+[Peer]
+
+PublicKey = +GzVAjpZKkRh5Wz8EJur6a1JAgNGTd85lvPQW4d2AyI=
+
+AllowedIPs = 0.0.0.0/0, ::/0
+
+Endpoint = 1.2.3.4:21734
+
+## End
+
+wg-quick up wg0
+
+wg set wg0 peer $(client1_publickey) allowed-ips 10.0.0.2/32
+
+systemctl enable wg-quick@wg0
+
+### 启动WireGuard
+wg-quick up wg0
+
+### 停止WireGuard
+wg-quick down wg0
+
+### 查看WireGuard运行状态
+wg
+
+### 停止WireGuard
+wg-quick down wg0
+
+### 已经成功创建后，启动WireGuard
+wg-quick up wg0
+
