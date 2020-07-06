@@ -90,9 +90,6 @@ AllowedIPs = 0.0.0.0/0, ::/0
 
 Endpoint = 1.2.3.4:21734
 
-PersistentKeepalive = 25
-
-
 ## 服务器端配置模板wg0.conf（酌情修改）
 
 [Interface]
