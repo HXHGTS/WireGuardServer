@@ -49,7 +49,7 @@ wg genkey | tee server_privatekey | wg pubkey > server_publickey
 
 wg genkey | tee client1_privatekey | wg pubkey > client1_publickey
 
-## 服务器端配置模板wg0.conf（酌情修改）
+## 服务器端配置模板/etc/wireguard/wg0.conf（酌情修改）
 
 [Interface]
 
@@ -77,7 +77,7 @@ AllowedIPs = 10.0.0.2/32
 
 ## End
 
-## 用户端配置文件模板client.conf（酌情修改）
+## 用户端配置文件模板/etc/wireguard/client.conf（酌情修改）
 
 [Interface]
 
