@@ -82,6 +82,8 @@ Address = 10.0.0.2/32
 
 DNS = 100.100.2.136, 100.100.2.138
 
+PersistentKeepalive = 25
+
 [Peer]
 
 PublicKey = +GzVAjpZKkRh5Wz8EJur6a1JAgNGTd85lvPQW4d2AyI=
