@@ -53,6 +53,8 @@ wg genkey | tee client_privatekey | wg pubkey > client_publickey
 
 参见 用户配置文件
 
+wg set wg0 peer $(client_publickey) allowed-ips 10.0.0.2/32
+
 systemctl enable wg-quick@wg0
 
 
