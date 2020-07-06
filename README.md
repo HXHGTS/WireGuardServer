@@ -1,7 +1,7 @@
 # WireGuardServer
 
 ## 一、更新内核
-yum -y install epel-release curl
+yum -y install epel-release curl vim wget
 
 sed -i "0,/enabled=0/s//enabled=1/" /etc/yum.repos.d/epel.repo
 
@@ -47,16 +47,15 @@ umask 077
 
 wg genkey | tee server_privatekey | wg pubkey > server_publickey
 
-wg genkey | tee client_privatekey | wg pubkey > client_publickey
+wg genkey | tee client1_privatekey | wg pubkey > client1_publickey
 
 参见 服务器配置文件
 
 参见 用户配置文件
 
-wg set wg0 peer $(client_publickey) allowed-ips 10.0.0.2/32
+wg set wg0 peer $(client1_publickey) allowed-ips 10.0.0.2/32
 
 systemctl enable wg-quick@wg0
-
 
 ### 启动WireGuard
 wg-quick up wg0
@@ -77,45 +76,45 @@ wg-quick up wg0
 
 [Interface]
 
-PrivateKey = gInWKSooaDEDXwai+KC6ole6bw/P5z21Q2pBIsQhxXw=
+PrivateKey = IJ4DEmcrwBXngTtDWHBOe9xPsRm9+fbwe8TbpINcXG8=
 
-Address = 10.0.0.2/24
+Address = 10.0.0.2/32
 
-DNS = 67.207.67.2
-
-DNS = 67.207.67.3
+DNS = 100.100.2.136, 100.100.2.138
 
 [Peer]
 
-PublicKey = SBah8iYP2mYv+5PlEAU9ZRwMllsdz6o+Slt2DDXu1yg=
+PublicKey = +GzVAjpZKkRh5Wz8EJur6a1JAgNGTd85lvPQW4d2AyI=
 
-Endpoint = sqbgp.nat.coalcloud.xyz:21735
+AllowedIPs = 0.0.0.0/0, ::/0
 
-AllowedIPs = 0.0.0.0/0
+Endpoint = 1.2.3.4:21734
 
-PersistentKeepalive = 25 
+PersistentKeepalive = 25
+
 
 ## 服务器端配置模板wg0.conf（酌情修改）
 
 [Interface]
 
-PrivateKey = UMez+xG0p9x5UUEnVQYieentswN90rRLbtHotaaL+nw=
+PrivateKey = 0BH2tb+3uMzdsMW0ODzZasndJPXLX/0LGZByalTHom4= 
 
-Address = 10.0.0.1/24
+Address = 10.0.0.1/16 
 
-PostUp = iptables -A FORWARD -i wg0 -j ACCEPT; iptables -A FORWARD -o wg0 -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+PostUp   = iptables -A FORWARD -i wg0 -j ACCEPT; iptables -A FORWARD -o wg0 -j ACCEPT; iptables -I FORWARD -s 10.0.0.1/24 -d 10.0.0.1/24 -j DROP; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 
-PostDown = iptables -D FORWARD -i wg0 -j ACCEPT; iptables -D FORWARD -o wg0 -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
+PostDown = iptables -D FORWARD -i wg0 -j ACCEPT; iptables -D FORWARD -o wg0 -j ACCEPT; iptables -D FORWARD -s 10.0.0.1/24 -d 10.0.0.1/24 -j DROP; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
 
-ListenPort = 21735
+ListenPort = 31734
 
-DNS = 67.207.67.2
+DNS = 100.100.2.136
 
-DNS = 67.207.67.3
+DNS = 100.100.2.138
+
+##添加一个用户需要对应添加一个peer，填入客户端publickey，ip如10.0.0.2 10.0.0.3
 
 [Peer]
 
-PublicKey = SHlCXsbxOLG8WuACzFR6Pm+zfCLeJlWEgcqELzYD4yU=
+PublicKey = tLg1EJH0bx/UiTclvQN3nM+aTS/72JgjM9O7qX0RKkc=
 
-AllowedIPs = 10.0.0.2/32 
-
+AllowedIPs = 10.0.0.2/32
