@@ -98,7 +98,7 @@ int AddUser() {
     else {
         printf("检测到当前用户数为:\n");
         system("cat /etc/wireguard/usernum.conf");
-        re3:printf("\n请输入新建用户编号，必须大于上值，否则会出错：");
+        re3:printf("\n请输入新建用户编号，必须等于上值，否则会出错：");
         scanf("%d", &num);
         if (num <= 2) {
             printf("非法输入，请重新输入用户编号！\n");
