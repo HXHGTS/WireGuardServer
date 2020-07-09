@@ -42,12 +42,12 @@ int UpdateKernel() {
     fprintf(bash,"sudo sed -i \"0,/enabled=0/s//enabled=1/\" /etc/yum.repos.d/epel.repo");
     fprintf(bash,"sudo yum remove -y kernel-devel");
     fprintf(bash,"sudo rpm –import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org");
-    fprintf(bash,"sudo rpm -Uvh https://mirror.tuna.tsinghua.edu.cn/elrepo/elrepo/el7/x86_64/RPMS/elrepo-release-7.0-5.el7.elrepo.noarch.rpm");
+    fprintf(bash,"sudo rpm -Uvh https://github.com/HXHGTS/WireGuardServer/raw/master/elrepo-release-7.0-5.el7.elrepo.noarch.rpm");
     fprintf(bash,"sudo yum –disablerepo=\"*\" –enablerepo=\"elrepo-kernel\" list available");
     fprintf(bash,"sudo yum -y –enablerepo=elrepo-kernel install kernel-ml");
     fprintf(bash,"sudo sed -i \"s/GRUB_DEFAULT=saved/GRUB_DEFAULT=0/\" /etc/default/grub");
     fprintf(bash,"sudo grub2-mkconfig -o /boot/grub2/grub.cfg");
-    fprintf(bash,"wget https://mirror.tuna.tsinghua.edu.cn/elrepo/kernel/el7/x86_64/RPMS/kernel-ml-devel-5.7.8-1.el7.elrepo.x86_64.rpm");
+    fprintf(bash,"wget https://github.com/HXHGTS/WireGuardServer/raw/master/kernel-ml-devel-5.7.8-1.el7.elrepo.x86_64.rpm");
     fprintf(bash,"sudo rpm -ivh kernel-ml-devel-5.7.8-1.el7.elrepo.x86_64.rpm");
     fprintf(bash,"sudo yum -y –enablerepo=elrepo-kernel install kernel-ml-devel");
     fclose(bash);
