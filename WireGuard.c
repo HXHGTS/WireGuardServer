@@ -38,20 +38,22 @@ int UI() {
 
 int UpdateKernel() {
     bash = fopen("KernelUpdate.sh", "w");
-    fprintf(bash,"sudo yum -y install epel-release curl vim wget");
-    fprintf(bash,"sudo sed -i \"0,/enabled=0/s//enabled=1/\" /etc/yum.repos.d/epel.repo");
-    fprintf(bash,"sudo yum remove -y kernel-devel");
-    fprintf(bash,"sudo rpm –import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org");
-    fprintf(bash,"sudo rpm -Uvh https://github.com/HXHGTS/WireGuardServer/raw/master/elrepo-release-7.0-5.el7.elrepo.noarch.rpm");
-    fprintf(bash,"sudo yum –disablerepo=\"*\" –enablerepo=\"elrepo-kernel\" list available");
-    fprintf(bash,"sudo yum -y –enablerepo=elrepo-kernel install kernel-ml");
-    fprintf(bash,"sudo sed -i \"s/GRUB_DEFAULT=saved/GRUB_DEFAULT=0/\" /etc/default/grub");
-    fprintf(bash,"sudo grub2-mkconfig -o /boot/grub2/grub.cfg");
-    fprintf(bash,"wget https://github.com/HXHGTS/WireGuardServer/raw/master/kernel-ml-devel-5.7.8-1.el7.elrepo.x86_64.rpm");
-    fprintf(bash,"sudo rpm -ivh kernel-ml-devel-5.7.8-1.el7.elrepo.x86_64.rpm");
-    fprintf(bash,"sudo yum -y –enablerepo=elrepo-kernel install kernel-ml-devel");
+    fprintf(bash, "#!/bin/bash\n");
+    fprintf(bash,"sudo yum -y install epel-release curl vim wget\n");
+    fprintf(bash,"sudo sed -i \"0,/enabled=0/s//enabled=1/\" /etc/yum.repos.d/epel.repo\n");
+    fprintf(bash,"sudo yum remove -y kernel-devel\n");
+    fprintf(bash,"sudo rpm –import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org\n");
+    fprintf(bash,"sudo rpm -Uvh https://github.com/HXHGTS/WireGuardServer/raw/master/elrepo-release-7.0-5.el7.elrepo.noarch.rpm\n");
+    fprintf(bash,"sudo yum –disablerepo=\"*\" –enablerepo=\"elrepo-kernel\" list available\n");
+    fprintf(bash,"sudo yum -y –enablerepo=elrepo-kernel install kernel-ml\n");
+    fprintf(bash,"sudo sed -i \"s/GRUB_DEFAULT=saved/GRUB_DEFAULT=0/\" /etc/default/grub\n");
+    fprintf(bash,"sudo grub2-mkconfig -o /boot/grub2/grub.cfg\n");
+    fprintf(bash,"wget https://github.com/HXHGTS/WireGuardServer/raw/master/kernel-ml-devel-5.7.8-1.el7.elrepo.x86_64.rpm\n");
+    fprintf(bash,"sudo rpm -ivh kernel-ml-devel-5.7.8-1.el7.elrepo.x86_64.rpm\n");
+    fprintf(bash,"sudo yum -y –enablerepo=elrepo-kernel install kernel-ml-devel\n");
     fclose(bash);
-    system("KernelUpdate.sh");
+    system("sudo chmod +x KernelUpdate.sh");
+    system("sudo bash KernelUpdate.sh");
     printf("内核升级准备就绪，请自行重启计算机. . .\n");
     return 0;
 }
