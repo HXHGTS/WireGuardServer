@@ -32,7 +32,7 @@ reboot
 
 直接运行简化版本(基于c语言自己编译，源代码可以查看，避免后门)：
 
-yum install -y wget gcc
+yum install -y gcc
 
 wget https://github.com/HXHGTS/WireGuardServer/raw/master/WireGuard.c
 
