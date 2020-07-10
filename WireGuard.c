@@ -70,7 +70,7 @@ int InstallWireGuard(){
     printf("请输入DNS服务器地址:");
     scanf("%s", DNS);
     system("curl -Lo /etc/yum.repos.d/wireguard.repo https://copr.fedorainfracloud.org/coprs/jdoss/wireguard/repo/epel-7/jdoss-wireguard-epel-7.repo");
-    system("sudo yum install epel-release -y");
+    system("sudo yum install epel-release qrencode -y");
     system("sudo yum install wireguard-dkms wireguard-tools -y");
     system("sudo echo \"net.ipv4.ip_forward = 1\" >> /etc/sysctl.conf");
     system("sudo sysctl -p");
@@ -170,5 +170,8 @@ re2:printf("请输入服务器监听端口号，与第二部一致:");
     fprintf(usernum, "%d", num + 1);
     fclose(usernum);
     printf("成功添加用户！\n");
+    printf("手机版WireGuard客户端建议扫描以下二维码添加:\n\n");
+    sprintf(command, "qrencode -t ansiutf8 < /etc/wireguard/%s.conf", username);
+    system(command);
     return 0;
 }
