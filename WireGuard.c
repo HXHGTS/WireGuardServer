@@ -31,7 +31,7 @@ int main()
 
 int UI() {
     printf("--------WireGuard安装工具(CentOS7)--------\n\n");
-    printf("1.更新CentOS7内核（必须）\n\n2.安装WireGuard\n\n3.添加wg用户\n\n4.关闭WireGuard\n\n5.重启WireGuard\n\n请输入：");
+    printf("1.更新CentOS7内核（必须）\n\n2.安装WireGuard\n\n3.添加用户\n\n4.关闭WireGuard\n\n5.重启WireGuard\n\n请输入：");
     scanf("%d", &mode);
     return 0;
 }
