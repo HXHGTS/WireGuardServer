@@ -30,8 +30,12 @@ int main()
 }
 
 int UI() {
-    printf("--------WireGuard安装工具(CentOS7)--------\n\n");
-    printf("1.更新CentOS7内核（必须）\n\n2.安装WireGuard\n\n3.添加用户\n\n4.关闭WireGuard\n\n5.重启WireGuard\n\n请输入：");
+    printf("--------WireGuard安装工具(CentOS7)--------\n");
+    printf("当前Kernel版本:\n");
+    system("uname -a");
+    printf("\n");
+    printf("------------------------------------------\n");
+    printf("1.更新CentOS7内核（Kernel版本低于5必须执行这一步）\n\n2.安装WireGuard\n\n3.添加用户\n\n4.关闭WireGuard\n\n5.重启WireGuard\n\n请输入：");
     scanf("%d", &mode);
     return 0;
 }
