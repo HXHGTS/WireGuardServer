@@ -3,7 +3,7 @@
 
 FILE* server_config, * client_config,*usernum,*bash;
 int mode,confirm,ListenPort, num;
-char username[10],command[200],pubkey[100],domainname[30];
+char username[10],command[200],pubkey[100],domainname[30],DNS[16];
 
 int main()
 {
@@ -65,6 +65,10 @@ int InstallWireGuard(){
         printf("非法输入，请重新输入端口号！\n");
         goto re1;
     }
+    printf("以下为服务器默认DNS服务器地址:");
+    system("cat /etc/resolv.conf");
+    printf("请输入DNS服务器地址:");
+    scanf("%s", DNS);
     system("curl -Lo /etc/yum.repos.d/wireguard.repo https://copr.fedorainfracloud.org/coprs/jdoss/wireguard/repo/epel-7/jdoss-wireguard-epel-7.repo");
     system("sudo yum install epel-release -y");
     system("sudo yum install wireguard-dkms wireguard-tools -y");
@@ -83,8 +87,7 @@ int InstallWireGuard(){
     fprintf(server_config, "PostUp = iptables -A FORWARD -i wg0 -j ACCEPT; iptables -A FORWARD -o wg0 -j ACCEPT; iptables -I FORWARD -s 10.0.0.1/24 -d 10.0.0.1/24 -j DROP; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE\n");
     fprintf(server_config, "PostDown = iptables -D FORWARD -i wg0 -j ACCEPT; iptables -D FORWARD -o wg0 -j ACCEPT; iptables -D FORWARD -s 10.0.0.1/24 -d 10.0.0.1/24 -j DROP; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE\n");
     fprintf(server_config, "ListenPort = %d\n",ListenPort);
-    fprintf(server_config, "DNS = 8.8.8.8\n");
-    fprintf(server_config, "DNS = 8.8.4.4\n\n");
+    fprintf(server_config, "DNS = %s\n\n",DNS);
     fclose(server_config);
     printf("服务器搭建完成！\n");
     return 0;
@@ -117,6 +120,10 @@ re2:printf("请输入服务器监听端口号，与第二部一致:");
         printf("非法输入，请重新输入端口号！\n");
         goto re2;
     }
+    printf("以下为服务器默认DNS服务器地址:");
+    system("cat /etc/resolv.conf");
+    printf("请输入DNS服务器地址:");
+    scanf("%s", DNS);
     printf("\n");
     sprintf(command, "wg genkey | tee /etc/wireguard/%s_privatekey | wg pubkey > /etc/wireguard/%s_publickey",username,username);
     system(command);
@@ -146,7 +153,7 @@ re2:printf("请输入服务器监听端口号，与第二部一致:");
     system(command);
     client_config = fopen("/etc/wireguard/client.conf", "a");
     fprintf(client_config, "Address = 10.0.0.%d/32\n",num);
-    fprintf(client_config, "DNS = 8.8.8.8, 8.8.4.4\n");
+    fprintf(client_config, "DNS = %s\n",DNS);
     fprintf(client_config, "[Peer]\n");
     fprintf(client_config, "AllowedIPs = 0.0.0.0/0, ::/0\n");
     fprintf(client_config, "Endpoint = %s:%d\n",domainname,ListenPort);
