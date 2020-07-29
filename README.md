@@ -12,6 +12,8 @@ sudo yum install -y wget gcc
 
 wget https://github.com/HXHGTS/WireGuardServer/raw/master/preload.sh
 
+sudo chmod +x preload.sh
+
 sudo bash preload.sh
 
 wget https://github.com/HXHGTS/WireGuardServer/raw/master/WireGuard.c
