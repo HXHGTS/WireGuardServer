@@ -8,6 +8,10 @@ WireGuard纯手工搭建教程，不依赖第三方脚本(本项目中代码完�
 
 sudo yum install -y wget gcc
 
+wget https://github.com/HXHGTS/WireGuardServer/raw/master/preload.sh
+
+sudo bash preload.sh
+
 wget https://github.com/HXHGTS/WireGuardServer/raw/master/WireGuard.c
 
 gcc -o WireGuard WireGuard.c
