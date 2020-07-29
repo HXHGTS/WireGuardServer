@@ -3,7 +3,7 @@
 
 FILE* server_config, * client_config,*usernum,*bash;
 int mode,confirm,ListenPort, num;
-char username[10],command[200],pubkey[100],domainname[30],DNS[16];
+char username[10],command[200],pubkey[100],domainname[30],DNS[15]="208.67.222.222";
 
 int main()
 {
@@ -44,11 +44,7 @@ int InstallWireGuard(){
         printf("非法输入，请重新输入端口号！\n");
         goto re1;
     }
-    printf("以下为服务器默认DNS服务器地址:\n");
-    system("cat /etc/resolv.conf");
-    printf("请输入DNS服务器地址:");
-    scanf("%s", DNS);
-    system("curl -Lo /etc/yum.repos.d/wireguard.repo https://copr.fedorainfracloud.org/coprs/jdoss/wireguard/repo/epel-7/jdoss-wireguard-epel-7.repo");
+    system("sudo curl -o /etc/yum.repos.d/jdoss-wireguard-epel-7.repo https://copr.fedorainfracloud.org/coprs/jdoss/wireguard/repo/epel-7/jdoss-wireguard-epel-7.repo");
     system("sudo yum install epel-release qrencode -y");
     system("sudo yum install wireguard-dkms wireguard-tools -y");
     system("sudo echo \"net.ipv4.ip_forward = 1\" >> /etc/sysctl.conf");
@@ -99,10 +95,6 @@ re2:printf("请输入服务器监听端口号，与第二部一致:");
         printf("非法输入，请重新输入端口号！\n");
         goto re2;
     }
-    printf("以下为服务器默认DNS服务器地址:\n");
-    system("cat /etc/resolv.conf");
-    printf("请输入DNS服务器地址:");
-    scanf("%s", DNS);
     printf("\n");
     sprintf(command, "wg genkey | tee /etc/wireguard/%s_privatekey | wg pubkey > /etc/wireguard/%s_publickey",username,username);
     system(command);
