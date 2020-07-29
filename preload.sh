@@ -18,9 +18,9 @@ sed -i "s/GRUB_DEFAULT=saved/GRUB_DEFAULT=0/" /etc/default/grub
 
 grub2-mkconfig -o /boot/grub2/grub.cfg
 
-https://mirrors.aliyun.com/centos/7.8.2003/virt/x86_64/xen-48/kernel-4.9.86-30.el7.x86_64.rpm?spm=a2c6h.13651111.0.0.2d3b2f70SDs6ec&file=kernel-4.9.86-30.el7.x86_64.rpm
+wget https://mirrors.aliyun.com/centos/7.8.2003/extras/x86_64/Packages/elrepo-release-7.0-4.el7.elrepo.noarch.rpm?spm=a2c6h.13651111.0.0.2d3b2f70SDs6ec&file=elrepo-release-7.0-4.el7.elrepo.noarch.rpm
 
-rpm -ivh kernel-ml-devel-5.7.8-1.el7.elrepo.x86_64.rpm
+rpm -ivh elrepo-release-7.0-4.el7.elrepo.noarch.rpm
 
 yum -y --enablerepo=elrepo-kernel install kernel-ml-devel
 
