@@ -1,4 +1,4 @@
-
+#!/bin/bash
 
 yum -y install epel-release curl vim wget
 
