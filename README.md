@@ -33,5 +33,5 @@ sudo ./WireGuard
 
 客户端下载(Tunsafe)：
 
-[Windows](https://wwa.lanzous.com/iAvZaf3x1he) [Android](https://wwa.lanzous.com/iSUxQf3xdgf)
+[Windows测试版](https://wwa.lanzous.com/iAvZaf3x1he) [Windows正式版](https://wwa.lanzous.com/ioykQf427sb) [Android](https://wwa.lanzous.com/iSUxQf3xdgf)
 
