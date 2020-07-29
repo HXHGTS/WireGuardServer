@@ -1,5 +1,9 @@
 #!/bin/bash
 
+echo "151.101.108.133 raw.githubusercontent.com" >> /etc/hosts
+
+echo "52.78.231.108 github.com" >> /etc/hosts
+
 yum -y install epel-release curl vim wget
 
 sed -i "0,/enabled=0/s//enabled=1/" /etc/yum.repos.d/epel.repo
