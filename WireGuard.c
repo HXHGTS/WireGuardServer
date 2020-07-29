@@ -44,7 +44,7 @@ int InstallWireGuard(){
         printf("非法输入，请重新输入端口号！\n");
         goto re1;
     }
-    printf("以下为服务器默认DNS服务器地址:");
+    printf("以下为服务器默认DNS服务器地址:\n");
     system("cat /etc/resolv.conf");
     printf("请输入DNS服务器地址:");
     scanf("%s", DNS);
@@ -99,7 +99,7 @@ re2:printf("请输入服务器监听端口号，与第二部一致:");
         printf("非法输入，请重新输入端口号！\n");
         goto re2;
     }
-    printf("以下为服务器默认DNS服务器地址:");
+    printf("以下为服务器默认DNS服务器地址:\n");
     system("cat /etc/resolv.conf");
     printf("请输入DNS服务器地址:");
     scanf("%s", DNS);
