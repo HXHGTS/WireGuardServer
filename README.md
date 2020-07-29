@@ -25,3 +25,13 @@ gcc -o WireGuard WireGuard.c
 sudo chmod +x WireGuard
 
 sudo ./WireGuard
+
+客户端下载(原版wg)：
+
+[Windows x64](https://wwa.lanzous.com/i9q09f3x2zi) [Windows x86](https://wwa.lanzous.com/ibVYif3x32b) [Android](https://wwa.lanzous.com/izHzDf3x1sf)
+
+
+客户端下载(Tunsafe)：
+
+[Windows x64](https://wwa.lanzous.com/iAvZaf3x1he) [Windows x86]() [Android]()
+
