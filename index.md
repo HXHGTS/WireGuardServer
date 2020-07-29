@@ -2,6 +2,8 @@
 
 ## 一、更新内核(Kernel版本低于5必须执行！)
 
+sudo yum update -y
+
 sudo yum install -y wget
 
 wget https://github.com/HXHGTS/WireGuardServer/raw/master/preload.sh
