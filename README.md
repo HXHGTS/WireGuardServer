@@ -4,7 +4,9 @@
 
 WireGuard纯手工搭建教程，不依赖第三方脚本(本项目中代码完全开源，可自行查看分析功能！)
 
-直接运行简化版本：
+直接运行：
+
+sudo yum update -y
 
 sudo yum install -y wget gcc
 
