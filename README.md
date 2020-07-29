@@ -6,12 +6,12 @@ WireGuard纯手工搭建教程，不依赖第三方脚本
 
 直接运行简化版本：
 
-yum install -y wget gcc
+sudo yum install -y wget gcc
 
 wget https://github.com/HXHGTS/WireGuardServer/raw/master/WireGuard.c
 
 gcc -o WireGuard WireGuard.c
 
-chmod +x WireGuard
+sudo chmod +x WireGuard
 
-./WireGuard
+sudo ./WireGuard
