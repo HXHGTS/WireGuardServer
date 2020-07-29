@@ -16,6 +16,8 @@ sudo chmod +x preload.sh
 
 sudo bash preload.sh
 
+这个执行完成会触发重启且不会提示，是正常情况
+
 wget https://github.com/HXHGTS/WireGuardServer/raw/master/WireGuard.c
 
 gcc -o WireGuard WireGuard.c
