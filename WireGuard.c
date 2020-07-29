@@ -3,7 +3,7 @@
 
 FILE* server_config, * client_config,*usernum,*bash;
 int mode,confirm,ListenPort, num;
-char username[10],command[200],pubkey[100],domainname[30],DNS[15]="208.67.222.222";
+char username[10],command[200],pubkey[100],domainname[35];
 
 int main()
 {
@@ -30,7 +30,6 @@ int UI() {
     printf("--------WireGuard安装工具(CentOS7)--------\n");
     printf("当前Kernel版本:\n");
     system("uname -a");
-    printf("\n");
     printf("------------------------------------------\n");
     printf("1.安装WireGuard\n\n2.添加用户\n\n3.关闭WireGuard\n\n4.重启WireGuard\n\n请输入：");
     scanf("%d", &mode);
@@ -62,7 +61,7 @@ int InstallWireGuard(){
     fprintf(server_config, "PostUp = iptables -A FORWARD -i wg0 -j ACCEPT; iptables -A FORWARD -o wg0 -j ACCEPT; iptables -I FORWARD -s 10.0.0.1/24 -d 10.0.0.1/24 -j DROP; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE\n");
     fprintf(server_config, "PostDown = iptables -D FORWARD -i wg0 -j ACCEPT; iptables -D FORWARD -o wg0 -j ACCEPT; iptables -D FORWARD -s 10.0.0.1/24 -d 10.0.0.1/24 -j DROP; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE\n");
     fprintf(server_config, "ListenPort = %d\n",ListenPort);
-    fprintf(server_config, "DNS = %s\n\n",DNS);
+    fprintf(server_config, "DNS = 208.67.222.222\n\n");
     fclose(server_config);
     printf("服务器搭建完成！\n");
     return 0;
@@ -85,14 +84,14 @@ int AddUser() {
             goto re3;
         }
     }
-    printf("请输入用户名，必须为英文:");
+    printf("\n请输入用户名，必须为英文:");
     scanf("%s", username);
-    printf("请输入服务器地址:");
+    printf("\n请输入服务器地址:");
     scanf("%s", domainname);
-re2:printf("请输入服务器监听端口号，与第二部一致:");
+re2:printf("\n请输入服务器监听端口号，与第二步一致:");
     scanf("%d", &ListenPort);
     if (ListenPort < 10000 || ListenPort>65535) {
-        printf("非法输入，请重新输入端口号！\n");
+        printf("\n非法输入，请重新输入端口号！\n");
         goto re2;
     }
     printf("\n");
@@ -108,10 +107,10 @@ re2:printf("请输入服务器监听端口号，与第二部一致:");
     fprintf(server_config, "AllowedIPs = 10.0.0.%d/32\n",num);
     fclose(server_config);
     system("wg-quick up wg0");
-    printf("正在计算客户端公钥:\n");
+    printf("\n正在计算客户端公钥:\n");
     sprintf(command,"cat /etc/wireguard/%s_publickey",username);
     system(command);
-    printf("请将上面输出的客户端公钥粘贴至此:\n");
+    printf("\n请将上面输出的客户端公钥粘贴至此:\n");
     scanf("%s", pubkey);
     sprintf(command,"wg set wg0 peer %s allowed-ips 10.0.0.%d/32",pubkey,num);
     system(command);
@@ -124,8 +123,8 @@ re2:printf("请输入服务器监听端口号，与第二部一致:");
     system(command);
     client_config = fopen("/etc/wireguard/client.conf", "a");
     fprintf(client_config, "Address = 10.0.0.%d/32\n",num);
-    fprintf(client_config, "DNS = %s\n",DNS);
-    fprintf(client_config, "[Peer]\n");
+    fprintf(client_config, "DNS = 208.67.222.222\n");
+    fprintf(client_config, "\n[Peer]\n");
     fprintf(client_config, "AllowedIPs = 0.0.0.0/0, ::/0\n");
     fprintf(client_config, "Endpoint = %s:%d\n",domainname,ListenPort);
     fprintf(client_config, "PublicKey = ");
@@ -140,8 +139,8 @@ re2:printf("请输入服务器监听端口号，与第二部一致:");
     usernum = fopen("/etc/wireguard/usernum.conf", "w");
     fprintf(usernum, "%d", num + 1);
     fclose(usernum);
-    printf("成功添加用户！\n");
-    printf("手机版WireGuard客户端建议扫描以下二维码添加:\n\n");
+    printf("\n成功添加用户！\n");
+    printf("\n手机版WireGuard客户端建议扫描以下二维码添加:\n\n");
     sprintf(command, "qrencode -t ansiutf8 < /etc/wireguard/%s.conf", username);
     system(command);
     return 0;
