@@ -5,13 +5,33 @@ FILE* server_config, * client_config,*usernum,*bash;
 int mode,confirm,ListenPort, num;
 char username[10],command[200],pubkey[100],domainname[35],DNS[16];
 
-int DNS(){
+int DNS_Server(){
     int DNS_choose;
-    printf("\n请选择DNS服务器:\n\n1.谷歌DNS\n\n2.OpenDNS\n\n3.CloudflareDNS\n\n4.自定义DNS\n\n");
+    printf("\n请选择DNS服务器(5、6仅针对服务器在国内的情况):\n\n1.谷歌DNS\n\n2.OpenDNS\n\n3.CloudflareDNS\n\n4.IBM DNS\n\n5.腾讯DNS\n\n6.阿里DNS\n\n7.自定义DNS\n\n");
     scanf("%d",&DNS_choose);
     if(DNS_choose==1){
-        
+        sprintf(DNS, "8.8.8.8");
     }
+    else if (DNS_choose == 2) {
+        sprintf(DNS, "208.67.222.222");
+    }
+    else if (DNS_choose == 3) {
+        sprintf(DNS, "1.1.1.1");
+    }
+    else if (DNS_choose == 4) {
+        sprintf(DNS, "9.9.9.9");
+    }
+    else if (DNS_choose == 5) {
+        sprintf(DNS, "119.29.29.29");
+    }
+    else if (DNS_choose == 6) {
+        sprintf(DNS, "223.5.5.5");
+    }
+    else {
+        printf("\n请输入DNS服务器地址:");
+        scanf("%s", DNS);
+    }
+    return 0;
 }
 
 int main()
@@ -36,13 +56,17 @@ int main()
 }
 
 int UI() {
-    printf("--------WireGuard安装工具(CentOS7)--------\n");
-    printf("当前Kernel版本:\n");
+    printf("-------------当前Kernel版本---------------\n");
     system("uname -a");
-    printf("Kernel版本低于5必须先升级再运行本程序!\n");
     printf("------------------------------------------\n");
-    printf("1.安装WireGuard\n\n2.添加用户\n\n3.关闭WireGuard\n\n4.重启WireGuard\n\n请输入：");
+    printf("--------WireGuard安装工具(CentOS7)--------\n");
+    printf("警告:Kernel版本低于5必须先升级再运行本程序!!!\n\n1.安装WireGuard\n\n2.添加用户\n\n3.关闭WireGuard\n\n4.重启WireGuard\n\n");
+    printf("------------------------------------------\n");
+    printf("请输入：");
     scanf("%d", &mode);
+    if (mode == 1 || mode == 2) {
+        DNS_Server();
+    }
     return 0;
 }
 
@@ -71,7 +95,7 @@ int InstallWireGuard(){
     fprintf(server_config, "PostUp = iptables -A FORWARD -i wg0 -j ACCEPT; iptables -A FORWARD -o wg0 -j ACCEPT; iptables -I FORWARD -s 10.0.0.1/24 -d 10.0.0.1/24 -j DROP; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE\n");
     fprintf(server_config, "PostDown = iptables -D FORWARD -i wg0 -j ACCEPT; iptables -D FORWARD -o wg0 -j ACCEPT; iptables -D FORWARD -s 10.0.0.1/24 -d 10.0.0.1/24 -j DROP; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE\n");
     fprintf(server_config, "ListenPort = %d\n",ListenPort);
-    fprintf(server_config, "DNS = 208.67.222.222\n\n");
+    fprintf(server_config, "DNS = %s\n\n",DNS);
     fclose(server_config);
     printf("服务器搭建完成！\n");
     return 0;
@@ -133,7 +157,7 @@ re2:printf("\n请输入服务器监听端口号，与第二步一致:");
     system(command);
     client_config = fopen("/etc/wireguard/client.conf", "a");
     fprintf(client_config, "Address = 10.0.0.%d/32\n",num);
-    fprintf(client_config, "DNS = 208.67.222.222\n");
+    fprintf(client_config, "DNS = %s\n",DNS);
     fprintf(client_config, "\n[Peer]\n");
     fprintf(client_config, "AllowedIPs = 0.0.0.0/0, ::/0\n");
     fprintf(client_config, "Endpoint = %s:%d\n",domainname,ListenPort);
@@ -153,7 +177,7 @@ re2:printf("\n请输入服务器监听端口号，与第二步一致:");
     printf("\n电脑版WireGuard客户端建议复制以下内容添加:\n\n");
     sprintf(command, "cat /etc/wireguard/%s.conf", username);
     system(command);
-    printf("\n手机版WireGuard客户端建议扫描以下二维码添加:\n\n");
+    printf("\n\n手机版WireGuard客户端建议扫描以下二维码添加:\n\n");
     sprintf(command, "qrencode -t ansiutf8 < /etc/wireguard/%s.conf", username);
     system(command);
     return 0;
