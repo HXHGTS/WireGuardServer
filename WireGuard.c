@@ -38,9 +38,11 @@ int main()
 {
     UI();
     if (mode == 1) {
+        DNS_Server();
         InstallWireGuard();
     }
     else if (mode == 2) {
+        DNS_Server();
         AddUser();
     }
     else if (mode == 3) {
@@ -64,9 +66,6 @@ int UI() {
     printf("------------------------------------------\n");
     printf("请输入：");
     scanf("%d", &mode);
-    if (mode == 1 || mode == 2) {
-        DNS_Server();
-    }
     return 0;
 }
 
