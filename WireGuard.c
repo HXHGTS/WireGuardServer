@@ -7,7 +7,7 @@ char username[10],command[200],pubkey[100],domainname[35],DNS[16];
 
 int DNS_Server(){
     int DNS_choose;
-    printf("\n请选择DNS服务器(5、6仅针对服务器在国内的情况):\n\n1.谷歌DNS\n\n2.OpenDNS\n\n3.CloudflareDNS\n\n4.IBM DNS\n\n5.腾讯DNS\n\n6.阿里DNS\n\n7.自定义DNS\n\n");
+    printf("\n请选择DNS服务器(5、6仅针对服务器在国内的情况):\n\n1.谷歌DNS\n\n2.OpenDNS\n\n3.CloudflareDNS\n\n4.IBM DNS\n\n5.腾讯DNS\n\n6.阿里DNS\n\n7.自定义DNS\n\n请输入:");
     scanf("%d",&DNS_choose);
     if(DNS_choose==1){
         sprintf(DNS, "8.8.8.8");
