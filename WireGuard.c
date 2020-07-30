@@ -3,7 +3,16 @@
 
 FILE* server_config, * client_config,*usernum,*bash;
 int mode,confirm,ListenPort, num;
-char username[10],command[200],pubkey[100],domainname[35];
+char username[10],command[200],pubkey[100],domainname[35],DNS[16];
+
+int DNS(){
+    int DNS_choose;
+    printf("\n请选择DNS服务器:\n\n1.谷歌DNS\n\n2.OpenDNS\n\n3.CloudflareDNS\n\n4.自定义DNS\n\n");
+    scanf("%d",&DNS_choose);
+    if(DNS_choose==1){
+        
+    }
+}
 
 int main()
 {
@@ -30,6 +39,7 @@ int UI() {
     printf("--------WireGuard安装工具(CentOS7)--------\n");
     printf("当前Kernel版本:\n");
     system("uname -a");
+    printf("Kernel版本低于5必须先升级再运行本程序!\n");
     printf("------------------------------------------\n");
     printf("1.安装WireGuard\n\n2.添加用户\n\n3.关闭WireGuard\n\n4.重启WireGuard\n\n请输入：");
     scanf("%d", &mode);
@@ -140,6 +150,9 @@ re2:printf("\n请输入服务器监听端口号，与第二步一致:");
     fprintf(usernum, "%d", num + 1);
     fclose(usernum);
     printf("\n成功添加用户！\n");
+    printf("\n电脑版WireGuard客户端建议复制以下内容添加:\n\n");
+    sprintf(command, "cat /etc/wireguard/%s.conf", username);
+    system(command);
     printf("\n手机版WireGuard客户端建议扫描以下二维码添加:\n\n");
     sprintf(command, "qrencode -t ansiutf8 < /etc/wireguard/%s.conf", username);
     system(command);
