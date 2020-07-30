@@ -1,5 +1,5 @@
 ﻿#include <stdio.h>
-#include <stdlib.h>
+#include <stdlib.h> 
 
 FILE* server_config, * client_config,*usernum,*bash;
 int mode,confirm,ListenPort, num;
@@ -63,12 +63,12 @@ int main()
 }
 
 int UI() {
-    printf("-------------当前Kernel版本---------------\n");
+    printf("----------WireGuard安装工具(CentOS7)----------\n");
+    printf("---------------当前Kernel版本-----------------\n");
     system("uname -a");
-    printf("------------------------------------------\n");
-    printf("--------WireGuard安装工具(CentOS7)--------\n");
+    printf("----------------------------------------------\n");
     printf("警告:Kernel版本低于5必须先升级再运行本程序!!!\n\n1.安装WireGuard\n\n2.添加用户\n\n3.关闭WireGuard\n\n4.重启WireGuard\n\n5.修改服务器配置\n\n");
-    printf("------------------------------------------\n");
+    printf("----------------------------------------------\n");
     printf("请输入：");
     scanf("%d", &mode);
     return 0;
@@ -106,24 +106,19 @@ int InstallWireGuard(){
 }
 
 int AddUser() {
-    if (fopen("/etc/wireguard/usernum.conf", "r") == NULL) {
-        usernum = fopen("/etc/wireguard/usernum.conf", "w");
-        fprintf(usernum, "%d", 2);
-        fclose(usernum);
+    int ret;
+    if (fopen("/etc/wireguard/user1.conf", "r") == NULL) {
         num = 2;
     }
     else {
-        printf("检测到当前用户数为:\n");
-        system("cat /etc/wireguard/usernum.conf");
-        re3:printf("\n请输入新建用户编号，必须等于上值，否则会出错：");
-        scanf("%d", &num);
-        if (num <= 2) {
-            printf("非法输入，请重新输入用户编号！\n");
-            goto re3;
+        for (ret = 1; ret <= 250; ret++) {
+            sprintf(command,"[ -f /etc/wireguard/user%d.conf ]",ret);
+            if (system(command) == NULL) {
+                num = ret+1;
+            }
         }
     }
-    printf("\n请输入用户名，必须为英文:");
-    scanf("%s", username);
+    sprintf(username, "user%d", num - 1);
     printf("\n请输入服务器地址:");
     scanf("%s", domainname);
 re2:printf("\n请输入服务器监听端口号，与第二步一致:");
@@ -174,9 +169,6 @@ re2:printf("\n请输入服务器监听端口号，与第二步一致:");
     sprintf(command, "sudo cp /etc/wireguard/client.conf /etc/wireguard/%s.conf", username);
     system(command);
     system("sudo rm -f /etc/wireguard/client.conf");
-    usernum = fopen("/etc/wireguard/usernum.conf", "w");
-    fprintf(usernum, "%d", num + 1);
-    fclose(usernum);
     printf("\n成功添加用户！\n");
     printf("\n电脑版WireGuard客户端建议复制以下内容添加:\n\n");
     sprintf(command, "cat /etc/wireguard/%s.conf", username);
