@@ -62,7 +62,7 @@ int main()
         system("sudo vi /etc/wireguard/wg0.conf");
     }
     else if (mode == 6) {
-        sprintf(command"sudo vi /etc/wireguard/user%d.conf",num);
+        sprintf(command,"sudo vi /etc/wireguard/user%d.conf",num);
         system(command);
     }
     else {
