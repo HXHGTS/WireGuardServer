@@ -1,9 +1,11 @@
 ﻿#include <stdio.h>
 #include <stdlib.h> 
 
-FILE* server_config, * client_config,*usernum,*bash;
+FILE* server_config, * client_config,*usernum,*bash,*client_pubkey;
 int mode,confirm,ListenPort, num;
-char username[10],command[200],pubkey[100],domainname[35],DNS[33];
+char username[10],command[200],pubkey[100],ServerName[35],DNS[33];
+int ret;
+char FileName[36];
 
 int DNS_Server(){
     int DNS_choose;
@@ -36,7 +38,7 @@ int DNS_Server(){
 
 int main()
 {
-    UI();
+    Menu:UI();
     if (mode == 1) {
         DNS_Server();
         InstallWireGuard();
@@ -59,17 +61,25 @@ int main()
         printf("修改完成后请手动重启WireGuard!\n");
         system("sudo vi /etc/wireguard/wg0.conf");
     }
+    else if (mode == 6) {
+        sprintf(command"sudo vi /etc/wireguard/user%d.conf",num);
+        system(command);
+    }
+    else {
+        printf("非法输入!\n");
+        goto Menu;
+    }
     return 0;
 }
 
 int UI() {
     printf("----------WireGuard安装工具(CentOS7)----------\n");
     printf("---------------当前Kernel版本-----------------\n");
-    system("uname -a");
+    system("uname -sr");
     printf("----------------------------------------------\n");
-    printf("警告:Kernel版本低于5必须先升级再运行本程序!!!\n\n1.安装WireGuard\n\n2.添加用户\n\n3.关闭WireGuard\n\n4.重启WireGuard\n\n5.修改服务器配置\n\n");
+    printf("警告:Kernel版本低于5必须先升级再运行本程序!!!\n1.安装WireGuard\n2.添加用户\n3.关闭WireGuard\n4.重启WireGuard\n5.修改服务器配置\n6.修改用户配置\n");
     printf("----------------------------------------------\n");
-    printf("请输入：");
+    printf("请输入:");
     scanf("%d", &mode);
     return 0;
 }
@@ -106,21 +116,25 @@ int InstallWireGuard(){
 }
 
 int AddUser() {
-    int ret;
     if (fopen("/etc/wireguard/user1.conf", "r") == NULL) {
         num = 2;
     }
     else {
-        for (ret = 1; ret <= 250; ret++) {
+        for (ret = 1; ret <= 251; ret++) {
             sprintf(command,"[ -f /etc/wireguard/user%d.conf ]",ret);
-            if (system(command) == NULL) {
+            if (system(command) != 0&&ret<251) {
                 num = ret+1;
+                break;
+            }
+            if (ret == 251) {
+                printf("\n已超过最大人数限制!\n");
+                exit(0);
             }
         }
     }
     sprintf(username, "user%d", num - 1);
     printf("\n请输入服务器地址:");
-    scanf("%s", domainname);
+    scanf("%s", ServerName);
 re2:printf("\n请输入服务器监听端口号，与第二步一致:");
     scanf("%d", &ListenPort);
     if (ListenPort < 10000 || ListenPort>65535) {
@@ -140,35 +154,32 @@ re2:printf("\n请输入服务器监听端口号，与第二步一致:");
     fprintf(server_config, "AllowedIPs = 10.0.0.%d/32\n",num);
     fclose(server_config);
     system("wg-quick up wg0");
-    printf("\n正在计算客户端公钥:\n");
-    sprintf(command,"cat /etc/wireguard/%s_publickey",username);
-    system(command);
-    printf("\n请将上面输出的客户端公钥粘贴至此:\n");
-    scanf("%s", pubkey);
+    sprintf(FileName, "/etc/wireguard/%s_publickey", username);
+    client_pubkey = fopen(FileName, "r");
+    fgets(pubkey,99,client_pubkey);
+    fclose(client_pubkey);
     sprintf(command,"wg set wg0 peer %s allowed-ips 10.0.0.%d/32",pubkey,num);
     system(command);
     system("sudo systemctl enable wg-quick@wg0");
-    client_config = fopen("/etc/wireguard/client.conf", "w");
+    client_config = fopen(FileName, "w");
+    fprintf(client_config, "##Can be found in /etc/wireguard/%s.conf\n",username,username);
     fprintf(client_config, "[Interface]\n");
     fprintf(client_config, "PrivateKey = ");
     fclose(client_config);
-    sprintf(command, "cat /etc/wireguard/%s_privatekey >> /etc/wireguard/client.conf", username);
+    sprintf(command, "cat /etc/wireguard/%s_privatekey >> /etc/wireguard/%s.conf", username,username);
     system(command);
-    client_config = fopen("/etc/wireguard/client.conf", "a");
+    client_config = fopen(FileName, "a");
     fprintf(client_config, "Address = 10.0.0.%d/32\n",num);
     fprintf(client_config, "DNS = %s\n",DNS);
     fprintf(client_config, "\n[Peer]\n");
     fprintf(client_config, "AllowedIPs = 0.0.0.0/0, ::/0\n");
-    fprintf(client_config, "Endpoint = %s:%d\n",domainname,ListenPort);
+    fprintf(client_config, "Endpoint = %s:%d\n",ServerName,ListenPort);
     fprintf(client_config, "PublicKey = ");
     fclose(client_config);
-    sprintf(command, "cat /etc/wireguard/server_publickey >> /etc/wireguard/client.conf", username);
+    sprintf(command, "cat /etc/wireguard/server_publickey >> /etc/wireguard/%s.conf", username);
     system(command);
-    client_config = fopen("/etc/wireguard/client.conf", "a");
+    client_config = fopen(FileName, "a");
     fclose(client_config);
-    sprintf(command, "sudo cp /etc/wireguard/client.conf /etc/wireguard/%s.conf", username);
-    system(command);
-    system("sudo rm -f /etc/wireguard/client.conf");
     printf("\n成功添加用户！\n");
     printf("\n电脑版WireGuard客户端建议复制以下内容添加:\n\n");
     sprintf(command, "cat /etc/wireguard/%s.conf", username);
@@ -176,5 +187,6 @@ re2:printf("\n请输入服务器监听端口号，与第二步一致:");
     printf("\n\n手机版WireGuard客户端建议扫描以下二维码添加:\n\n");
     sprintf(command, "qrencode -t ansiutf8 < /etc/wireguard/%s.conf", username);
     system(command);
+    printf("\n生成的配置文件请不要在本机上改名或删除，如确实需要，请删除文件中内容，避免修改文件名!\n");
     return 0;
 }
