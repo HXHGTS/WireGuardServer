@@ -28,7 +28,7 @@ sudo chmod +x WireGuard
 
 sudo ./WireGuard
 
-客户端下载(原版wg)：
+客户端下载:
 
 [Windows x64](https://wwa.lanzous.com/i9q09f3x2zi) [Windows x86](https://wwa.lanzous.com/ibVYif3x32b) [Android](https://wwa.lanzous.com/izHzDf3x1sf)
 
