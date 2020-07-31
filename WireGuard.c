@@ -9,6 +9,7 @@ char FileName[36];
 
 int DNS_Server(){
     int DNS_choose;
+    system("clear");
     printf("\n请选择DNS服务器(不知道怎么选就选2，5、6仅针对服务器在国内的情况):\n\n1.谷歌DNS\n\n2.OpenDNS\n\n3.CloudflareDNS\n\n4.IBM DNS\n\n5.腾讯DNS\n\n6.阿里DNS\n\n7.自定义DNS\n\n请输入:");
     scanf("%d",&DNS_choose);
     if(DNS_choose==1){
@@ -73,6 +74,7 @@ int main()
 }
 
 int UI() {
+    system("clear");
     printf("----------WireGuard安装工具(CentOS7)----------\n");
     printf("---------------当前Kernel版本-----------------\n");
     system("uname -sr");
@@ -91,6 +93,7 @@ int InstallWireGuard(){
         printf("非法输入，请重新输入端口号！\n");
         goto re1;
     }
+    system("clear");
     system("sudo curl -o /etc/yum.repos.d/jdoss-wireguard-epel-7.repo https://copr.fedorainfracloud.org/coprs/jdoss/wireguard/repo/epel-7/jdoss-wireguard-epel-7.repo");
     system("sudo yum install epel-release qrencode -y");
     system("sudo yum install wireguard-dkms wireguard-tools -y");
@@ -141,7 +144,7 @@ re2:printf("\n请输入服务器监听端口号，与第二步一致:");
         printf("\n非法输入，请重新输入端口号！\n");
         goto re2;
     }
-    printf("\n");
+    system("clear");
     sprintf(command, "wg genkey | tee /etc/wireguard/%s_privatekey | wg pubkey > /etc/wireguard/%s_publickey",username,username);
     system(command);
     server_config = fopen("/etc/wireguard/wg0.conf", "a");
