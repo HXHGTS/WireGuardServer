@@ -1,8 +1,6 @@
 #!/bin/bash
 
-yum update -y
-
-yum -y install epel-release curl vim wget
+yum -y install epel-release
 
 sed -i "0,/enabled=0/s//enabled=1/" /etc/yum.repos.d/epel.repo
 
