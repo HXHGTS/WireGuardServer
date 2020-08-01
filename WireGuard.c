@@ -3,7 +3,7 @@
 
 FILE* server_config, * client_config,*usernum,*client_pubkey;
 int mode,confirm,ListenPort, num;
-char username[10],command[200],pubkey[100],ServerName[35],DNS_Reslover[33];
+char username[10],command[200],pubkey[100],ServerName[35],DNS_Reslover[17];
 int ret;
 char FileName[36];
 int DNS_choose;
@@ -14,25 +14,25 @@ int DNS_X(){
         printf("\n请选择DNS服务器(不知道怎么选就选2，5、6仅针对服务器在国内的情况):\n\n1.谷歌DNS\n\n2.OpenDNS\n\n3.CloudflareDNS\n\n4.IBM DNS\n\n5.腾讯DNS\n\n6.阿里DNS\n\n7.自定义DNS\n\n请输入:");
         scanf("%d", &DNS_choose);
         if (DNS_choose == 1) {
-            sprintf(DNS_Reslover, "8.8.8.8,8.8.4.4");
+            sprintf(DNS_Reslover, "8.8.8.8");
         }
         else if (DNS_choose == 2) {
-            sprintf(DNS_Reslover, "208.67.222.222,208.67.220.220");
+            sprintf(DNS_Reslover, "208.67.222.222");
         }
         else if (DNS_choose == 3) {
-            sprintf(DNS_Reslover, "1.1.1.1,1.0.0.1");
+            sprintf(DNS_Reslover, "1.1.1.1");
         }
         else if (DNS_choose == 4) {
-            sprintf(DNS_Reslover, "9.9.9.9,149.112.112.112");
+            sprintf(DNS_Reslover, "9.9.9.9");
         }
         else if (DNS_choose == 5) {
-            sprintf(DNS_Reslover, "119.29.29.29,182.254.116.116");
+            sprintf(DNS_Reslover, "119.29.29.29");
         }
         else if (DNS_choose == 6) {
-            sprintf(DNS_Reslover, "223.5.5.5,223.6.6.6");
+            sprintf(DNS_Reslover, "223.5.5.5");
         }
         else {
-            printf("\n请输入DNS服务器地址，最多可以输入2个，地址间用英文逗号\",\"隔开:");
+            printf("\n请输入DNS服务器地址:");
             scanf("%s", DNS_Reslover);
         }
     return 0;
