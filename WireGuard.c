@@ -3,7 +3,7 @@
 
 FILE* server_config, * client_config,*usernum,*client_pubkey;
 int mode,confirm,ListenPort, num;
-char username[10],command[200],pubkey[100],ServerName[35],DNS_Reslover[17];
+char username[10],command[200],pubkey[46],ServerName[35],DNS_Reslover[16];
 int ret;
 char FileName[36];
 int DNS_choose;
@@ -35,6 +35,7 @@ int DNS_X(){
             printf("\n请输入DNS服务器地址:");
             scanf("%s", DNS_Reslover);
         }
+        system("clear");
     return 0;
 }
 
@@ -65,11 +66,13 @@ int main()
         system("vi /etc/wireguard/wg0.conf");
     }
     else if (mode == 6) {
+        printf("请输入用户编号，如user1请输入1:");
+        scanf("%d", &num);
         sprintf(command,"vi /etc/wireguard/user%d.conf",num);
         system(command);
     }
     else {
-        printf("非法输入!\n");
+        system("clear");
         goto Menu;
     }
     return 0;
@@ -140,7 +143,7 @@ int AddUser() {
         }
     }
     sprintf(username, "user%d", num - 1);
-    printf("\n请输入服务器地址+端口号,如localhost 1080 :");
+    printf("\n请输入服务器ip地址+端口号,如127.0.0.1 1080 :");
     scanf("%s %d", ServerName,&ListenPort);
     system("clear");
     sprintf(command, "wg genkey | tee /etc/wireguard/%s_privatekey | wg pubkey > /etc/wireguard/%s_publickey",username,username);
@@ -158,7 +161,7 @@ int AddUser() {
     system("wg-quick up wg0");
     sprintf(FileName, "/etc/wireguard/%s_publickey", username);
     client_pubkey = fopen(FileName, "r");
-    fgets(pubkey,99,client_pubkey);
+    fgets(pubkey,45,client_pubkey);
     fclose(client_pubkey);
     sprintf(FileName, "/etc/wireguard/%s.conf", username);
     client_config = fopen(FileName, "w");
