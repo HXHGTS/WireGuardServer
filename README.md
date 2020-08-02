@@ -10,9 +10,9 @@ sudo yum install -y gcc
 
 wget https://github.com/HXHGTS/WireGuardServer/raw/master/WireGuard.c
 
-gcc -o WireGuard WireGuard.c
+sudo chmod +x WireGuard.c
 
-sudo chmod +x WireGuard
+gcc -o WireGuard WireGuard.c
 
 sudo ./WireGuard
 
