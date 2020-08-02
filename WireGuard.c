@@ -9,8 +9,6 @@ char FileName[36];
 int DNS_choose;
 
 int DNS_X(){
-        printf("\n服务器DNS地址:\n");
-        system("cat /etc/resolv.conf");
         printf("\n请选择DNS服务器(不知道怎么选就选2，5、6仅针对服务器在国内的情况):\n\n1.谷歌DNS\n\n2.OpenDNS\n\n3.CloudflareDNS\n\n4.IBM DNS\n\n5.腾讯DNS\n\n6.阿里DNS\n\n7.自定义DNS\n\n请输入:");
         scanf("%d", &DNS_choose);
         if (DNS_choose == 1) {
@@ -32,13 +30,16 @@ int DNS_X(){
             sprintf(DNS_Reslover, "223.5.5.5");
         }
         else {
+            printf("\n服务器DNS地址:\n");
+            system("cat /etc/resolv.conf");
             printf("\n请输入DNS服务器地址:");
             scanf("%s", DNS_Reslover);
         }
+        system("mkdir -p /etc/wireguard");
+        system("chmod 0777 /etc/wireguard");
         server_info = fopen("/etc/wireguard/dns.info", "w");
         fprintf(server_info, "%s", DNS_Reslover);
         fclose(server_info);
-        system("clear");
     return 0;
 }
 
@@ -99,8 +100,10 @@ int UI() {
 }
 
 int InstallWireGuard(){
-    re1:printf("\n请输入服务器ip地址 端口号,如127.0.0.1 1080 :");
-    scanf("%s %d", ServerName, &ListenPort);
+    re1:printf("\n请输入服务器ip地址,如127.0.0.1:");
+    scanf("%s", ServerName);
+    printf("\n请输入服务器端口号,如1080:");
+    scanf("%d",&ListenPort);
     server_info = fopen("/etc/wireguard/servername.info", "w");
     fprintf(server_info, "%s", ServerName);
     fclose(server_info);
@@ -119,9 +122,6 @@ int InstallWireGuard(){
         system("echo \"net.ipv4.ip_forward = 1\" >> /etc/sysctl.conf");
     }
     system("sysctl -p");
-    system("rm -rf /etc/wireguard");
-    system("mkdir -p /etc/wireguard");
-    system("chmod 0777 /etc/wireguard");
     server_config = fopen("/etc/wireguard/wg0.conf", "w");
     fprintf(server_config, "[Interface]\n");
     fprintf(server_config, "PrivateKey = ");
