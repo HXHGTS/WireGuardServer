@@ -6,19 +6,7 @@ WireGuard纯手工搭建教程，不依赖第三方脚本(本项目中代码完�
 
 直接运行(仅支持CentOS7)：
 
-sudo yum install -y wget gcc
-
-echo "151.101.108.133 raw.githubusercontent.com" >> /etc/hosts
-
-echo "52.78.231.108 github.com" >> /etc/hosts
-
-wget https://github.com/HXHGTS/WireGuardServer/raw/master/preload.sh
-
-sudo chmod +x preload.sh
-
-sudo bash preload.sh
-
-这个执行完成会触发重启且不会提示，是正常情况
+sudo yum install -y gcc
 
 wget https://github.com/HXHGTS/WireGuardServer/raw/master/WireGuard.c
 
@@ -27,6 +15,8 @@ gcc -o WireGuard WireGuard.c
 sudo chmod +x WireGuard
 
 sudo ./WireGuard
+
+Kernel版本低于5的务必先进行内核升级再安装！
 
 客户端下载:
 
