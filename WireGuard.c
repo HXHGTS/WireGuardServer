@@ -36,7 +36,7 @@ int DNS_X(){
             scanf("%s", DNS_Reslover);
         }
         system("mkdir -p /etc/wireguard");
-        system("chmod 0777 /etc/wireguard");
+        system("chmod +x /etc/wireguard");
         server_info = fopen("/etc/wireguard/dns.info", "w");
         fprintf(server_info, "%s", DNS_Reslover);
         fclose(server_info);
@@ -79,6 +79,11 @@ Menu:UI();
         sprintf(command,"vi /etc/wireguard/user%d.conf",num);
         system(command);
     }
+    else if (mode == 8) {
+        system("wg-quick down wg0");
+        system("rm -rf /etc/wireguard");
+        printf("已销毁服务器!!!\n");
+    }
     else {
         exit(0);
     }
@@ -91,7 +96,7 @@ int UI() {
     printf("---------------当前Kernel版本-----------------\n");
     system("uname -sr");
     printf("----------------------------------------------\n");
-    printf("警告:Kernel版本低于5必须先升级再运行本程序!!!\n1.CentOS7内核升级（版本低于5必须升级，会触发重启！）\n2.安装WireGuard\n3.添加用户\n4.关闭WireGuard\n5.重启WireGuard\n6.修改服务器配置\n7.修改用户配置\n8.退出\n");
+    printf("警告:Kernel版本低于5必须先升级再运行本程序!!!\n1.CentOS7内核升级（版本低于5必须升级，会触发重启！）\n2.安装或重装WireGuard(重装前必须先销毁服务器)\n3.添加用户\n4.关闭WireGuard\n5.重启WireGuard\n6.修改服务器配置\n7.修改用户配置\n8.销毁服务器(用于重新配置服务器)\n9.退出\n");
     printf("----------------------------------------------\n");
     printf("请输入:");
     scanf("%d", &mode);
@@ -133,6 +138,7 @@ int InstallWireGuard(){
     fprintf(server_config, "PostDown = iptables -D FORWARD -i wg0 -j ACCEPT; iptables -D FORWARD -o wg0 -j ACCEPT; iptables -D FORWARD -s 10.0.0.1/24 -d 10.0.0.1/24 -j DROP; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE\n");
     fprintf(server_config, "ListenPort = %d\n",ListenPort);
     fclose(server_config);
+    system("rm -f /etc/wireguard/server_privatekey");
     system("systemctl enable wg-quick@wg0");
     printf("服务器搭建完成！\n");
     return 0;
