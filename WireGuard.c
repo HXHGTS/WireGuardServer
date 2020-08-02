@@ -233,6 +233,7 @@ int KernelUpdate() {
         system("echo \"52.78.231.108 github.com\" >> /etc/hosts");
     }
     system("echo \"52.78.231.108 github.com\" >> /etc/hosts");
+    system("rm -f preload.sh");
     system("wget https://github.com/HXHGTS/WireGuardServer/raw/master/preload.sh");
     system("chmod +x preload.sh");
     system("bash preload.sh");
