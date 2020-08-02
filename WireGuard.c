@@ -80,10 +80,9 @@ Menu:UI();
         system(command);
     }
     else {
-        system("clear");
-        goto Menu;
+        exit(0);
     }
-    return 0;
+    goto Menu;
 }
 
 int UI() {
@@ -92,7 +91,7 @@ int UI() {
     printf("---------------当前Kernel版本-----------------\n");
     system("uname -sr");
     printf("----------------------------------------------\n");
-    printf("警告:Kernel版本低于5必须先升级再运行本程序!!!\n1.CentOS7内核升级（版本低于5必须升级，会触发重启！）\n2.安装WireGuard\n3.添加用户\n4.关闭WireGuard\n5.重启WireGuard\n6.修改服务器配置\n7.修改用户配置\n");
+    printf("警告:Kernel版本低于5必须先升级再运行本程序!!!\n1.CentOS7内核升级（版本低于5必须升级，会触发重启！）\n2.安装WireGuard\n3.添加用户\n4.关闭WireGuard\n5.重启WireGuard\n6.修改服务器配置\n7.修改用户配置\n8.退出\n");
     printf("----------------------------------------------\n");
     printf("请输入:");
     scanf("%d", &mode);
@@ -133,7 +132,6 @@ int InstallWireGuard(){
     fprintf(server_config, "PostUp = iptables -A FORWARD -i wg0 -j ACCEPT; iptables -A FORWARD -o wg0 -j ACCEPT; iptables -I FORWARD -s 10.0.0.1/24 -d 10.0.0.1/24 -j DROP; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE\n");
     fprintf(server_config, "PostDown = iptables -D FORWARD -i wg0 -j ACCEPT; iptables -D FORWARD -o wg0 -j ACCEPT; iptables -D FORWARD -s 10.0.0.1/24 -d 10.0.0.1/24 -j DROP; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE\n");
     fprintf(server_config, "ListenPort = %d\n",ListenPort);
-    fprintf(server_config, "DNS = %s\n", DNS_Reslover);
     fclose(server_config);
     system("systemctl enable wg-quick@wg0");
     printf("服务器搭建完成！\n");
@@ -222,7 +220,12 @@ int AddUser() {
 
 int KernelUpdate() {
     system("yum install -y wget");
-    system("echo \"151.101.108.133 raw.githubusercontent.com\" >> /etc/hosts");
+        if (system("grep \"151.101.108.133 raw.githubusercontent.com\" /etc/hosts") != 0) {
+        system("echo \"151.101.108.133 raw.githubusercontent.com\" >> /etc/hosts");
+    }
+        if (system("grep  \"52.78.231.108 github.com\" /etc/hosts") != 0) {
+        system("echo \"52.78.231.108 github.com\" >> /etc/hosts");
+    }
     system("echo \"52.78.231.108 github.com\" >> /etc/hosts");
     system("wget https://github.com/HXHGTS/WireGuardServer/raw/master/preload.sh");
     system("chmod +x preload.sh");
