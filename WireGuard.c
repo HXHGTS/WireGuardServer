@@ -82,6 +82,7 @@ Menu:UI();
     else if (mode == 8) {
         system("wg-quick down wg0");
         system("rm -rf /etc/wireguard");
+        system("rm -rf /root/preload.sh");
         printf("已销毁服务器!!!\n");
     }
     else {
@@ -91,7 +92,6 @@ Menu:UI();
 }
 
 int UI() {
-    system("clear");
     printf("----------WireGuard安装工具(CentOS7)----------\n");
     printf("---------------当前Kernel版本-----------------\n");
     system("uname -sr");
@@ -221,6 +221,7 @@ int AddUser() {
     sprintf(command, "qrencode -t ansiutf8 < /etc/wireguard/%s.conf", username);
     system(command);
     printf("\n生成的配置文件请不要在本机上改名或删除，如确实需要，请删除文件中内容，避免修改文件名!\n");
+    system("sleep 3");
     return 0;
 }
 
