@@ -1,7 +1,7 @@
 ﻿#include <stdio.h>
 #include <stdlib.h> 
 
-FILE* server_config, * client_config,*usernum,*client_pubkey;
+FILE* server_config, * client_config,*usernum,*client_pubkey,*server_info;
 int mode,confirm,ListenPort, num;
 char username[10],command[200],pubkey[46],ServerName[35],DNS_Reslover[16];
 int ret;
@@ -35,37 +35,44 @@ int DNS_X(){
             printf("\n请输入DNS服务器地址:");
             scanf("%s", DNS_Reslover);
         }
+        server_info = fopen("/etc/wireguard/dns.info", "w");
+        fprintf(server_info, "%s", DNS_Reslover);
+        fclose(server_info);
         system("clear");
     return 0;
 }
 
 int main()
 {
-    Menu:UI();
+Menu:UI();
+    system("clear");
     if (mode == 1) {
+        printf("正在升级Kernel. . .\n");
+        KernelUpdate();
+    }
+    else if (mode == 2) {
         DNS_X();
         system("wg-quick down wg0");
         InstallWireGuard();
     }
-    else if (mode == 2) {
-        DNS_X();
+    else if (mode == 3) {
         AddUser();
     }
-    else if (mode == 3) {
+    else if (mode == 4) {
         system("wg-quick down wg0");
         printf("已关闭WireGuard!\n");
     }
-    else if (mode == 4) {
+    else if (mode == 5) {
         system("wg-quick down wg0");
         system("wg-quick up wg0");
         printf("已重启WireGuard!\n");
     }
-    else if (mode == 5) {
+    else if (mode == 6) {
         system("wg-quick down wg0");
         printf("修改完成后请手动重启WireGuard!\n");
         system("vi /etc/wireguard/wg0.conf");
     }
-    else if (mode == 6) {
+    else if (mode == 7) {
         printf("请输入用户编号，如user1请输入1:");
         scanf("%d", &num);
         sprintf(command,"vi /etc/wireguard/user%d.conf",num);
@@ -84,7 +91,7 @@ int UI() {
     printf("---------------当前Kernel版本-----------------\n");
     system("uname -sr");
     printf("----------------------------------------------\n");
-    printf("警告:Kernel版本低于5必须先升级再运行本程序!!!\n1.安装WireGuard\n2.添加用户\n3.关闭WireGuard\n4.重启WireGuard\n5.修改服务器配置\n6.修改用户配置\n");
+    printf("警告:Kernel版本低于5必须先升级再运行本程序!!!\n1.CentOS7内核升级（版本低于5必须升级，会触发重启！）\n2.安装WireGuard\n3.添加用户\n4.关闭WireGuard\n5.重启WireGuard\n6.修改服务器配置\n7.修改用户配置\n");
     printf("----------------------------------------------\n");
     printf("请输入:");
     scanf("%d", &mode);
@@ -92,8 +99,14 @@ int UI() {
 }
 
 int InstallWireGuard(){
-    re1:printf("请输入服务器监听端口号(10000-65535):");
-    scanf("%d", &ListenPort);
+    re1:printf("\n请输入服务器ip地址 端口号,如127.0.0.1 1080 :");
+    scanf("%s %d", ServerName, &ListenPort);
+    server_info = fopen("/etc/wireguard/servername.info", "w");
+    fprintf(server_info, "%s", ServerName);
+    fclose(server_info);
+    server_info = fopen("/etc/wireguard/port.info", "w");
+    fprintf(server_info, "%d", ListenPort);
+    fclose(server_info);
     if (ListenPort < 10000 || ListenPort>65535) {
         printf("非法输入，请重新输入端口号！\n");
         goto re1;
@@ -102,7 +115,9 @@ int InstallWireGuard(){
     system("curl -o /etc/yum.repos.d/jdoss-wireguard-epel-7.repo https://copr.fedorainfracloud.org/coprs/jdoss/wireguard/repo/epel-7/jdoss-wireguard-epel-7.repo");
     system("yum install epel-release qrencode -y");
     system("yum install wireguard-dkms wireguard-tools -y");
-    system("echo \"net.ipv4.ip_forward = 1\" >> /etc/sysctl.conf");
+    if (system("grep \"net.ipv4.ip_forward = 1\" /etc/sysctl.conf") != 0) {
+        system("echo \"net.ipv4.ip_forward = 1\" >> /etc/sysctl.conf");
+    }
     system("sysctl -p");
     system("rm -rf /etc/wireguard");
     system("mkdir -p /etc/wireguard");
@@ -143,8 +158,15 @@ int AddUser() {
         }
     }
     sprintf(username, "user%d", num - 1);
-    printf("\n请输入服务器ip地址+端口号,如127.0.0.1 1080 :");
-    scanf("%s %d", ServerName,&ListenPort);
+    server_info = fopen("/etc/wireguard/servername.info", "r");
+    fscanf(server_info, "%s", ServerName);
+    fclose(server_info);
+    server_info = fopen("/etc/wireguard/port.info", "r");
+    fscanf(server_info, "%d", &ListenPort);
+    fclose(server_info);
+    server_info = fopen("/etc/wireguard/dns.info", "r");
+    fscanf(server_info, "%s", DNS_Reslover);
+    fclose(server_info);
     system("clear");
     sprintf(command, "wg genkey | tee /etc/wireguard/%s_privatekey | wg pubkey > /etc/wireguard/%s_publickey",username,username);
     system(command);
@@ -195,5 +217,17 @@ int AddUser() {
     sprintf(command, "qrencode -t ansiutf8 < /etc/wireguard/%s.conf", username);
     system(command);
     printf("\n生成的配置文件请不要在本机上改名或删除，如确实需要，请删除文件中内容，避免修改文件名!\n");
+    return 0;
+}
+
+int KernelUpdate() {
+    system("yum install -y wget");
+    system("echo \"151.101.108.133 raw.githubusercontent.com\" >> /etc/hosts");
+    system("echo \"52.78.231.108 github.com\" >> /etc/hosts");
+    system("wget https://github.com/HXHGTS/WireGuardServer/raw/master/preload.sh");
+    system("chmod +x preload.sh");
+    system("bash preload.sh");
+    printf("升级完成，正在重启服务器以应用配置. . .\n");
+    system("reboot");
     return 0;
 }
