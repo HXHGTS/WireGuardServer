@@ -30,9 +30,9 @@ int DNS_X(){
             sprintf(DNS_Reslover, "223.5.5.5");
         }
         else {
-            printf("\n服务器DNS地址:\n");
+            printf("\n读取的服务器DNS地址如下:\n");
             system("cat /etc/resolv.conf");
-            printf("\n请输入DNS服务器地址:");
+            printf("\n请输入你希望配置的DNS服务器地址:");
             scanf("%s", DNS_Reslover);
         }
         system("mkdir -p /etc/wireguard");
@@ -100,7 +100,7 @@ int UI() {
 }
 
 int InstallWireGuard(){
-    re1:printf("\n请输入服务器ip地址,如127.0.0.1:");
+    re1:printf("\n请输入服务器公网ip地址,如222.222.222.222:");
     scanf("%s", ServerName);
     printf("\n请输入服务器端口号,如1080:");
     scanf("%d",&ListenPort);
