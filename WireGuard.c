@@ -70,8 +70,11 @@ Menu:UI();
     }
     else if (mode == 6) {
         system("wg-quick down wg0");
-        printf("修改完成后请手动重启WireGuard!\n");
+        printf("正在打开配置文件. . .\n");
         system("vi /etc/wireguard/wg0.conf");
+        system("wg-quick down wg0");
+        system("wg-quick up wg0");
+        printf("修改完成!\n");
     }
     else if (mode == 7) {
         printf("请输入用户编号，如user1请输入1:");
@@ -79,6 +82,8 @@ Menu:UI();
         sprintf(command,"vi /etc/wireguard/user%d.conf",num);
         system(command);
         printf("\n成功修改用户！\n");
+        system("wg-quick down wg0");
+        system("wg-quick up wg0");
         printf("\n电脑版WireGuard客户端建议复制以下内容添加:\n\n");
         sprintf(command, "cat /etc/wireguard/user%d.conf", num);
         system(command);
