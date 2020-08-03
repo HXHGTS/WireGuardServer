@@ -8,7 +8,7 @@ int ret;
 char FileName[36];
 int DNS_choose;
 
-int DNS_X(){
+int DNS(){
         printf("\n请选择DNS服务器(不知道怎么选就选2，5、6仅针对服务器在国内的情况):\n\n1.谷歌DNS\n\n2.OpenDNS\n\n3.CloudflareDNS\n\n4.IBM DNS\n\n5.腾讯DNS\n\n6.阿里DNS\n\n7.自定义DNS\n\n请输入:");
         scanf("%d", &DNS_choose);
         if (DNS_choose == 1) {
@@ -52,7 +52,7 @@ Menu:UI();
         KernelUpdate();
     }
     else if (mode == 2) {
-        DNS_X();
+        DNS();
         system("wg-quick down wg0");
         InstallWireGuard();
     }
@@ -78,9 +78,19 @@ Menu:UI();
         scanf("%d", &num);
         sprintf(command,"vi /etc/wireguard/user%d.conf",num);
         system(command);
+        printf("\n成功修改用户！\n");
+        printf("\n电脑版WireGuard客户端建议复制以下内容添加:\n\n");
+        sprintf(command, "cat /etc/wireguard/user%d.conf", num);
+        system(command);
+        printf("\n\n手机版WireGuard客户端建议扫描以下二维码添加:\n\n");
+        sprintf(command, "qrencode -t ansiutf8 < /etc/wireguard/user%d.conf", num);
+        system(command);
+        printf("\n生成的配置文件请不要在本机上改名或删除，如确实需要，请删除文件中内容，避免修改文件名!\n");
+        system("sleep 3");
     }
     else if (mode == 8) {
         system("wg-quick down wg0");
+        system("yum remove -y wireguard-dkms wireguard-tools");
         system("rm -rf /etc/wireguard");
         system("rm -rf /root/preload.sh");
         printf("已销毁服务器!!!\n");
@@ -106,7 +116,7 @@ int UI() {
 int InstallWireGuard(){
     re1:printf("\n请输入服务器公网ip地址,如222.222.222.222:");
     scanf("%s", ServerName);
-    printf("\n请输入服务器端口号,如1080:");
+    printf("\n请输入服务器端口号,建议10000-60000,如10800:");
     scanf("%d",&ListenPort);
     server_info = fopen("/etc/wireguard/servername.info", "w");
     fprintf(server_info, "%s", ServerName);
