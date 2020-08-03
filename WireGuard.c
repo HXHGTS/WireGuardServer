@@ -69,7 +69,8 @@ Menu:UI();
         printf("已重启WireGuard!\n");
     }
     else if (mode == 6) {
-        printf("服务器信息如下\n");
+        system("clear");
+        printf("服务器信息如下:\n");
         system("wg");
     }
     else if (mode == 7) {
