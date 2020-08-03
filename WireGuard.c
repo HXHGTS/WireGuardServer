@@ -160,6 +160,9 @@ int InstallWireGuard(){
     fclose(server_config);
     system("rm -f /etc/wireguard/server_privatekey");
     system("systemctl enable wg-quick@wg0");
+    system("echo \"net.core.default_qdisc = fq\" >> /etc/sysctl.conf");
+    system("echo \"net.ipv4.tcp_congestion_control = bbr\" >> /etc/sysctl.conf");
+    system("sysctl -p");
     printf("服务器搭建完成！\n");
     printf("正在默认添加用户1. . .\n");
     AddUser();
