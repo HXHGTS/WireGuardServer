@@ -161,6 +161,9 @@ int InstallWireGuard(){
     system("rm -f /etc/wireguard/server_privatekey");
     system("systemctl enable wg-quick@wg0");
     printf("服务器搭建完成！\n");
+    printf("正在默认添加用户1. . .\n");
+    AddUser();
+    printf("需要添加更多用户请使用\"添加用户\"功能!\n");
     return 0;
 }
 
