@@ -153,9 +153,9 @@ int InstallWireGuard(){
     system("wg genkey | tee /etc/wireguard/server_privatekey | wg pubkey > /etc/wireguard/server_publickey");
     system("cat /etc/wireguard/server_privatekey >> /etc/wireguard/wg0.conf");
     server_config = fopen("/etc/wireguard/wg0.conf", "a");
-    fprintf(server_config, "Address = 10.0.0.1/16\n");
-    fprintf(server_config, "PostUp = iptables -A FORWARD -i wg0 -j ACCEPT; iptables -A FORWARD -o wg0 -j ACCEPT; iptables -I FORWARD -s 10.0.0.1/24 -d 10.0.0.1/24 -j DROP; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE\n");
-    fprintf(server_config, "PostDown = iptables -D FORWARD -i wg0 -j ACCEPT; iptables -D FORWARD -o wg0 -j ACCEPT; iptables -D FORWARD -s 10.0.0.1/24 -d 10.0.0.1/24 -j DROP; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE\n");
+    fprintf(server_config, "Address = 10.0.0.1/24\n");
+    fprintf(server_config, "PostUp = iptables -A FORWARD -i wg0 -j ACCEPT; iptables -A FORWARD -o wg0 -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE\n");
+    fprintf(server_config, "PostDown = iptables -D FORWARD -i wg0 -j ACCEPT; iptables -D FORWARD -o wg0 -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE\n");
     fprintf(server_config, "ListenPort = %d\n",ListenPort);
     fclose(server_config);
     system("rm -f /etc/wireguard/server_privatekey");
@@ -207,7 +207,7 @@ int AddUser() {
     sprintf(command,"cat /etc/wireguard/%s_publickey >> /etc/wireguard/wg0.conf",username);
     system(command);
     server_config = fopen("/etc/wireguard/wg0.conf", "a");
-    fprintf(server_config, "AllowedIPs = 10.0.0.%d/32\n",num);
+    fprintf(server_config, "AllowedIPs = 10.0.0.%d/24\n",num);
     fclose(server_config);
     system("wg-quick down wg0");
     system("wg-quick up wg0");
@@ -224,7 +224,7 @@ int AddUser() {
     sprintf(command, "cat /etc/wireguard/%s_privatekey >> /etc/wireguard/%s.conf", username,username);
     system(command);
     client_config = fopen(FileName, "a");
-    fprintf(client_config, "Address = 10.0.0.%d/32\n",num);
+    fprintf(client_config, "Address = 10.0.0.%d/24\n",num);
     fprintf(client_config, "DNS = %s\n", DNS_Reslover);
     fprintf(client_config, "\n[Peer]\n");
     fprintf(client_config, "AllowedIPs = 0.0.0.0/0, ::/0\n");
