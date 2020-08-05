@@ -50,30 +50,27 @@ Menu:UI();
     if (mode == 1) {
         printf("正在升级Kernel. . .\n");
         KernelUpdate();
-    }
-    else if (mode == 2) {
         DNS();
-        system("wg-quick down wg0");
         InstallWireGuard();
     }
-    else if (mode == 3) {
+    else if (mode == 2) {
         AddUser();
     }
-    else if (mode == 4) {
+    else if (mode == 3) {
         system("wg-quick down wg0");
         printf("已关闭WireGuard!\n");
     }
-    else if (mode == 5) {
+    else if (mode == 4) {
         system("wg-quick down wg0");
         system("wg-quick up wg0");
         printf("已重启WireGuard!\n");
     }
-    else if (mode == 6) {
+    else if (mode == 5) {
         system("clear");
         printf("服务器信息如下:\n");
         system("wg");
     }
-    else if (mode == 7) {
+    else if (mode == 6) {
         system("wg-quick down wg0");
         printf("正在打开配置文件. . .\n");
         system("vi /etc/wireguard/wg0.conf");
@@ -81,7 +78,7 @@ Menu:UI();
         system("wg-quick up wg0");
         printf("修改完成!\n");
     }
-    else if (mode == 8) {
+    else if (mode == 7) {
         printf("请输入用户编号，如user1请输入1:");
         scanf("%d", &num);
         sprintf(command,"vi /etc/wireguard/user%d.conf",num);
@@ -98,7 +95,7 @@ Menu:UI();
         printf("\n生成的配置文件请不要在本机上改名或删除，如确实需要，请删除文件中内容，避免修改文件名!\n");
         system("sleep 3");
     }
-    else if (mode == 9) {
+    else if (mode == 8) {
         system("wg-quick down wg0");
         system("yum remove -y wireguard-dkms wireguard-tools");
         system("rm -rf /etc/wireguard");
@@ -116,7 +113,7 @@ int UI() {
     printf("---------------当前Kernel版本-----------------\n");
     system("uname -sr");
     printf("----------------------------------------------\n");
-    printf("警告:Kernel版本低于5必须先升级再运行本程序!!!\n1.CentOS7内核升级（版本低于5必须升级，会触发重启！）\n2.安装或重装WireGuard(重装前必须先销毁服务器)\n3.添加用户\n4.关闭WireGuard\n5.重启WireGuard\n6.查看服务器信息\n7.修改服务器配置\n8.修改用户配置\n9.销毁服务器(用于重新配置服务器)\n0.退出\n");
+    printf("警告:Kernel版本低于5必须先升级再运行本程序!!!\n1.安装或重装WireGuard(重装前必须先销毁服务器)\n2.添加用户\n3.关闭WireGuard\n4.重启WireGuard\n5.查看服务器信息\n6.修改服务器配置\n7.修改用户配置\n8.销毁服务器(用于重新配置服务器)\n0.退出\n");
     printf("----------------------------------------------\n");
     printf("请输入:");
     scanf("%d", &mode);
@@ -252,19 +249,23 @@ int AddUser() {
 }
 
 int KernelUpdate() {
-    system("yum install -y wget");
+    if ((fopen("preload.sh", "r")) == NULL) {
+        system("yum install -y wget");
         if (system("grep \"151.101.108.133 raw.githubusercontent.com\" /etc/hosts") != 0) {
-        system("echo \"151.101.108.133 raw.githubusercontent.com\" >> /etc/hosts");
-    }
+            system("echo \"151.101.108.133 raw.githubusercontent.com\" >> /etc/hosts");
+        }
         if (system("grep  \"52.78.231.108 github.com\" /etc/hosts") != 0) {
+            system("echo \"52.78.231.108 github.com\" >> /etc/hosts");
+        }
         system("echo \"52.78.231.108 github.com\" >> /etc/hosts");
+        system("wget https://github.com/HXHGTS/WireGuardServer/raw/master/preload.sh");
+        system("chmod +x preload.sh");
+        system("bash preload.sh");
+        printf("升级完成，正在重启服务器以应用配置. . .\n");
+        system("reboot");
     }
-    system("echo \"52.78.231.108 github.com\" >> /etc/hosts");
-    system("rm -f preload.sh");
-    system("wget https://github.com/HXHGTS/WireGuardServer/raw/master/preload.sh");
-    system("chmod +x preload.sh");
-    system("bash preload.sh");
-    printf("升级完成，正在重启服务器以应用配置. . .\n");
-    system("reboot");
+    else {
+        system("yum remove -y $(rpm -qa | grep kernel | grep -v $(uname -r))");
+    }
     return 0;
 }
