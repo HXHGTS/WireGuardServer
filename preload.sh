@@ -16,5 +16,5 @@ sed -i "s/GRUB_DEFAULT=saved/GRUB_DEFAULT=0/" /etc/default/grub
 
 grub2-mkconfig -o /boot/grub2/grub.cfg
 
-yum remove $(rpm -qa | grep kernel | grep -v $(uname -r)) -y
+yum remove -y $(rpm -qa | grep kernel | grep -v $(uname -r))
 
