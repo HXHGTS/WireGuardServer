@@ -12,7 +12,7 @@ rpm -Uvh https://www.elrepo.org/elrepo-release-7.el7.elrepo.noarch.rpm
 
 yum --disablerepo="*" --enablerepo="elrepo-kernel" list available
 
-yum --enablerepo=elrepo-kernel install kernel-ml kernel-ml-devel -y
+yum --enablerepo=elrepo-kernel install kernel-ml kernel-ml-devel kernel-ml-headers -y
 
 sed -i "s/GRUB_DEFAULT=saved/GRUB_DEFAULT=0/" /etc/default/grub
 
