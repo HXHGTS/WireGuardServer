@@ -260,12 +260,12 @@ int KernelUpdate() {
         system("echo \"52.78.231.108 github.com\" >> /etc/hosts");
         system("wget https://github.com/HXHGTS/WireGuardServer/raw/master/preload.sh");
         system("chmod +x preload.sh");
+        printf("正在升级，将自动触发重启以应用配置. . .\n");
         system("bash preload.sh");
-        printf("升级完成，正在重启服务器以应用配置. . .\n");
-        system("reboot");
     }
     else {
         system("yum remove -y $(rpm -qa | grep kernel | grep -v $(uname -r))");
     }
     return 0;
 }
+
