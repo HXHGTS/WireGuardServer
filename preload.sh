@@ -4,7 +4,7 @@ yum -y install epel-release
 
 sed -i "0,/enabled=0/s//enabled=1/" /etc/yum.repos.d/epel.repo
 
-yum remove -y kernel-devel
+yum remove -y kernel-devel kernel-headers kernel
 
 rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org
 
