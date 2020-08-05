@@ -10,7 +10,7 @@ rpm -Uvh https://www.elrepo.org/elrepo-release-7.el7.elrepo.noarch.rpm
 
 yum --disablerepo="*" --enablerepo="elrepo-kernel" list available
 
-yum --enablerepo=elrepo-kernel remove kernel-devel kernel-headers -y
+yum remove kernel-devel kernel-headers -y
 
 yum --enablerepo=elrepo-kernel install kernel-ml kernel-ml-devel kernel-ml-headers -y
 
