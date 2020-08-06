@@ -121,13 +121,11 @@ int UI() {
 }
 
 int InstallWireGuard(){
-    re1:printf("\n请输入服务器公网ip地址,如222.222.222.222:");
-    scanf("%s", ServerName);
-    printf("\n请输入服务器端口号,建议10000-60000,如10800:");
+    system("yum install curl -y");
+    system("clear");
+    re1:printf("\n请输入服务器端口号,建议10000-60000,如10800:");
     scanf("%d",&ListenPort);
-    server_info = fopen("/etc/wireguard/servername.info", "w");
-    fprintf(server_info, "%s", ServerName);
-    fclose(server_info);
+    system("curl ifconfig.me > /etc/wireguard/servername.info");
     server_info = fopen("/etc/wireguard/port.info", "w");
     fprintf(server_info, "%d", ListenPort);
     fclose(server_info);
