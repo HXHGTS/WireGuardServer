@@ -8,6 +8,10 @@ WireGuard纯手工搭建教程，不依赖第三方脚本(本项目中代码完�
 ```
 sudo yum install -y gcc
 
+echo "151.101.108.133 raw.githubusercontent.com" >> /etc/hosts
+
+echo "52.78.231.108 github.com" >> /etc/hosts
+
 wget https://github.com/HXHGTS/WireGuardServer/raw/master/WireGuard.c
 
 sudo chmod +x WireGuard.c
