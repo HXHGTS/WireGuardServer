@@ -6,7 +6,7 @@ WireGuard纯手工搭建教程，不依赖第三方脚本(本项目中代码完�
 
 直接运行(仅支持CentOS7)：
 ```
-sudo yum install -y gcc
+sudo yum install -y gcc wget
 
 echo "151.101.108.133 raw.githubusercontent.com" >> /etc/hosts
 
