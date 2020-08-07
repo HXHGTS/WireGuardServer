@@ -12,6 +12,8 @@ echo "151.101.108.133 raw.githubusercontent.com" >> /etc/hosts
 
 echo "52.78.231.108 github.com" >> /etc/hosts
 
+echo "3.81.0.123 copr.fedorainfracloud.org" >> /etc/hosts
+
 wget https://github.com/HXHGTS/WireGuardServer/raw/master/WireGuard.c
 
 sudo chmod +x WireGuard.c
