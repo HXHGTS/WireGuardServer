@@ -202,7 +202,7 @@ int AddUser() {
     sprintf(command,"cat /etc/wireguard/%s_publickey >> /etc/wireguard/wg0.conf",username);
     system(command);
     server_config = fopen("/etc/wireguard/wg0.conf", "a");
-    fprintf(server_config, "AllowedIPs = 10.0.0.%d/24\n",num);
+    fprintf(server_config, "AllowedIPs = 10.0.0.%d/32\n",num);
     fclose(server_config);
     system("wg-quick down wg0");
     system("wg-quick up wg0");
@@ -219,7 +219,7 @@ int AddUser() {
     sprintf(command, "cat /etc/wireguard/%s_privatekey >> /etc/wireguard/%s.conf", username,username);
     system(command);
     client_config = fopen(FileName, "a");
-    fprintf(client_config, "Address = 10.0.0.%d/24\n",num);
+    fprintf(client_config, "Address = 10.0.0.%d/32\n",num);
     fprintf(client_config, "DNS = %s\n", DNS_Reslover);
     fprintf(client_config, "\n[Peer]\n");
     fprintf(client_config, "AllowedIPs = 0.0.0.0/0, ::/0\n");
