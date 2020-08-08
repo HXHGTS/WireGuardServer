@@ -9,29 +9,32 @@ char FileName[36];
 int DNS_choose;
 
 int DNS(){
-        printf("\n请选择DNS服务器(不知道怎么选就选2，5、6仅针对服务器在国内的情况):\n\n1.谷歌DNS\n\n2.OpenDNS\n\n3.CloudflareDNS\n\n4.IBM DNS\n\n5.腾讯DNS\n\n6.阿里DNS\n\n7.自定义DNS\n\n请输入:");
+        printf("\n请选择DNS服务器(国内服务器或不知道怎么选就选1自动配置!):\n\n1.默认DNS(系统指定)\n\n2.谷歌DNS\n\n3.OpenDNS\n\n4.CloudflareDNS\n\n5.level3 DNS\n\n6.Quad101\n\n7.自定义DNS\n\n请输入:");
         scanf("%d", &DNS_choose);
         if (DNS_choose == 1) {
-            sprintf(DNS_Reslover, "8.8.8.8");
+            system("yum install -y bind-utils");
+            system("nslookup localhost | grep Server > /etc/wireguard/dns.info.0");
+            server_info = fopen("/etc/wireguard/dns.info.0", "r");
+            fscanf(server_info, "Server:		%s", DNS_Reslover);
+            fclose(server_info);
+            system("rm -rf /etc/wireguard/dns.info.0");
         }
         else if (DNS_choose == 2) {
-            sprintf(DNS_Reslover, "208.67.222.222");
+            sprintf(DNS_Reslover, "8.8.8.8");
         }
         else if (DNS_choose == 3) {
-            sprintf(DNS_Reslover, "1.1.1.1");
+            sprintf(DNS_Reslover, "208.67.222.222");
         }
         else if (DNS_choose == 4) {
-            sprintf(DNS_Reslover, "9.9.9.9");
+            sprintf(DNS_Reslover, "1.1.1.1");
         }
         else if (DNS_choose == 5) {
-            sprintf(DNS_Reslover, "119.29.29.29");
+            sprintf(DNS_Reslover, "4.2.2.1");
         }
         else if (DNS_choose == 6) {
-            sprintf(DNS_Reslover, "223.5.5.5");
+            sprintf(DNS_Reslover, "101.101.101.101");
         }
         else {
-            printf("\n读取的服务器DNS地址如下:\n");
-            system("cat /etc/resolv.conf");
             printf("\n请输入你希望配置的DNS服务器地址:");
             scanf("%s", DNS_Reslover);
         }
@@ -121,11 +124,9 @@ int UI() {
 }
 
 int InstallWireGuard(){
-    system("yum install curl -y");
     system("clear");
-    re1:printf("\n请输入服务器端口号,建议10000-60000,如10800:");
+    re1:printf("请输入服务器端口号,建议10000-60000,如10800:");
     scanf("%d",&ListenPort);
-    system("curl ifconfig.me > /etc/wireguard/servername.info");
     server_info = fopen("/etc/wireguard/port.info", "w");
     fprintf(server_info, "%d", ListenPort);
     fclose(server_info);
@@ -133,6 +134,8 @@ int InstallWireGuard(){
         printf("非法输入，请重新输入端口号！\n");
         goto re1;
     }
+    system("yum install curl -y");
+    system("curl ifconfig.me > /etc/wireguard/servername.info");
     system("clear");
     system("curl -o /etc/yum.repos.d/jdoss-wireguard-epel-7.repo https://copr.fedorainfracloud.org/coprs/jdoss/wireguard/repo/epel-7/jdoss-wireguard-epel-7.repo");
     system("yum install epel-release qrencode -y");
@@ -140,6 +143,10 @@ int InstallWireGuard(){
     if (system("grep \"net.ipv4.ip_forward = 1\" /etc/sysctl.conf") != 0) {
         system("echo \"net.ipv4.ip_forward = 1\" >> /etc/sysctl.conf");
     }
+    system("echo \"* soft nofile 65535\" > /etc/security/limits.conf");
+    system("echo \"* hard nofile 65535\" >> /etc/security/limits.conf");
+    system("echo \"ulimit -n 65535\" >> /etc/sysctl.conf");
+    system("echo \"ulimit -u 65535\" >> /etc/sysctl.conf");
     system("sysctl -p");
     server_config = fopen("/etc/wireguard/wg0.conf", "w");
     fprintf(server_config, "[Interface]\n");
@@ -249,13 +256,6 @@ int AddUser() {
 int KernelUpdate() {
     if ((fopen("preload.sh", "r")) == NULL) {
         system("yum install -y wget");
-        if (system("grep \"151.101.108.133 raw.githubusercontent.com\" /etc/hosts") != 0) {
-            system("echo \"151.101.108.133 raw.githubusercontent.com\" >> /etc/hosts");
-        }
-        if (system("grep  \"52.78.231.108 github.com\" /etc/hosts") != 0) {
-            system("echo \"52.78.231.108 github.com\" >> /etc/hosts");
-        }
-        system("echo \"52.78.231.108 github.com\" >> /etc/hosts");
         system("wget https://github.com/HXHGTS/WireGuardServer/raw/master/preload.sh");
         system("chmod +x preload.sh");
         printf("正在升级，将自动触发重启以应用配置. . .\n");
