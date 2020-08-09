@@ -135,7 +135,7 @@ int InstallWireGuard(){
         goto re1;
     }
     system("yum install curl -y");
-    system("curl ifconfig.me > /etc/wireguard/servername.info");
+    system("curl myip.ustclug.org > /etc/wireguard/servername.info");
     system("clear");
     system("curl -o /etc/yum.repos.d/jdoss-wireguard-epel-7.repo https://copr.fedorainfracloud.org/coprs/jdoss/wireguard/repo/epel-7/jdoss-wireguard-epel-7.repo");
     system("yum install epel-release qrencode -y");
