@@ -24,9 +24,9 @@ sudo ./WireGuard
 ```
 第一次点击安装后会自动升级系统内核并触发重启，重启后输入
 ```
-sudo ./WireGuard 并选1继续安装
+sudo ./WireGuard
 ```
-
+并选1继续安装
 
 客户端下载:
 
