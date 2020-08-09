@@ -9,29 +9,21 @@ char FileName[36];
 int DNS_choose;
 
 int DNS(){
-        printf("\n请选择DNS服务器(国内服务器或不知道怎么选就选1自动配置!):\n\n1.默认DNS(系统指定)\n\n2.谷歌DNS\n\n3.OpenDNS\n\n4.CloudflareDNS\n\n5.level3 DNS\n\n6.Quad101\n\n7.自定义DNS\n\n请输入:");
+        printf("\n请选择DNS服务器(不知道怎么选就选1!):\n\n1.谷歌DNS\n\n2.OpenDNS\n\n3.CloudflareDNS\n\n4.level3 DNS\n\n5.Quad101\n\n6.自定义DNS\n\n请输入:");
         scanf("%d", &DNS_choose);
         if (DNS_choose == 1) {
-            system("yum install -y bind-utils");
-            system("nslookup localhost | grep Server > /etc/wireguard/dns.info.0");
-            server_info = fopen("/etc/wireguard/dns.info.0", "r");
-            fscanf(server_info, "Server: %s", DNS_Reslover);
-            fclose(server_info);
-            system("rm -rf /etc/wireguard/dns.info.0");
-        }
-        else if (DNS_choose == 2) {
             sprintf(DNS_Reslover, "8.8.8.8");
         }
-        else if (DNS_choose == 3) {
+        else if (DNS_choose == 2) {
             sprintf(DNS_Reslover, "208.67.222.222");
         }
-        else if (DNS_choose == 4) {
+        else if (DNS_choose == 3) {
             sprintf(DNS_Reslover, "1.1.1.1");
         }
-        else if (DNS_choose == 5) {
+        else if (DNS_choose == 4) {
             sprintf(DNS_Reslover, "4.2.2.1");
         }
-        else if (DNS_choose == 6) {
+        else if (DNS_choose == 5) {
             sprintf(DNS_Reslover, "101.101.101.101");
         }
         else {
