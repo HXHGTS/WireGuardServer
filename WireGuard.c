@@ -15,7 +15,7 @@ int DNS(){
             system("yum install -y bind-utils");
             system("nslookup localhost | grep Server > /etc/wireguard/dns.info.0");
             server_info = fopen("/etc/wireguard/dns.info.0", "r");
-            fscanf(server_info, "Server:		%s", DNS_Reslover);
+            fscanf(server_info, "Server: %s", DNS_Reslover);
             fclose(server_info);
             system("rm -rf /etc/wireguard/dns.info.0");
         }
@@ -116,7 +116,7 @@ int UI() {
     printf("---------------当前Kernel版本-----------------\n");
     system("uname -sr");
     printf("----------------------------------------------\n");
-    printf("警告:Kernel版本低于5必须先升级再运行本程序!!!\n1.安装或重装WireGuard(重装前必须先销毁服务器)\n2.添加用户\n3.关闭WireGuard\n4.重启WireGuard\n5.查看服务器信息\n6.修改服务器配置\n7.修改用户配置\n8.销毁服务器(用于重新配置服务器)\n0.退出\n");
+    printf("警告:Kernel版本低于5运行模式1会自动升级内核并重启，重启后点击键盘方向键上并回车选择模式1以继续执行代码\n1.安装或重装WireGuard(重装前必须先销毁服务器)\n2.添加用户\n3.关闭WireGuard\n4.重启WireGuard\n5.查看服务器信息\n6.修改服务器配置\n7.修改用户配置\n8.销毁服务器(用于重新配置服务器)\n0.退出\n");
     printf("----------------------------------------------\n");
     printf("请输入:");
     scanf("%d", &mode);
