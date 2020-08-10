@@ -137,9 +137,10 @@ int InstallWireGuard(){
     }
     system("echo \"* soft nofile 65535\" > /etc/security/limits.conf");
     system("echo \"* hard nofile 65535\" >> /etc/security/limits.conf");
-    system("echo \"ulimit -n 65535\" >> /etc/sysctl.conf");
-    system("echo \"ulimit -u 65535\" >> /etc/sysctl.conf");
     system("sysctl -p");
+    system("echo \"ulimit -n 65535\" >> /etc/rc.d/rc.local");
+    system("echo \"ulimit -u 65535\" >> /etc/rc.d/rc.local");
+    system("chmod +x /etc/rc.d/rc.local");
     server_config = fopen("/etc/wireguard/wg0.conf", "w");
     fprintf(server_config, "[Interface]\n");
     fprintf(server_config, "PrivateKey = ");
