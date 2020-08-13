@@ -148,7 +148,7 @@ int InstallWireGuard(){
     system("wg genkey | tee /etc/wireguard/server_privatekey | wg pubkey > /etc/wireguard/server_publickey");
     system("cat /etc/wireguard/server_privatekey >> /etc/wireguard/wg0.conf");
     server_config = fopen("/etc/wireguard/wg0.conf", "a");
-    fprintf(server_config, "Address = 10.0.0.1/24\n");
+    fprintf(server_config, "Address = 192.168.30.1/24\n");
     fprintf(server_config, "PostUp = iptables -A FORWARD -i wg0 -j ACCEPT; iptables -A FORWARD -o wg0 -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE\n");
     fprintf(server_config, "PostDown = iptables -D FORWARD -i wg0 -j ACCEPT; iptables -D FORWARD -o wg0 -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE\n");
     fprintf(server_config, "ListenPort = %d\n",ListenPort);
@@ -202,7 +202,7 @@ int AddUser() {
     sprintf(command,"cat /etc/wireguard/%s_publickey >> /etc/wireguard/wg0.conf",username);
     system(command);
     server_config = fopen("/etc/wireguard/wg0.conf", "a");
-    fprintf(server_config, "AllowedIPs = 10.0.0.%d/32\n",num);
+    fprintf(server_config, "AllowedIPs = 192.168.30.%d/32\n",num);
     fclose(server_config);
     system("wg-quick down wg0");
     system("wg-quick up wg0");
@@ -219,7 +219,7 @@ int AddUser() {
     sprintf(command, "cat /etc/wireguard/%s_privatekey >> /etc/wireguard/%s.conf", username,username);
     system(command);
     client_config = fopen(FileName, "a");
-    fprintf(client_config, "Address = 10.0.0.%d/32\n",num);
+    fprintf(client_config, "Address = 192.168.30.%d/32\n",num);
     fprintf(client_config, "DNS = %s\n", DNS_Reslover);
     fprintf(client_config, "ListenPort = 10088\n", DNS_Reslover);
         //客户端本地监听端口号过高可能导致4G网络下连接失败，原因不明，可能是移动网络防火墙屏蔽，设置低端口降低连接失败率，可酌情修改
