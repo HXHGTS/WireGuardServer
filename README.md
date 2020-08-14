@@ -4,7 +4,7 @@
 
 WireGuard纯手工搭建教程(全部从官方源下载软件包，不做拦截规则等配置，默认开启谷歌原版BBR)
 
-### 直接运行(仅支持CentOS7)：
+### 直接运行(仅支持CentOS7):
 ```
 sudo yum install -y gcc wget && echo "151.101.108.133 raw.githubusercontent.com" >> /etc/hosts && echo "52.78.231.108 github.com" >> /etc/hosts && echo "3.81.0.123 copr.fedorainfracloud.org" >> /etc/hosts && wget https://github.com/HXHGTS/WireGuardServer/raw/master/WireGuard.c && sudo chmod +x WireGuard.c && gcc -o WireGuard WireGuard.c && sudo ./WireGuard
 ```
@@ -14,9 +14,9 @@ sudo ./WireGuard
 ```
 并选1继续安装
 
-### 已知问题：
+### 已知问题:
 
-1.移动4G网络会出现断流
+1.中国移动4G网络会出现断流(当服务器搭建在国外)
 ```
 解决方案:UDP阻断机制，可以配合UDP2raw规避或者搭建国内跳转
 ```
