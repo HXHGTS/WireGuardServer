@@ -24,3 +24,6 @@ sudo ./WireGuard
 
 [Windows x64](https://wwa.lanzous.com/i9q09f3x2zi) [Windows x86](https://wwa.lanzous.com/ibVYif3x32b) [Android](https://wwa.lanzous.com/izHzDf3x1sf)
 
+### 使用方法:
+
+Android客户端支持二维码扫描，请直接扫描二维码导入配置，电脑客户端可以复制二维码上方文字配置
