@@ -20,6 +20,10 @@ sudo ./WireGuard
 ```
 （解决方案:在用户配置中增加一行 ListenPort = xxxxx）xxxxx最好不超过20000
 ```
+2.若使用Tunsafe客户端会因为脚本中设置了双DNS导致无法加载配置文件
+```
+（解决方案:在用户配置中 DNS = 8.8.8.8,8.8.4.4）中删除一个DNS，记得把逗号也删除，即可正常使用
+```
 ### 客户端下载:
 
 [Windows x64](https://wwa.lanzous.com/i9q09f3x2zi) [Windows x86](https://wwa.lanzous.com/ibVYif3x32b) [Android](https://wwa.lanzous.com/izHzDf3x1sf)
