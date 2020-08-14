@@ -43,7 +43,6 @@ int main()
 Menu:UI();
     system("clear");
     if (mode == 1) {
-        printf("正在升级Kernel. . .\n");
         KernelUpdate();
         DNS();
         InstallWireGuard();
@@ -126,21 +125,26 @@ int InstallWireGuard(){
         printf("非法输入，请重新输入端口号！\n");
         goto re1;
     }
-    system("yum install curl -y");
-    system("curl ifconfig.me > /etc/wireguard/servername.info");
+    printf("正在检测本机ip地址，请稍后. . . . . .\n");
+    system("yum install curl -y && curl ifconfig.me > /etc/wireguard/servername.info");
     system("clear");
+    printf("正在安装WireGuard. . . . . .\n");
     system("curl -o /etc/yum.repos.d/jdoss-wireguard-epel-7.repo https://copr.fedorainfracloud.org/coprs/jdoss/wireguard/repo/epel-7/jdoss-wireguard-epel-7.repo");
-    system("yum install epel-release qrencode -y");
-    system("yum install wireguard-dkms wireguard-tools -y");
+    system("yum install epel-release wireguard-dkms wireguard-tools qrencode -y");
     if (system("grep \"net.ipv4.ip_forward = 1\" /etc/sysctl.conf") != 0) {
         system("echo \"net.ipv4.ip_forward = 1\" >> /etc/sysctl.conf");
+        system("sysctl -p");
     }
+    printf("正在优化网络通信性能. . . . . .\n");
     system("echo \"* soft nofile 65535\" > /etc/security/limits.conf");
     system("echo \"* hard nofile 65535\" >> /etc/security/limits.conf");
+    system("echo \"net.core.default_qdisc = fq\" >> /etc/sysctl.conf");
+    system("echo \"net.ipv4.tcp_congestion_control = bbr\" >> /etc/sysctl.conf");
     system("sysctl -p");
     system("echo \"ulimit -n 65535\" >> /etc/rc.d/rc.local");
     system("echo \"ulimit -u 65535\" >> /etc/rc.d/rc.local");
     system("chmod +x /etc/rc.d/rc.local");
+    printf("正在生成服务器配置. . . . . .\n");
     server_config = fopen("/etc/wireguard/wg0.conf", "w");
     fprintf(server_config, "[Interface]\n");
     fprintf(server_config, "PrivateKey = ");
@@ -154,10 +158,8 @@ int InstallWireGuard(){
     fprintf(server_config, "ListenPort = %d\n",ListenPort);
     fclose(server_config);
     system("rm -f /etc/wireguard/server_privatekey");
+    printf("正在启动服务器. . . . . .\n");
     system("systemctl enable wg-quick@wg0");
-    system("echo \"net.core.default_qdisc = fq\" >> /etc/sysctl.conf");
-    system("echo \"net.ipv4.tcp_congestion_control = bbr\" >> /etc/sysctl.conf");
-    system("sysctl -p");
     printf("服务器搭建完成！\n");
     printf("正在默认添加用户1. . .\n");
     AddUser();
@@ -221,8 +223,8 @@ int AddUser() {
     client_config = fopen(FileName, "a");
     fprintf(client_config, "Address = 192.168.30.%d/32\n",num);
     fprintf(client_config, "DNS = %s\n", DNS_Reslover);
-    fprintf(client_config, "ListenPort = 10088\n", DNS_Reslover);
-        //客户端本地监听端口号过高可能导致4G网络下连接失败，原因不明，可能是移动网络防火墙屏蔽，设置低端口降低连接失败率，可酌情修改
+    //客户端本地监听端口号过高可能导致4G网络下连接失败，原因不明，可能是移动网络防火墙屏蔽，设置低端口降低连接失败率，可酌情修改
+    //格式ListenPort = 12345
     fprintf(client_config, "\n[Peer]\n");
     fprintf(client_config, "AllowedIPs = 0.0.0.0/0, ::/0\n");
     fprintf(client_config, "Endpoint = %s:%d\n",ServerName,ListenPort);
@@ -250,6 +252,7 @@ int AddUser() {
 
 int KernelUpdate() {
     if ((fopen("preload.sh", "r")) == NULL) {
+        printf("正在升级新内核. . .\n");
         system("yum install -y wget");
         system("wget https://github.com/HXHGTS/WireGuardServer/raw/master/preload.sh");
         system("chmod +x preload.sh");
@@ -257,6 +260,7 @@ int KernelUpdate() {
         system("bash preload.sh");
     }
     else {
+        printf("正在卸载旧内核. . .\n");
         system("yum remove -y $(rpm -qa | grep kernel | grep -v $(uname -r))");
     }
     return 0;
