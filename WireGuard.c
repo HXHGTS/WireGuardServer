@@ -163,10 +163,14 @@ int InstallWireGuard(){
     system("wg genkey | tee /etc/wireguard/server_privatekey | wg pubkey > /etc/wireguard/server_publickey");
     system("cat /etc/wireguard/server_privatekey >> /etc/wireguard/wg0.conf");
     server_config = fopen("/etc/wireguard/wg0.conf", "a");
+    fprintf(server_config, "##服务器私钥，不要修改\n");
     fprintf(server_config, "Address = 192.168.30.1/24\n");
+    fprintf(server_config, "##服务器ip地址，修改需要同时修改客户端配置\n");
     fprintf(server_config, "PostUp = iptables -A FORWARD -i wg0 -j ACCEPT; iptables -A FORWARD -o wg0 -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE\n");
     fprintf(server_config, "PostDown = iptables -D FORWARD -i wg0 -j ACCEPT; iptables -D FORWARD -o wg0 -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE\n");
+    fprintf(server_config, "##服务器防火墙配置\n");
     fprintf(server_config, "ListenPort = %d\n",ListenPort);
+    fprintf(server_config, "##服务器监听端口\n");
     fclose(server_config);
     system("rm -f /etc/wireguard/server_privatekey");
     printf("正在启动服务器. . . . . .\n");
@@ -215,7 +219,9 @@ int AddUser() {
     sprintf(command,"cat /etc/wireguard/%s_publickey >> /etc/wireguard/wg0.conf",username);
     system(command);
     server_config = fopen("/etc/wireguard/wg0.conf", "a");
+    fprintf(server_config, "##客户端公钥，不要修改\n");
     fprintf(server_config, "AllowedIPs = 192.168.30.%d/32\n",num);
+    fprintf(server_config, "##客户端ip地址分配，不要修改\n");
     fclose(server_config);
     system("wg-quick down wg0");
     system("wg-quick up wg0");
@@ -232,18 +238,24 @@ int AddUser() {
     sprintf(command, "cat /etc/wireguard/%s_privatekey >> /etc/wireguard/%s.conf", username,username);
     system(command);
     client_config = fopen(FileName, "a");
+    fprintf(client_config, "##客户端私钥，不要修改\n");
     fprintf(client_config, "Address = 192.168.30.%d/32\n",num);
+    fprintf(client_config, "##客户端ip地址\n");
     fprintf(client_config, "DNS = %s\n", DNS_Reslover);
+    fprintf(client_config, "##客户端DNS服务器地址\n");
     //客户端本地监听端口号过高可能导致4G网络下连接失败，原因不明，可能是移动网络防火墙屏蔽，设置低端口降低连接失败率，可酌情修改
     //格式ListenPort = 12345
     fprintf(client_config, "\n[Peer]\n");
     fprintf(client_config, "AllowedIPs = 0.0.0.0/0, ::/0\n");
+    fprintf(client_config, "##客户端转发流量范围，默认全局\n");
     fprintf(client_config, "Endpoint = %s:%d\n",ServerName,ListenPort);
+    fprintf(client_config, "##服务器ip地址:端口号\n");
     fprintf(client_config, "PublicKey = ");
     fclose(client_config);
     sprintf(command, "cat /etc/wireguard/server_publickey >> /etc/wireguard/%s.conf", username);
     system(command);
     client_config = fopen(FileName, "a");
+    fprintf(client_config, "##服务器公钥，不要修改\n"); 
     fclose(client_config);
     sprintf(command, "rm -f /etc/wireguard/%s_privatekey", username);
     system(command);
