@@ -9,7 +9,8 @@ char FileName[36];
 int DNS_choose;
 
 int DNS(){
-        printf("\n请选择DNS服务器(不知道怎么选就选1!):\n\n1.谷歌DNS\n\n2.OpenDNS\n\n3.CloudflareDNS\n\n4.level3 DNS\n\n5.Quad101\n\n6.自定义DNS\n\n请输入:");
+        printf("\n请选择DNS服务器(不知道怎么选就选1!):\n5、6、7运营商级DNS可能不具备全球低延迟解析能力，尽量避免使用!\n\n");
+        printf("1.谷歌DNS\n\n2.思科OpenDNS\n\n3.CloudflareDNS\n\n4.微软level3 DNS\n\n5.台湾Quad101\n\n6.韩国KT\n\n7.新加坡Singtel\n\n0.自定义DNS\n\n请输入:");
         scanf("%d", &DNS_choose);
         if (DNS_choose == 1) {
             sprintf(DNS_Reslover, "8.8.8.8,8.8.4.4");
@@ -21,13 +22,19 @@ int DNS(){
             sprintf(DNS_Reslover, "1.1.1.1,1.0.0.1");
         }
         else if (DNS_choose == 4) {
-            sprintf(DNS_Reslover, "209.244.0.3,209.244.0.4");
+            sprintf(DNS_Reslover, "4.2.2.1,4.2.2.2");
         }
         else if (DNS_choose == 5) {
             sprintf(DNS_Reslover, "101.101.101.101,101.102.103.104");
         }
+        else if (DNS_choose == 6) {
+            sprintf(DNS_Reslover, "168.126.63.1,168.126.63.2");
+        }
+        else if (DNS_choose == 7) {
+            sprintf(DNS_Reslover, "165.21.83.88,165.21.100.88");
+        }
         else {
-            printf("\n请输入你希望配置的DNS服务器地址:");
+            printf("\n请输入你希望配置的DNS服务器地址，若配置双DNS，地址间用英文逗号隔开:");
             scanf("%s", DNS_Reslover);
         }
         system("mkdir -p /etc/wireguard");
