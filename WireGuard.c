@@ -3,7 +3,7 @@
 
 FILE* server_config, * client_config,*usernum,*client_pubkey,*server_info;
 int mode,confirm,ListenPort, num;
-char username[10],command[200],pubkey[46],ServerName[35],DNS_Reslover[16];
+char username[10],command[200],pubkey[46],ServerName[35],DNS_Reslover[35];
 int ret;
 char FileName[36];
 int DNS_choose;
@@ -12,19 +12,19 @@ int DNS(){
         printf("\n请选择DNS服务器(不知道怎么选就选1!):\n\n1.谷歌DNS\n\n2.OpenDNS\n\n3.CloudflareDNS\n\n4.level3 DNS\n\n5.Quad101\n\n6.自定义DNS\n\n请输入:");
         scanf("%d", &DNS_choose);
         if (DNS_choose == 1) {
-            sprintf(DNS_Reslover, "8.8.8.8");
+            sprintf(DNS_Reslover, "8.8.8.8,8.8.4.4");
         }
         else if (DNS_choose == 2) {
-            sprintf(DNS_Reslover, "208.67.222.222");
+            sprintf(DNS_Reslover, "208.67.222.222,208.67.220.220");
         }
         else if (DNS_choose == 3) {
-            sprintf(DNS_Reslover, "1.1.1.1");
+            sprintf(DNS_Reslover, "1.1.1.1,1.0.0.1");
         }
         else if (DNS_choose == 4) {
-            sprintf(DNS_Reslover, "4.2.2.1");
+            sprintf(DNS_Reslover, "209.244.0.3,209.244.0.4");
         }
         else if (DNS_choose == 5) {
-            sprintf(DNS_Reslover, "101.101.101.101");
+            sprintf(DNS_Reslover, "101.101.101.101,101.102.103.104");
         }
         else {
             printf("\n请输入你希望配置的DNS服务器地址:");
