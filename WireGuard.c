@@ -163,7 +163,6 @@ int InstallWireGuard(){
     fprintf(server_config, "PrivateKey = ");
     fclose(server_config);
     system("wg genkey | tee /etc/wireguard/server_privatekey | wg pubkey > /etc/wireguard/server_publickey");
-    system("wg genpsk > /etc/wireguard/psk");
     system("cat /etc/wireguard/server_privatekey >> /etc/wireguard/wg0.conf");
     server_config = fopen("/etc/wireguard/wg0.conf", "a");
     fprintf(server_config, "##服务器私钥，不要修改\n");
@@ -213,6 +212,7 @@ int AddUser() {
     fscanf(server_info, "%s", DNS_Reslover);
     fclose(server_info);
     system("clear");
+    system("wg genpsk > /etc/wireguard/psk"); 
     sprintf(command, "wg genkey | tee /etc/wireguard/%s_privatekey | wg pubkey > /etc/wireguard/%s_publickey",username,username);
     system(command);
     server_config = fopen("/etc/wireguard/wg0.conf", "a");
