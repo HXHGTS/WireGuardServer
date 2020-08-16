@@ -275,6 +275,7 @@ int AddUser() {
     system(command);
     sprintf(command, "rm -f /etc/wireguard/%s_publickey", username);
     system(command);
+    system("rm -f /etc/wireguard/psk");
     printf("\n成功添加用户！\n");
     printf("\n电脑版WireGuard客户端建议复制以下内容添加:\n\n");
     sprintf(command, "cat /etc/wireguard/%s.conf", username);
