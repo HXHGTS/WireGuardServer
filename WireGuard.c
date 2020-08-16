@@ -126,6 +126,7 @@ int UI() {
 }
 
 int InstallWireGuard(){
+    system("timedatectl set-timezone Asia/Shanghai");
     system("clear");
     re1:printf("请输入服务器端口号,建议10000-60000,如10800:");
     scanf("%d",&ListenPort);
@@ -144,6 +145,7 @@ int InstallWireGuard(){
     system("yum install epel-release wireguard-dkms wireguard-tools qrencode -y");
     if (system("grep \"net.ipv4.ip_forward = 1\" /etc/sysctl.conf") != 0) {
         system("echo \"net.ipv4.ip_forward = 1\" >> /etc/sysctl.conf");
+        system("echo \"net.ipv6.conf.all.forwarding = 1\" >> /etc/sysctl.conf");
         system("sysctl -p");
     }
     printf("正在优化网络通信性能. . . . . .\n");
@@ -161,6 +163,7 @@ int InstallWireGuard(){
     fprintf(server_config, "PrivateKey = ");
     fclose(server_config);
     system("wg genkey | tee /etc/wireguard/server_privatekey | wg pubkey > /etc/wireguard/server_publickey");
+    system("wg genpsk > /etc/wireguard/psk");
     system("cat /etc/wireguard/server_privatekey >> /etc/wireguard/wg0.conf");
     server_config = fopen("/etc/wireguard/wg0.conf", "a");
     fprintf(server_config, "##服务器私钥，不要修改\n");
@@ -222,7 +225,12 @@ int AddUser() {
     fprintf(server_config, "##客户端公钥，不要修改\n");
     fprintf(server_config, "AllowedIPs = 192.168.30.%d/32\n",num);
     fprintf(server_config, "##客户端ip地址分配，不要修改\n");
-    fclose(server_config);
+    fprintf(server_config, "PresharedKey = ");
+    fclose(server_config); 
+    system("cat /etc/wireguard/psk >> /etc/wireguard/wg0.conf");
+    server_config = fopen("/etc/wireguard/wg0.conf", "a");
+    fprintf(server_config, "##预共享密钥，不要修改\n");
+    fclose(server_config);        
     system("wg-quick down wg0");
     system("wg-quick up wg0");
     sprintf(FileName, "/etc/wireguard/%s_publickey", username);
@@ -256,7 +264,13 @@ int AddUser() {
     system(command);
     client_config = fopen(FileName, "a");
     fprintf(client_config, "##服务器公钥，不要修改\n"); 
-    fclose(client_config);
+    fprintf(client_config, "PresharedKey = ");
+    fclose(client_config); 
+    sprintf(command, "cat /etc/wireguard/psk >> /etc/wireguard/%s.conf",username);
+    system(command);
+    client_config = fopen(FileName, "a");
+    fprintf(client_config, "##预共享密钥，不要修改\n");
+    fclose(client_config);        
     sprintf(command, "rm -f /etc/wireguard/%s_privatekey", username);
     system(command);
     sprintf(command, "rm -f /etc/wireguard/%s_publickey", username);
