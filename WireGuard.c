@@ -148,15 +148,6 @@ int InstallWireGuard(){
         system("echo \"net.ipv6.conf.all.forwarding = 1\" >> /etc/sysctl.conf");
         system("sysctl -p");
     }
-    printf("正在优化网络通信性能. . . . . .\n");
-    system("echo \"* soft nofile 65535\" > /etc/security/limits.conf");
-    system("echo \"* hard nofile 65535\" >> /etc/security/limits.conf");
-    system("echo \"net.core.default_qdisc = fq\" >> /etc/sysctl.conf");
-    system("echo \"net.ipv4.tcp_congestion_control = bbr\" >> /etc/sysctl.conf");
-    system("sysctl -p");
-    system("echo \"ulimit -n 65535\" >> /etc/rc.d/rc.local");
-    system("echo \"ulimit -u 65535\" >> /etc/rc.d/rc.local");
-    system("chmod +x /etc/rc.d/rc.local");
     printf("正在生成服务器配置. . . . . .\n");
     server_config = fopen("/etc/wireguard/wg0.conf", "w");
     fprintf(server_config, "[Interface]\n");
