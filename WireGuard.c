@@ -207,35 +207,24 @@ int AddUser() {
     sprintf(command, "cat /etc/wireguard/%s_privatekey >> /etc/wireguard/%s.conf", username,username);
     system(command);
     client_config = fopen(FileName, "a");
-    fprintf(client_config, "##客户端私钥，不要修改\n");
     fprintf(client_config, "Address = 192.168.30.%d/32\n",num);
-    fprintf(client_config, "##客户端ip地址\n");
     fprintf(client_config, "DNS = %s\n", "192.168.30.1");
-    fprintf(client_config, "##客户端DNS服务器地址\n");
     fprintf(client_config, "MTU = 1420\n");
-    fprintf(client_config, "##最大封包大小\n"); 
     //客户端本地监听端口号过高可能导致4G网络下连接失败，原因不明，可能是移动网络防火墙屏蔽，设置低端口降低连接失败率，可酌情修改
     //格式ListenPort = 12345
     fprintf(client_config, "\n[Peer]\n");
     fprintf(client_config, "AllowedIPs = 0.0.0.0/0, ::/0\n");
-    fprintf(client_config, "##客户端转发流量范围，默认全局\n");
     fprintf(client_config, "Endpoint = %s:%d\n",ServerName,ListenPort);
-    fprintf(client_config, "##服务器ip地址:端口号\n");
     fprintf(client_config, "PersistentKeepalive = 25\n");
-    fprintf(client_config, "##连接保活间隔\n");  
     fprintf(client_config, "PublicKey = ");
     fclose(client_config);
     sprintf(command, "cat /etc/wireguard/server_publickey >> /etc/wireguard/%s.conf", username);
     system(command);
     client_config = fopen(FileName, "a");
-    fprintf(client_config, "##服务器公钥，不要修改\n"); 
     fprintf(client_config, "PresharedKey = ");
     fclose(client_config); 
     sprintf(command, "cat /etc/wireguard/psk >> /etc/wireguard/%s.conf",username);
-    system(command);
-    client_config = fopen(FileName, "a");
-    fprintf(client_config, "##预共享密钥，不要修改\n");
-    fclose(client_config);        
+    system(command);     
     sprintf(command, "rm -f /etc/wireguard/%s_privatekey", username);
     system(command);
     sprintf(command, "rm -f /etc/wireguard/%s_publickey", username);
