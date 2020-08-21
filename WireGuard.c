@@ -3,49 +3,19 @@
 
 FILE* server_config, * client_config,*usernum,*client_pubkey,*server_info;
 int mode,confirm,ListenPort, num;
-char username[10],command[200],pubkey[46],ServerName[35],DNS_Reslover[35];
+char username[10],command[200],pubkey[46],ServerName[35];
 int ret;
 char FileName[36];
-int DNS_choose;
 
 int DNS(){
-        printf("\n请选择DNS服务器(不知道怎么选就选1!):\n5、6、7运营商级DNS可能不具备全球低延迟解析能力，尽量避免使用!\n\n");
-        printf("1.谷歌\n\n2.思科OpenDNS\n\n3.Cloudflare\n\n4.微软level3\n\n5.IBM Quad9\n\n6.台湾Quad101\n\n7.韩国KT\n\n8.新加坡Singtel\n\n0.自定义\n\n请输入:");
-        scanf("%d", &DNS_choose);
-        if (DNS_choose == 1) {
-            sprintf(DNS_Reslover, "8.8.8.8,8.8.4.4");
-        }
-        else if (DNS_choose == 2) {
-            sprintf(DNS_Reslover, "208.67.222.222,208.67.220.220");
-        }
-        else if (DNS_choose == 3) {
-            sprintf(DNS_Reslover, "1.1.1.1,1.0.0.1");
-        }
-        else if (DNS_choose == 4) {
-            sprintf(DNS_Reslover, "4.2.2.1,4.2.2.2");
-        }
-        else if (DNS_choose == 5) {
-            sprintf(DNS_Reslover, "9.9.9.9,149.112.112.112");
-        }
-        else if (DNS_choose == 6) {
-            sprintf(DNS_Reslover, "101.101.101.101,101.102.103.104");
-        }
-        else if (DNS_choose == 7) {
-            sprintf(DNS_Reslover, "168.126.63.1,168.126.63.2");
-        }
-        else if (DNS_choose == 8) {
-            sprintf(DNS_Reslover, "165.21.83.88,165.21.100.88");
-        }
-        else {
-            printf("\n请输入你希望配置的DNS服务器地址，若配置双DNS，地址间用英文逗号隔开:");
-            scanf("%s", DNS_Reslover);
-        }
+        printf("正在安装防污染DNS. . .\n");
+        system("wget https://github.com/HXHGTS/AdguardHomeInstall/raw/master/install.sh -O install.sh");
+        system("bash install.sh");
+        printf("已安装防污染dns,默认dns已被设置为谷歌DNS!\n");
+        system("clear");
         system("mkdir -p /etc/wireguard");
         system("chmod +x /etc/wireguard");
-        server_info = fopen("/etc/wireguard/dns.info", "w");
-        fprintf(server_info, "%s", DNS_Reslover);
-        fclose(server_info);
-    return 0;
+        return 0;//默认使用DNS Over TLS技术，设置为服务器解析，避免DNS污染与DNS泄露
 }
 
 int main()
@@ -138,7 +108,8 @@ int InstallWireGuard(){
         goto re1;
     }
     printf("正在检测本机ip地址，请稍后. . . . . .\n");
-    system("yum install curl bind-utils -y && curl ifconfig.me > /etc/wireguard/servername.info");
+    system("yum install curl bind-utils -y");
+    system("curl ipinfo.io/ip > /etc/wireguard/servername.info");
     system("clear");
     printf("正在安装WireGuard. . . . . .\n");
     system("curl -o /etc/yum.repos.d/jdoss-wireguard-epel-7.repo https://copr.fedorainfracloud.org/coprs/jdoss/wireguard/repo/epel-7/jdoss-wireguard-epel-7.repo");
@@ -201,9 +172,6 @@ int AddUser() {
     server_info = fopen("/etc/wireguard/port.info", "r");
     fscanf(server_info, "%d", &ListenPort);
     fclose(server_info);
-    server_info = fopen("/etc/wireguard/dns.info", "r");
-    fscanf(server_info, "%s", DNS_Reslover);
-    fclose(server_info);
     system("clear");
     system("wg genpsk > /etc/wireguard/psk"); 
     sprintf(command, "wg genkey | tee /etc/wireguard/%s_privatekey | wg pubkey > /etc/wireguard/%s_publickey",username,username);
@@ -242,7 +210,7 @@ int AddUser() {
     fprintf(client_config, "##客户端私钥，不要修改\n");
     fprintf(client_config, "Address = 192.168.30.%d/32\n",num);
     fprintf(client_config, "##客户端ip地址\n");
-    fprintf(client_config, "DNS = %s\n", DNS_Reslover);
+    fprintf(client_config, "DNS = %s\n", "192.168.30.1");
     fprintf(client_config, "##客户端DNS服务器地址\n");
     fprintf(client_config, "MTU = 1420\n");
     fprintf(client_config, "##最大封包大小\n"); 
