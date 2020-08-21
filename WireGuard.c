@@ -3,20 +3,32 @@
 
 FILE* server_config, * client_config,*usernum,*client_pubkey,*server_info;
 int mode,confirm,ListenPort, num,region;
-char username[10],command[200],pubkey[46],ServerName[35];
+char username[10],command[200],pubkey[46],ServerName[35], dns_server[35];
 int ret;
 char FileName[36];
 
 int DNS(){
-        printf("此服务器位于中国境内还是境外?(0=境外 1=境内)");
-        printf("正在安装防污染DNS. . .\n");
-        system("wget https://github.com/HXHGTS/AdguardHomeInstall/raw/master/install.sh -O install.sh");
-        system("sudo bash install.sh");
-        printf("已安装防污染dns,默认dns已被设置为谷歌DNS!\n");
+        printf("此服务器位于中国境内还是境外?(0=境外 1=境内):");
+        scanf("%d", &region);
+        system("clear");
+        printf("正在配置DNS. . .\n");
+        if (region == 1) {
+            system("wget https://github.com/HXHGTS/AdguardHomeInstall/raw/master/CN.sh -O install.sh");
+            system("sudo bash install.sh");
+            printf("默认dns已被设置为清华大学+中科大DNS!\n");
+            server_info = fopen("/etc/wireguard/dns.info", "w");
+            fprintf(server_info, "192.168.30.1");
+            fclose(server_info);//使用教育网DNS，避免DNS污染
+        }
+        else {
+            server_info = fopen("/etc/wireguard/dns.info", "w");
+            fprintf(server_info, "4.2.2.1");
+            fclose(server_info);//使用level3 普通DNS解析
+        }
         system("clear");
         system("mkdir -p /etc/wireguard");
         system("chmod +x /etc/wireguard");
-        return 0;//默认使用DNS Over TLS技术，设置为服务器解析，避免DNS污染与DNS泄露
+        return 0;
 }
 
 int main()
@@ -173,6 +185,9 @@ int AddUser() {
     server_info = fopen("/etc/wireguard/port.info", "r");
     fscanf(server_info, "%d", &ListenPort);
     fclose(server_info);
+    server_info = fopen("/etc/wireguard/dns.info", "r");
+    fscanf(server_info, "%s",dns_server);
+    fclose(server_info);
     system("clear");
     system("wg genpsk > /etc/wireguard/psk"); 
     sprintf(command, "wg genkey | tee /etc/wireguard/%s_privatekey | wg pubkey > /etc/wireguard/%s_publickey",username,username);
@@ -209,7 +224,7 @@ int AddUser() {
     system(command);
     client_config = fopen(FileName, "a");
     fprintf(client_config, "Address = 192.168.30.%d/32\n",num);
-    fprintf(client_config, "DNS = %s\n", "192.168.30.1");
+    fprintf(client_config, "DNS = %s\n", dns_server);
     fprintf(client_config, "MTU = 1420\n");
     //客户端本地监听端口号过高可能导致4G网络下连接失败，原因不明，可能是移动网络防火墙屏蔽，设置低端口降低连接失败率，可酌情修改
     //格式ListenPort = 12345
