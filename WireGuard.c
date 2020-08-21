@@ -2,12 +2,13 @@
 #include <stdlib.h> 
 
 FILE* server_config, * client_config,*usernum,*client_pubkey,*server_info;
-int mode,confirm,ListenPort, num;
+int mode,confirm,ListenPort, num,region;
 char username[10],command[200],pubkey[46],ServerName[35];
 int ret;
 char FileName[36];
 
 int DNS(){
+        printf("此服务器位于中国境内还是境外?(0=境外 1=境内)");
         printf("正在安装防污染DNS. . .\n");
         system("wget https://github.com/HXHGTS/AdguardHomeInstall/raw/master/install.sh -O install.sh");
         system("sudo bash install.sh");
