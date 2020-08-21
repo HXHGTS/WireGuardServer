@@ -26,7 +26,7 @@ sudo ./WireGuard
 
 ##### 2.防污染DNS有关
 
-解决方案:自动安装AdGuardHome，其参数信息可以参考[这里](https://hxhgts.github.io/AdguardHomeInstall/)，可以根据自身情况修改，强烈建议保持默认！（默认使用谷歌TLS DNS）
+解决方案:自动安装AdGuardHome并配置其为客户端DNS服务器，其参数信息可以参考[这里](https://hxhgts.github.io/AdguardHomeInstall/)，可以根据自身情况修改，强烈建议保持默认！（默认使用谷歌TLS DNS）
 
 ### 客户端下载:
 
