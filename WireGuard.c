@@ -10,7 +10,7 @@ char FileName[36];
 int DNS(){
         printf("正在安装防污染DNS. . .\n");
         system("wget https://github.com/HXHGTS/AdguardHomeInstall/raw/master/install.sh -O install.sh");
-        system("bash install.sh");
+        system("sudo bash install.sh");
         printf("已安装防污染dns,默认dns已被设置为谷歌DNS!\n");
         system("clear");
         system("mkdir -p /etc/wireguard");
