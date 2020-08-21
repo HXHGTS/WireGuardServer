@@ -109,7 +109,7 @@ int InstallWireGuard(){
     }
     printf("正在检测本机ip地址，请稍后. . . . . .\n");
     system("yum install curl bind-utils -y");
-    system("curl ipinfo.io/ip > /etc/wireguard/servername.info");
+    system("curl https://ipinfo.io/ip > /etc/wireguard/servername.info");
     system("clear");
     printf("正在安装WireGuard. . . . . .\n");
     system("curl -o /etc/yum.repos.d/jdoss-wireguard-epel-7.repo https://copr.fedorainfracloud.org/coprs/jdoss/wireguard/repo/epel-7/jdoss-wireguard-epel-7.repo");
