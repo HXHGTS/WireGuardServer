@@ -20,14 +20,14 @@ sudo ./WireGuard
 
 ### 已知问题:
 
-1.中国移动4G网络会出现断流(当服务器搭建在国外)
-```
+##### 1.中国移动4G网络会出现断流(当服务器搭建在国外)
+
 解决方案:UDP阻断机制，可以配合UDP2raw规避或者搭建国内跳转
-```
-2.若使用Tunsafe客户端会因为脚本中设置了双DNS导致无法加载配置文件
-```
-解决方案:在用户配置中 DNS = 8.8.8.8,8.8.4.4 中删除一个DNS，如改为 DNS = 8.8.8.8 记得把逗号也删除，即可正常使用（下方客户端为官方版，不会出现此问题）
-```
+
+##### 2.防污染DNS有关
+
+解决方案:自动安装AdGuardHome，其参数信息可以参考[这里](https://hxhgts.github.io/AdguardHomeInstall/)，可以根据自身情况修改，强烈建议保持默认！（默认使用谷歌TLS DNS）
+
 ### 客户端下载:
 
 [Windows x64](https://wwa.lanzous.com/i9q09f3x2zi) [Windows x86](https://wwa.lanzous.com/ibVYif3x32b) [Android](https://wwa.lanzous.com/izHzDf3x1sf) [iOS](https://itunes.apple.com/us/app/wireguard/id1441195209?ls=1&mt=8)
