@@ -18,6 +18,12 @@ yum install -y gcc wget && wget https://github.com/HXHGTS/WireGuardServer/raw/ma
 ```
 并选1继续安装
 
+### 常见应用:
+
+1.游戏加速器
+
+2.游戏组建局域网联机（MonsterHunter MineCraft GTA5）
+
 ### 已知问题:
 
 ##### 1.中国移动4G网络会出现断流(当服务器搭建在国外)
