@@ -8,6 +8,8 @@ int ret;
 char FileName[36];
 
 int DNS(){
+        system("mkdir -p /etc/wireguard");
+        system("chmod +x /etc/wireguard");
         printf("此服务器位于中国境内还是境外?(0=境外 1=境内):");
         scanf("%d", &region);
         system("clear");
@@ -25,9 +27,7 @@ int DNS(){
             fprintf(server_info, "4.2.2.1");
             fclose(server_info);//使用level3 普通DNS解析
         }
-        system("clear");
-        system("mkdir -p /etc/wireguard");
-        system("chmod +x /etc/wireguard");
+        system("clear"); 
         return 0;
 }
 
