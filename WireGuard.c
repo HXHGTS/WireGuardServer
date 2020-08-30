@@ -138,8 +138,6 @@ int InstallWireGuard(){
     fprintf(server_config, "##服务器私钥，不要修改\n");
     fprintf(server_config, "Address = 192.168.30.1/16\n");
     fprintf(server_config, "##服务器ip地址，修改需要同时修改客户端配置\n");
-    fprintf(server_config, "MTU = 1420\n");
-    fprintf(server_config, "##最大封包大小\n"); 
     fprintf(server_config, "PostUp = iptables -A FORWARD -i wg0 -j ACCEPT; iptables -A FORWARD -o wg0 -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE\n");
     fprintf(server_config, "PostDown = iptables -D FORWARD -i wg0 -j ACCEPT; iptables -D FORWARD -o wg0 -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE\n");
     fprintf(server_config, "##服务器防火墙配置\n");
@@ -220,13 +218,11 @@ int AddUser() {
     client_config = fopen(FileName, "a");
     fprintf(client_config, "Address = 192.168.30.%d/32\n",num);
     fprintf(client_config, "DNS = %s\n", dns_server);
-    fprintf(client_config, "MTU = 1420\n");
     //客户端本地监听端口号过高可能导致4G网络下连接失败，原因不明，可能是移动网络防火墙屏蔽，设置低端口降低连接失败率，可酌情修改
     //格式ListenPort = 12345
     fprintf(client_config, "\n[Peer]\n");
     fprintf(client_config, "AllowedIPs = 0.0.0.0/0, ::/0\n");
     fprintf(client_config, "Endpoint = %s:%d\n",ServerName,ListenPort);
-    fprintf(client_config, "PersistentKeepalive = 25\n");
     fprintf(client_config, "PublicKey = ");
     fclose(client_config);
     sprintf(command, "cat /etc/wireguard/server_publickey >> /etc/wireguard/%s.conf", username);
