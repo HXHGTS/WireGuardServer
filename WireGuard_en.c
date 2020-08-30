@@ -2,7 +2,7 @@
 #include <stdlib.h> 
 
 FILE* server_config, * client_config,*usernum,*client_pubkey,*server_info;
-int mode,confirm,ListenPort, num,region;
+int mode,confirm,ListenPort, num;
 char username[10],command[200],pubkey[46],ServerName[35], dns_server[35];
 int ret;
 char FileName[36];
@@ -10,9 +10,6 @@ char FileName[36];
 int DNS(){
         system("mkdir -p /etc/wireguard");
         system("chmod +x /etc/wireguard");
-        printf("此服务器位于中国境内还是境外?(0=境外 1=境内):");
-        scanf("%d", &region);
-        system("clear");
         printf("正在配置DNS. . .\n");
         if (region == 1) {
             server_info = fopen("/etc/wireguard/dns.info", "w");
