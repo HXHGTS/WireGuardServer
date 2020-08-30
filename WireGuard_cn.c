@@ -8,14 +8,22 @@ int ret;
 char FileName[36];
 
 int DNS(){
-        system("mkdir -p /etc/wireguard");
-        system("chmod +x /etc/wireguard");
-        printf("正在配置DNS. . .\n");
-            server_info = fopen("/etc/wireguard/dns.info", "w");
-            fprintf(server_info, "119.29.29.29");
-            fclose(server_info);//使用tencent DNS解析
-        system("clear"); 
-        return 0;
+    system("mkdir -p /etc/wireguard");
+    system("chmod +x /etc/wireguard");
+    system("yum install bind-utils -y");
+    system("sleep 2");
+    system("nslookup localhost | grep Server > /etc/wireguard/dns.temp");
+    system("sleep 2");
+    server_info = fopen("/etc/wireguard/dns.temp", "r");
+    fscanf(server_info, "Server:		%s",dns_server);
+    fclose(server_info);
+    system("rm -rf /etc/wireguard/dns.temp");
+    printf("正在配置DNS. . .\n");
+    server_info = fopen("/etc/wireguard/dns.info", "w");
+    fprintf(server_info, "%s",dns_server);
+    fclose(server_info);//使用tencent DNS解析
+    system("clear"); 
+    return 0;
 }
 
 int main()
@@ -108,7 +116,7 @@ int InstallWireGuard(){
         goto re1;
     }
     printf("正在检测本机ip地址，请稍后. . . . . .\n");
-    system("yum install curl bind-utils -y");
+    system("yum install curl -y");
     system("curl -s api.myip.la > /etc/wireguard/servername.info");
     system("clear");
     printf("正在安装WireGuard. . . . . .\n");
