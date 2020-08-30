@@ -195,7 +195,7 @@ int AddUser() {
     system(command);
     server_config = fopen("/etc/wireguard/wg0.conf", "a");
     fprintf(server_config, "##客户端公钥，不要修改\n");
-    fprintf(server_config, "AllowedIPs = 192.168.30.%d/32\n",num);
+    fprintf(server_config, "AllowedIPs = 192.168.30.%d/24\n",num);
     fprintf(server_config, "##客户端ip地址分配，不要修改\n");
     fprintf(server_config, "PresharedKey = ");
     fclose(server_config); 
@@ -218,7 +218,7 @@ int AddUser() {
     sprintf(command, "cat /etc/wireguard/%s_privatekey >> /etc/wireguard/%s.conf", username,username);
     system(command);
     client_config = fopen(FileName, "a");
-    fprintf(client_config, "Address = 192.168.30.%d/32\n",num);
+    fprintf(client_config, "Address = 192.168.30.%d/24\n",num);
     fprintf(client_config, "DNS = %s\n", dns_server);
     fprintf(client_config, "MTU = 1420\n");
     //客户端本地监听端口号过高可能导致4G网络下连接失败，原因不明，可能是移动网络防火墙屏蔽，设置低端口降低连接失败率，可酌情修改
