@@ -15,17 +15,14 @@ int DNS(){
         system("clear");
         printf("正在配置DNS. . .\n");
         if (region == 1) {
-            system("wget https://github.com/HXHGTS/AdguardHomeInstall/raw/master/install.sh -O install.sh");
-            system("sudo bash install.sh");
-            printf("默认dns已被设置为清华大学+中科大DNS!\n");
             server_info = fopen("/etc/wireguard/dns.info", "w");
-            fprintf(server_info, "192.168.30.1");
-            fclose(server_info);//使用教育网DNS，避免DNS污染
+            fprintf(server_info, "119.29.29.29");
+            fclose(server_info);//使用tencent DNS解析
         }
         else {
             server_info = fopen("/etc/wireguard/dns.info", "w");
-            fprintf(server_info, "4.2.2.1");
-            fclose(server_info);//使用level3 普通DNS解析
+            fprintf(server_info, "8.8.8.8");
+            fclose(server_info);//使用Google DNS解析
         }
         system("clear"); 
         return 0;
