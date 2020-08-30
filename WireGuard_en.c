@@ -11,16 +11,9 @@ int DNS(){
         system("mkdir -p /etc/wireguard");
         system("chmod +x /etc/wireguard");
         printf("正在配置DNS. . .\n");
-        if (region == 1) {
-            server_info = fopen("/etc/wireguard/dns.info", "w");
-            fprintf(server_info, "119.29.29.29");
-            fclose(server_info);//使用tencent DNS解析
-        }
-        else {
-            server_info = fopen("/etc/wireguard/dns.info", "w");
-            fprintf(server_info, "8.8.8.8");
-            fclose(server_info);//使用Google DNS解析
-        }
+        server_info = fopen("/etc/wireguard/dns.info", "w");
+        fprintf(server_info, "8.8.8.8");
+        fclose(server_info);//使用Google DNS解析
         system("clear"); 
         return 0;
 }
