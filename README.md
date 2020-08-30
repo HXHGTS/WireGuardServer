@@ -30,9 +30,9 @@ yum install -y gcc wget && wget https://github.com/HXHGTS/WireGuardServer/raw/ma
 
 解决方案:UDP阻断机制，可以配合UDP2raw规避或者搭建国内跳转
 
-##### 2.防污染DNS有关
+##### 2.DNS有关
 
-解决方案:自动安装AdGuardHome并配置其为客户端DNS服务器，其参数信息可以参考[这里](https://hxhgts.github.io/AdguardHomeInstall/)，可以根据自身情况修改，强烈建议保持默认！（默认使用谷歌TLS DNS）
+解决方案:默认使用服务器自动获取的DNS，可在/etc/wireguard/dns.info中修改
 
 ### 客户端下载:
 
