@@ -21,7 +21,7 @@ int DNS(){
     printf("正在配置DNS. . .\n");
     server_info = fopen("/etc/wireguard/dns.info", "w");
     fprintf(server_info, "%s",dns_server);
-    fclose(server_info);//使用tencent DNS解析
+    fclose(server_info);//使用系统默认DNS解析
     system("clear"); 
     return 0;
 }
