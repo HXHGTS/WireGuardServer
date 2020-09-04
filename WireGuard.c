@@ -122,11 +122,12 @@ int InstallWireGuard(){
     printf("正在安装WireGuard. . . . . .\n");
     system("curl -o /etc/yum.repos.d/jdoss-wireguard-epel-7.repo https://copr.fedorainfracloud.org/coprs/jdoss/wireguard/repo/epel-7/jdoss-wireguard-epel-7.repo");
     system("yum install epel-release wireguard-dkms wireguard-tools qrencode -y");
-    system("sed -e '/net.ipv4.ip_forward/d;/net.ipv6.conf.all.forwarding/d' /etc/sysctl.conf > /etc/sysctl.conf.temp");
+    system("sed -e '/net.ipv4.ip_forward/d;/net.ipv6.conf.all.forwarding/d;/net.ipv6.conf.default.forwarding/d' /etc/sysctl.conf > /etc/sysctl.conf.temp");
     system("cp -rf /etc/sysctl.conf.temp /etc/sysctl.conf");
     system("rm -rf /etc/sysctl.conf.temp");
     system("echo \"net.ipv4.ip_forward = 1\" >> /etc/sysctl.conf");
     system("echo \"net.ipv6.conf.all.forwarding = 1\" >> /etc/sysctl.conf");
+    system("echo \"net.ipv6.conf.default.forwarding = 1\" >> /etc/sysctl.conf");
     system("sysctl -p");//开启ipv4与ipv6数据转发
     printf("正在生成服务器配置. . . . . .\n");
     server_config = fopen("/etc/wireguard/wg0.conf", "w");
