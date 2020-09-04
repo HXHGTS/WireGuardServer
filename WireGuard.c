@@ -111,7 +111,7 @@ int InstallWireGuard(){
     server_info = fopen("/etc/wireguard/port.info", "w");
     fprintf(server_info, "%d", ListenPort);
     fclose(server_info);
-    if (ListenPort < 1000 || ListenPort>65535) {
+    if (ListenPort < 23 || ListenPort>65535) {
         printf("非法输入，请重新输入端口号！\n");
         goto re1;
     }
