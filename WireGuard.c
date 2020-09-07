@@ -9,7 +9,7 @@ char FileName[36];
 
 int DNS(){
     system("mkdir -p /etc/wireguard");
-    system("chmod +x /etc/wireguard");
+    system("chmod 777 /etc/wireguard");
     system("yum install bind-utils -y");
     system("sleep 2");
     system("nslookup localhost | grep Server > /etc/wireguard/dns.temp");
