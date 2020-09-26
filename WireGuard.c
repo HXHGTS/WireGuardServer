@@ -132,16 +132,13 @@ int InstallWireGuard(){
     fprintf(server_config, "PrivateKey = ");
     fclose(server_config);
     system("wg genkey | tee /etc/wireguard/server_privatekey | wg pubkey > /etc/wireguard/server_publickey");
-    system("cat /etc/wireguard/server_privatekey >> /etc/wireguard/wg0.conf");
+    system("cat /etc/wireguard/server_privatekey >> /etc/wireguard/wg0.conf");//服务器私钥，不要修改
     server_config = fopen("/etc/wireguard/wg0.conf", "a");
-    fprintf(server_config, "##服务器私钥，不要修改\n");
-    fprintf(server_config, "Address = 192.168.30.1/24\n");
-    fprintf(server_config, "##服务器ip地址，修改需要同时修改客户端配置\n");
-    fprintf(server_config, "PostUp = iptables -A FORWARD -i wg0 -j ACCEPT; iptables -A FORWARD -o wg0 -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE\n");
-    fprintf(server_config, "PostDown = iptables -D FORWARD -i wg0 -j ACCEPT; iptables -D FORWARD -o wg0 -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE\n");
-    fprintf(server_config, "##服务器防火墙配置\n");
-    fprintf(server_config, "ListenPort = %d\n",ListenPort);
-    fprintf(server_config, "##服务器监听端口\n");
+    fprintf(server_config, "Address = 192.168.30.1/24\n");//服务器ip地址，修改需要同时修改客户端配置
+    fprintf(server_config, "MTU = 1412\n");//根据PPPOE状态的MTU=1492计算得出
+    fprintf(server_config, "PostUp = iptables -A FORWARD -i wg0 -j ACCEPT; iptables -A FORWARD -o wg0 -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE\n");//服务器防火墙配置
+    fprintf(server_config, "PostDown = iptables -D FORWARD -i wg0 -j ACCEPT; iptables -D FORWARD -o wg0 -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE\n");//服务器防火墙配置
+    fprintf(server_config, "ListenPort = %d\n",ListenPort);//服务器监听端口
     fclose(server_config);
     system("rm -f /etc/wireguard/server_privatekey");
     printf("正在启动服务器. . . . . .\n");
@@ -188,17 +185,15 @@ int AddUser() {
     fprintf(server_config, "\n[Peer]\n");
     fprintf(server_config, "PublicKey = ");
     fclose(server_config);
-    sprintf(command,"cat /etc/wireguard/%s_publickey >> /etc/wireguard/wg0.conf",username);
+    sprintf(command,"cat /etc/wireguard/%s_publickey >> /etc/wireguard/wg0.conf",username);//客户端公钥，不要修改
     system(command);
     server_config = fopen("/etc/wireguard/wg0.conf", "a");
-    fprintf(server_config, "##客户端公钥，不要修改\n");
-    fprintf(server_config, "AllowedIPs = 192.168.30.%d/32\n",num);
-    fprintf(server_config, "##客户端ip地址分配，不要修改\n");
+    fprintf(server_config, "AllowedIPs = 192.168.30.%d/32\n",num);//客户端ip地址分配，不要修改
     fprintf(server_config, "PresharedKey = ");
     fclose(server_config); 
-    system("cat /etc/wireguard/psk >> /etc/wireguard/wg0.conf");
+    system("cat /etc/wireguard/psk >> /etc/wireguard/wg0.conf");//预共享密钥，不要修改
     server_config = fopen("/etc/wireguard/wg0.conf", "a");
-    fprintf(server_config, "##预共享密钥，不要修改\n");
+    fprintf(server_config, "\n");
     fclose(server_config);        
     system("wg-quick down wg0");
     system("wg-quick up wg0");
@@ -216,11 +211,10 @@ int AddUser() {
     system(command);
     client_config = fopen(FileName, "a");
     fprintf(client_config, "Address = 192.168.30.%d/32\n",num);
+    fprintf(client_config, "MTU = 1412\n");//根据PPPOE状态的MTU=1492计算得出
     fprintf(client_config, "DNS = %s\n", dns_server);
-    //客户端本地监听端口号过高可能导致4G网络下连接失败，原因不明，可能是移动网络防火墙屏蔽，设置低端口降低连接失败率，可酌情修改
-    //格式ListenPort = 12345
     fprintf(client_config, "\n[Peer]\n");
-    fprintf(client_config, "AllowedIPs = 0.0.0.0/0\n");
+    fprintf(client_config, "AllowedIPs = 0.0.0.0/0,::/0\n");
     fprintf(client_config, "Endpoint = %s:%d\n",ServerName,ListenPort);
     fprintf(client_config, "PublicKey = ");
     fclose(client_config);
