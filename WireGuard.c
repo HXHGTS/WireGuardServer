@@ -220,7 +220,7 @@ int AddUser() {
     //客户端本地监听端口号过高可能导致4G网络下连接失败，原因不明，可能是移动网络防火墙屏蔽，设置低端口降低连接失败率，可酌情修改
     //格式ListenPort = 12345
     fprintf(client_config, "\n[Peer]\n");
-    fprintf(client_config, "AllowedIPs = ::/0, 0.0.0.0/0\n");
+    fprintf(client_config, "AllowedIPs = 0.0.0.0/0\n");
     fprintf(client_config, "Endpoint = %s:%d\n",ServerName,ListenPort);
     fprintf(client_config, "PublicKey = ");
     fclose(client_config);
