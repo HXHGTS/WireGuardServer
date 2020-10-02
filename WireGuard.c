@@ -71,12 +71,12 @@ Menu:UI();
         printf("\n\n手机版WireGuard客户端建议扫描以下二维码添加:\n\n");
         sprintf(command, "qrencode -t ansiutf8 < /etc/wireguard/user%d.conf", num);
         system(command);
-        system("sleep 5");
+        system("sleep 1");
         printf("\n电脑版WireGuard客户端建议复制以下内容添加:\n\n");
         sprintf(command, "cat /etc/wireguard/user%d.conf", num);
         system(command);
         printf("\n生成的配置文件请不要在本机上改名或删除，如确实需要，请删除文件中内容，避免修改文件名!\n");
-        system("sleep 5");
+        system("sleep 1");
     }
     else if (mode == 8) {
         system("wg-quick down wg0");
@@ -241,7 +241,7 @@ int AddUser() {
     sprintf(command, "qrencode -t ansiutf8 < /etc/wireguard/%s.conf", username);
     system(command);
     printf("\n生成的配置文件请不要在本机上改名或删除，如确实需要，请删除文件中内容，避免修改文件名!\n");
-    system("sleep 3");
+    system("sleep 1");
     return 0;
 }
 
