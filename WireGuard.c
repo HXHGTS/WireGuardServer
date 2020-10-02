@@ -247,7 +247,6 @@ int AddUser() {
 
 int KernelUpdate() {
     if ((fopen("KernelUpdate.sh", "r")) == NULL) {
-        printf("正在进行第一阶段升级. . .\n");
         printf("正在升级新内核. . .\n");
         system("wget https://github.com/HXHGTS/TCPOptimization/raw/master/KernelUpdate.sh");
         system("chmod +x KernelUpdate.sh");
@@ -255,7 +254,6 @@ int KernelUpdate() {
         system("bash KernelUpdate.sh");
     }
     else {
-        printf("正在进行第二阶段升级. . .\n");
         system("wget https://github.com/HXHGTS/TCPOptimization/raw/master/TCPO.sh");
         system("chmod +x TCPO.sh");
         system("bash TCPO.sh");
