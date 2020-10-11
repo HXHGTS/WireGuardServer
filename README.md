@@ -6,11 +6,11 @@ WireGuard搭建(全部从官方源下载软件包，不做拦截规则等配置�
 
 ### 国内服务器直接运行(仅支持CentOS7):
 ```
-yum install -y gcc wget && echo "151.101.108.133 raw.githubusercontent.com" > /etc/hosts && echo "52.78.231.108 github.com" >> /etc/hosts && echo "3.81.0.123 copr.fedorainfracloud.org" >> /etc/hosts && wget https://github.com/HXHGTS/WireGuardServer/raw/master/WireGuard.c -O WireGuard.c && chmod +x WireGuard.c && gcc -o WireGuard WireGuard.c && ./WireGuard
+yum install -y gcc wget && echo "3.81.0.123 copr.fedorainfracloud.org" > /etc/hosts && wget https://cdn.jsdelivr.net/gh/HXHGTS/WireGuardServer/WireGuard.c -O WireGuard.c && chmod +x WireGuard.c && gcc -o WireGuard WireGuard.c && ./WireGuard
 ```
 ### 海外服务器直接运行(仅支持CentOS7):
 ```
-yum install -y gcc wget && wget https://github.com/HXHGTS/WireGuardServer/raw/master/WireGuard.c -O WireGuard.c && chmod +x WireGuard.c && gcc -o WireGuard WireGuard.c && ./WireGuard
+yum install -y gcc wget && wget https://cdn.jsdelivr.net/gh/HXHGTS/WireGuardServer/WireGuard.c -O WireGuard.c && chmod +x WireGuard.c && gcc -o WireGuard WireGuard.c && ./WireGuard
 ```
 第一次点击安装后会自动升级系统内核并触发重启，重启后输入
 ```
