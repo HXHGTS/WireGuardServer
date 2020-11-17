@@ -188,7 +188,7 @@ int AddUser() {
     sprintf(command,"cat /etc/wireguard/%s_publickey >> /etc/wireguard/wg0.conf",username);//客户端公钥，不要修改
     system(command);
     server_config = fopen("/etc/wireguard/wg0.conf", "a");
-    fprintf(server_config, "AllowedIPs = 192.168.30.%d/32\n",num);//客户端ip地址分配，不要修改
+    fprintf(server_config, "AllowedIPs = 192.168.30.%d/24\n",num);//客户端ip地址分配，不要修改
     fprintf(server_config, "PresharedKey = ");
     fclose(server_config); 
     system("cat /etc/wireguard/psk >> /etc/wireguard/wg0.conf");//预共享密钥，不要修改
@@ -210,7 +210,7 @@ int AddUser() {
     sprintf(command, "cat /etc/wireguard/%s_privatekey >> /etc/wireguard/%s.conf", username,username);
     system(command);
     client_config = fopen(FileName, "a");
-    fprintf(client_config, "Address = 192.168.30.%d/32\n",num);
+    fprintf(client_config, "Address = 192.168.30.%d/24\n",num);
     fprintf(client_config, "MTU = 1412\n");//根据PPPOE状态的MTU=1492计算得出
     fprintf(client_config, "DNS = %s\n", dns_server);
     fprintf(client_config, "\n[Peer]\n");
