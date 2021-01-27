@@ -10,7 +10,7 @@ char FileName[36];
 int DNS(){
     system("mkdir -p /etc/wireguard");
     system("umask 777 /etc/wireguard");
-    system("yum install bind-utils -y");
+    system("yum install bind-utils dnsmasq -y");
     system("sleep 2");
     system("nslookup localhost | grep Server > /etc/wireguard/dns.temp");
     system("sleep 2");
@@ -19,9 +19,20 @@ int DNS(){
     fclose(server_info);
     system("rm -rf /etc/wireguard/dns.temp");
     printf("正在配置DNS. . .\n");
-    server_info = fopen("/etc/wireguard/dns.info", "w");
-    fprintf(server_info, "%s",dns_server);
+    server_info = fopen("/etc/dnsmasq.conf", "w");
+    fprintf(server_info, "resolv-file=/etc/resolv.dnsmasq.conf");
+    fprintf(server_info, "strict-order");
+    fprintf(server_info, "addn-hosts=/etc/dnsmasq.hosts");
+    fprintf(server_info, "listen-address=10.0.0.1");
     fclose(server_info);//使用系统默认DNS解析
+    server_info = fopen("/etc/resolv.dnsmasq.conf", "w");
+    fprintf(server_info, "nameserver %s",dns_server);
+    fclose(server_info);
+    server_info = fopen("/etc/dnsmasq.hosts", "w");
+    fprintf(server_info, "addn-hosts=/etc/dnsmasq.hosts");
+    fclose(server_info);
+    system("systemctl start dnsmasq");
+    system("systemctl enable dnsmasq");
     system("clear"); 
     return 0;
 }
@@ -134,7 +145,7 @@ int InstallWireGuard(){
     system("wg genkey | tee /etc/wireguard/server_privatekey | wg pubkey > /etc/wireguard/server_publickey");
     system("cat /etc/wireguard/server_privatekey >> /etc/wireguard/wg0.conf");//服务器私钥，不要修改
     server_config = fopen("/etc/wireguard/wg0.conf", "a");
-    fprintf(server_config, "Address = 192.168.30.1/24\n");//服务器ip地址，修改需要同时修改客户端配置
+    fprintf(server_config, "Address = 10.0.0.1/24\n");//服务器ip地址，修改需要同时修改客户端配置
     fprintf(server_config, "MTU = 1420\n");
     fprintf(server_config, "PostUp = iptables -A FORWARD -i wg0 -j ACCEPT; iptables -A FORWARD -o wg0 -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE\n");//服务器防火墙配置
     fprintf(server_config, "PostDown = iptables -D FORWARD -i wg0 -j ACCEPT; iptables -D FORWARD -o wg0 -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE\n");//服务器防火墙配置
@@ -174,9 +185,6 @@ int AddUser() {
     server_info = fopen("/etc/wireguard/port.info", "r");
     fscanf(server_info, "%d", &ListenPort);
     fclose(server_info);
-    server_info = fopen("/etc/wireguard/dns.info", "r");
-    fscanf(server_info, "%s",dns_server);
-    fclose(server_info);
     system("clear");
     system("wg genpsk > /etc/wireguard/psk"); 
     sprintf(command, "wg genkey | tee /etc/wireguard/%s_privatekey | wg pubkey > /etc/wireguard/%s_publickey",username,username);
@@ -188,7 +196,7 @@ int AddUser() {
     sprintf(command,"cat /etc/wireguard/%s_publickey >> /etc/wireguard/wg0.conf",username);//客户端公钥，不要修改
     system(command);
     server_config = fopen("/etc/wireguard/wg0.conf", "a");
-    fprintf(server_config, "AllowedIPs = 192.168.30.%d/24\n",num);//客户端ip地址分配，不要修改
+    fprintf(server_config, "AllowedIPs = 10.0.0.%d/24\n",num);//客户端ip地址分配，不要修改
     fprintf(server_config, "PresharedKey = ");
     fclose(server_config); 
     system("cat /etc/wireguard/psk >> /etc/wireguard/wg0.conf");//预共享密钥，不要修改
@@ -210,9 +218,9 @@ int AddUser() {
     sprintf(command, "cat /etc/wireguard/%s_privatekey >> /etc/wireguard/%s.conf", username,username);
     system(command);
     client_config = fopen(FileName, "a");
-    fprintf(client_config, "Address = 192.168.30.%d/24\n",num);
-    fprintf(client_config, "MTU = 1420\n");//根据PPPOE状态的MTU=1492计算得出
-    fprintf(client_config, "DNS = %s\n", dns_server);
+    fprintf(client_config, "Address = 10.0.0.%d/24\n",num);
+    fprintf(client_config, "MTU = 1420\n");//
+    fprintf(client_config, "DNS = 10.0.0.1\n");
     fprintf(client_config, "\n[Peer]\n");
     fprintf(client_config, "AllowedIPs = 0.0.0.0/0,::/0\n");
     fprintf(client_config, "Endpoint = %s:%d\n",ServerName,ListenPort);
