@@ -20,16 +20,16 @@ int DNS(){
     system("rm -rf /etc/wireguard/dns.temp");
     printf("正在配置DNS. . .\n");
     server_info = fopen("/etc/dnsmasq.conf", "w");
-    fprintf(server_info, "resolv-file=/etc/resolv.dnsmasq.conf");
-    fprintf(server_info, "strict-order");
-    fprintf(server_info, "addn-hosts=/etc/dnsmasq.hosts");
-    fprintf(server_info, "listen-address=10.0.0.1");
+    fprintf(server_info, "resolv-file=/etc/resolv.dnsmasq.conf\n");
+    fprintf(server_info, "strict-order\n");
+    fprintf(server_info, "addn-hosts=/etc/dnsmasq.hosts\n");
+    fprintf(server_info, "listen-address=10.0.0.1\n");
     fclose(server_info);//使用系统默认DNS解析
     server_info = fopen("/etc/resolv.dnsmasq.conf", "w");
-    fprintf(server_info, "nameserver %s",dns_server);
+    fprintf(server_info, "nameserver %s\n",dns_server);
     fclose(server_info);
     server_info = fopen("/etc/dnsmasq.hosts", "w");
-    fprintf(server_info, "addn-hosts=/etc/dnsmasq.hosts");
+    fprintf(server_info, "addn-hosts=/etc/dnsmasq.hosts\n");
     fclose(server_info);
     system("systemctl start dnsmasq");
     system("systemctl enable dnsmasq");
