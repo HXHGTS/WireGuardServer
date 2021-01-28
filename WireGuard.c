@@ -23,7 +23,7 @@ int DNS(){
     fprintf(server_info, "resolv-file=/etc/resolv.dnsmasq.conf\n");
     fprintf(server_info, "strict-order\n");
     fprintf(server_info, "addn-hosts=/etc/dnsmasq.hosts\n");
-    fprintf(server_info, "listen-address=10.0.0.1, fd00:7::1/48\n");
+    fprintf(server_info, "listen-address=10.0.0.1, fd00:7::1\n");
     fclose(server_info);//使用系统默认DNS解析
     server_info = fopen("/etc/resolv.dnsmasq.conf", "w");
     fprintf(server_info, "nameserver %s\n",dns_server);
