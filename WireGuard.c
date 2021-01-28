@@ -23,7 +23,7 @@ int DNS(){
     fprintf(server_info, "resolv-file=/etc/resolv.dnsmasq.conf\n");
     fprintf(server_info, "strict-order\n");
     fprintf(server_info, "addn-hosts=/etc/dnsmasq.hosts\n");
-    fprintf(server_info, "listen-address=10.0.0.1\n");
+    fprintf(server_info, "listen-address=10.0.0.1, fd00:7::1\n");
     fclose(server_info);//使用系统默认DNS解析
     server_info = fopen("/etc/resolv.dnsmasq.conf", "w");
     fprintf(server_info, "nameserver %s\n",dns_server);
@@ -133,10 +133,6 @@ int InstallWireGuard(){
     printf("正在安装WireGuard. . . . . .\n");
     system("curl -o /etc/yum.repos.d/jdoss-wireguard-epel-7.repo https://copr.fedorainfracloud.org/coprs/jdoss/wireguard/repo/epel-7/jdoss-wireguard-epel-7.repo");
     system("yum install epel-release wireguard-dkms wireguard-tools qrencode -y");
-    system("sysctl -w net.ipv4.ip_forward=1");
-    system("sysctl -w net.ipv6.conf.all.forwarding=1");
-    system("sysctl -w net.ipv6.conf.default.forwarding=1");
-    system("sysctl -p");//开启ipv4与ipv6数据转发
     printf("正在生成服务器配置. . . . . .\n");
     server_config = fopen("/etc/wireguard/wg0.conf", "w");
     fprintf(server_config, "[Interface]\n");
@@ -220,7 +216,7 @@ int AddUser() {
     client_config = fopen(FileName, "a");
     fprintf(client_config, "Address = 10.0.0.%d/32, fd00:7::%d/128\n",num,num);
     fprintf(client_config, "MTU = 1420\n");//
-    fprintf(client_config, "DNS = 10.0.0.1\n");
+    fprintf(client_config, "DNS = 10.0.0.1,fd00:7::1\n");
     fprintf(client_config, "\n[Peer]\n");
     fprintf(client_config, "AllowedIPs = 0.0.0.0/0,::/0\n");
     fprintf(client_config, "Endpoint = %s:%d\n",ServerName,ListenPort);
