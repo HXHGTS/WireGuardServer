@@ -251,13 +251,13 @@ int AddUser() {
 int KernelUpdate() {
     if ((fopen("KernelUpdate.sh", "r")) == NULL) {
         printf("正在升级新内核. . .\n");
-        system("wget https://github.com/HXHGTS/TCPOptimization/raw/master/KernelUpdate.sh");
+        system("wget https://cdn.jsdelivr.net/gh/HXHGTS/TCPOptimization/KernelUpdate.sh");
         system("chmod +x KernelUpdate.sh");
         printf("正在升级，将自动触发重启以应用配置. . .\n");
         system("bash KernelUpdate.sh");
     }
     else {
-        system("wget https://github.com/HXHGTS/TCPOptimization/raw/master/TCPO.sh");
+        system("wget https://cdn.jsdelivr.net/gh/HXHGTS/TCPOptimization/TCPO.sh");
         system("chmod +x TCPO.sh");
         system("bash TCPO.sh");
     }
