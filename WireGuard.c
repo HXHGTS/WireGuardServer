@@ -127,6 +127,7 @@ int InstallWireGuard(){
     }
     printf("正在检测本机ip地址，请稍后. . . . . .\n");
     system("yum install curl -y");
+    system("echo '216.239.38.21 ifconfig.me' >> /etc/hosts");
     system("curl -s ifconfig.me/ip > /etc/wireguard/servername.info");
     system("clear");
     printf("正在安装WireGuard. . . . . .\n");
