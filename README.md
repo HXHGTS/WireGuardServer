@@ -6,11 +6,11 @@ WireGuard搭建(全部从官方源下载软件包，不做拦截规则等配置�
 
 ### 国内服务器直接运行(仅支持CentOS7):
 
-`yum install -y gcc wget && echo '151.101.112.133 raw.githubusercontent.com' > /etc/hosts && curl https://raw.githubusercontent.com/HXHGTS/WireGuardServer/master/hosts > /etc/hosts && wget https://raw.githubusercontent.com/HXHGTS/WireGuardServer/master/WireGuard.c -O WireGuard.c && chmod +x WireGuard.c && gcc -o WireGuard WireGuard.c && ./WireGuard`
+`yum install -y gcc wget && echo '151.101.112.133 raw.githubusercontent.com' > /etc/hosts && curl https://raw.githubusercontent.com/HXHGTS/WireGuardServer/master/hosts > /etc/hosts && wget https://raw.githubusercontent.com/HXHGTS/WireGuardServer/master/WireGuard.c -O WireGuard.c && chmod +x WireGuard.c && gcc -o WireGuard WireGuard.c && chmod +x WireGuard && ./WireGuard`
 
 ### 海外服务器直接运行(仅支持CentOS7):
 
-`yum install -y gcc wget && wget https://raw.githubusercontent.com/HXHGTS/WireGuardServer/master/WireGuard.c -O WireGuard.c && chmod +x WireGuard.c && gcc -o WireGuard WireGuard.c && ./WireGuard`
+`yum install -y gcc wget && wget https://raw.githubusercontent.com/HXHGTS/WireGuardServer/master/WireGuard.c -O WireGuard.c && chmod +x WireGuard.c && gcc -o WireGuard WireGuard.c && chmod +x WireGuard && ./WireGuard`
 
 第一次点击安装后会自动升级系统内核并触发重启，重启后输入
 
