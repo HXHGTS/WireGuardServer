@@ -36,7 +36,7 @@ WireGuard搭建(全部从官方源下载软件包，不做拦截规则等配置�
 
 ### 客户端下载:
 
-[Windows x64](https://wwa.lanzous.com/i9q09f3x2zi) [Windows x86](https://wwa.lanzous.com/ibVYif3x32b) [Android](https://wwa.lanzous.com/izHzDf3x1sf) [iOS](https://itunes.apple.com/us/app/wireguard/id1441195209?ls=1&mt=8)
+[Windows x64](https://download.wireguard.com/windows-client/wireguard-amd64-0.3.5.msi) [Windows x86](https://download.wireguard.com/windows-client/wireguard-x86-0.3.5.msi) [Android](https://f-droid.org/repo/com.wireguard.android_485.apk) [iOS](https://itunes.apple.com/us/app/wireguard/id1441195209?ls=1&mt=8)
 
 ### 使用方法:
 
