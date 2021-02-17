@@ -130,7 +130,7 @@ int InstallWireGuard(){
     system("curl -s ifconfig.me/ip > /etc/wireguard/servername.info");
     system("clear");
     printf("正在安装WireGuard. . . . . .\n");
-    system("curl -o /etc/yum.repos.d/jdoss-wireguard-epel-7.repo https://copr.fedorainfracloud.org/coprs/jdoss/wireguard/repo/epel-7/jdoss-wireguard-epel-7.repo");
+    system("curl -o /etc/yum.repos.d/jdoss-wireguard-epel-7.repo https://cdn.jsdelivr.net/gh/HXHGTS/WireGuardServer/jdoss-wireguard-epel-7.repo");
     system("yum install epel-release wireguard-dkms wireguard-tools qrencode -y");
     printf("正在生成服务器配置. . . . . .\n");
     server_config = fopen("/etc/wireguard/wg0.conf", "w");
