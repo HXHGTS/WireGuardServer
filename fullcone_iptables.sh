@@ -6,13 +6,9 @@ yum install gcc gcc-c++ autoconf autogen libmnl libmnl-devel libtool-devel libto
 
 yum install centos-release-scl -y
 
-yum install devtoolset-8-gcc* -y
-
-scl enable devtoolset-8 bash
+yum install devtoolset-8-gcc* -y && scl enable devtoolset-8 bash
 
 echo 正在克隆项目文件. . .
-
-cd /root/
 
 git clone git://git.netfilter.org/libnftnl.git
 
