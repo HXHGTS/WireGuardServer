@@ -22,6 +22,14 @@ unzip netfilter-full-cone-nat.zip
 
 tar -jxvf libnftnl.tar.bz2
 
+cp -rf /iptables-1.8.7 /iptables
+
+cp -rf /libnftnl-1.1.9 /libnftnl
+
+rm -rf /iptables-1.8.7
+
+rm -rf /libnftnl-1.1.9
+
 echo 开始编译libnftnl. . .
 
 cd libnftnl
