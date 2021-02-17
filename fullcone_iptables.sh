@@ -56,7 +56,7 @@ modprobe nf_nat
 
 insmod xt_FULLCONENAT.ko
 
-cp /root/netfilter-full-cone-nat/libipt_FULLCONENAT.c /root/iptables/extensions/
+cp -f /root/netfilter-full-cone-nat/libipt_FULLCONENAT.c /root/iptables/extensions/
 
 cd /root/iptables
 
