@@ -2,7 +2,7 @@
 
 echo 正在安装编译所需依赖. . .
 
-yum install gcc gcc-c++ autoconf autogen libmnl libmnl-devel libtool-devel libtool git -y
+yum install gcc gcc-c++ autoconf autogen libmnl libmnl-devel libtool libtool-ltdl libtool-ltdl-devel git -y
 
 yum install centos-release-scl -y
 
