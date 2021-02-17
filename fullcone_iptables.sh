@@ -84,7 +84,7 @@ iptables -V
 
 kernel=`uname -r`
 
-cp /root/netfilter-full-cone-nat/xt_FULLCONENAT.ko  /lib/modules/$kernel/
+cp -f /root/netfilter-full-cone-nat/xt_FULLCONENAT.ko  /lib/modules/$kernel/
 
 depmod
 
