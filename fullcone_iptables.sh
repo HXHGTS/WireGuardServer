@@ -20,9 +20,15 @@ wget https://www.netfilter.org/pub/libnftnl/libnftnl-1.1.9.tar.bz2 -O libnftnl.t
 
 tar -jxvf iptables.tar.bz2
 
+sleep 3
+
 unzip netfilter-full-cone-nat.zip
 
+sleep 3
+
 tar -jxvf libnftnl.tar.bz2
+
+sleep 3
 
 cp -rf /iptables-1.8.7 /iptables
 
@@ -36,21 +42,29 @@ rm -rf /libnftnl-1.1.9
 
 rm -rf /netfilter-full-cone-nat-master
 
+sleep 3
+
 echo 开始编译libnftnl. . .
 
 cd libnftnl
 
 ./configure
 
+sleep 3
+
 make
 
 make install
+
+sleep 3
 
 echo 开始编译iptables. . .
 
 cd /root/netfilter-full-cone-nat
 
 make
+
+sleep 3
 
 modprobe nf_nat
 
@@ -64,15 +78,21 @@ ln -sfv /usr/sbin/xtables-multi /usr/bin/iptables-xml
 
 ./autogen.sh
 
+sleep 3
+
 PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
 
 export PKG_CONFIG_PATH
 
 ./configure --disable-nftables
 
+sleep 3
+
 make
 
 make install
+
+sleep 3
 
 echo 正在替换iptables. . .
 
