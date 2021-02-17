@@ -8,8 +8,6 @@ yum install centos-release-scl -y
 
 yum install devtoolset-8-gcc* -y
 
-yum install libmnl-devel -y
-
 scl enable devtoolset-8 bash
 
 echo 正在克隆项目文件. . .
