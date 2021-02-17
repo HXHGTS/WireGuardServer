@@ -2,25 +2,29 @@
 
 echo 正在安装编译所需依赖. . .
 
-yum install gcc gcc-c++ autoconf autogen libmnl libmnl-devel libtool libtool-ltdl libtool-ltdl-devel git -y
+yum install gcc gcc-c++ autoconf autogen libmnl libmnl-devel libtool libtool-ltdl libtool-ltdl-devel bzip2 unzip -y
 
 yum install centos-release-scl -y
 
 yum install devtoolset-8-gcc* -y && scl enable devtoolset-8 bash
 
-echo 正在克隆项目文件. . .
+echo 正在下载项目文件. . .
 
-git clone git://git.netfilter.org/libnftnl.git
+wget https://github.com/Chion82/netfilter-full-cone-nat/archive/master.zip -O netfilter-full-cone-nat.zip
 
-git clone git://git.netfilter.org/iptables.git
+wget https://www.netfilter.org/pub/iptables/iptables-1.8.7.tar.bz2 -O iptables.tar.bz2
 
-git clone https://github.com/Chion82/netfilter-full-cone-nat.git
+wget https://www.netfilter.org/pub/libnftnl/libnftnl-1.1.9.tar.bz2 -O libnftnl.tar.bz2
+
+tar -jxvf iptables.tar.bz2
+
+unzip netfilter-full-cone-nat.zip
+
+tar -jxvf libnftnl.tar.bz2
 
 echo 开始编译libnftnl. . .
 
 cd libnftnl
-
-sh autogen.sh
 
 ./configure
 
