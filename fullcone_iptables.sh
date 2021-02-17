@@ -6,7 +6,7 @@ yum install gcc gcc-c++ autoconf autogen libmnl libmnl-devel libtool libtool-ltd
 
 yum install centos-release-scl -y
 
-yum install devtoolset-8-gcc* -y && scl enable devtoolset-8 bash
+yum install devtoolset-8-gcc* -y
 
 echo 正在下载项目文件. . .
 
