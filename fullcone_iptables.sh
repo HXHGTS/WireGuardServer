@@ -56,7 +56,7 @@ PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
 
 export PKG_CONFIG_PATH
 
-./configure
+./configure --disable-nftables
 
 make
 
