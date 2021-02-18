@@ -10,6 +10,8 @@ yum install centos-release-scl -y
 
 yum install devtoolset-8-gcc* -y
 
+echo "source /opt/rh/devtoolset-8/enable" >>/etc/profile
+
 echo 正在下载项目文件. . .
 
 rm -rf /root/libmnl
@@ -68,15 +70,11 @@ cd /root/libmnl
 
 ./configure
 
-sleep 3
-
 autoreconf -ivf
 
 make
 
 make install
-
-sleep 3
 
 echo 开始编译libnftnl. . .
 
@@ -88,23 +86,17 @@ export PKG_CONFIG_PATH
 
 ./configure
 
-sleep 3
-
 autoreconf -ivf
 
 make
 
 make install
 
-sleep 3
-
-echo 开始编译iptables. . .
+echo 开始编译netfilter-full-cone-nat. . .
 
 cd /root/netfilter-full-cone-nat
 
 make
-
-sleep 3
 
 modprobe nf_nat
 
@@ -112,17 +104,21 @@ insmod xt_FULLCONENAT.ko
 
 cp -f /root/netfilter-full-cone-nat/libipt_FULLCONENAT.c /root/iptables/extensions/
 
+echo 开始编译iptables. . .
+
 cd /root/iptables
 
 ln -sfv /usr/sbin/xtables-multi /usr/bin/iptables-xml
 
-./autogen.sh
+PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
 
-sleep 3
+export PKG_CONFIG_PATH
+
+./autogen.sh
 
 ./configure
 
-sleep 3
+autoreconf -ivf
 
 make
 
