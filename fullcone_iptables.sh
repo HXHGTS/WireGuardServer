@@ -2,7 +2,7 @@
 
 echo 正在安装编译所需依赖. . .
 
-yum install gcc-c++ autoconf autogen -y
+yum install gcc gcc-c++ autoconf autogen -y
 
 yum install libtool libtool-ltdl libtool-ltdl-devel bzip2 unzip -y
 
