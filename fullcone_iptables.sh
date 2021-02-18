@@ -14,6 +14,14 @@ scl enable devtoolset-8 bash
 
 echo 正在下载项目文件. . .
 
+rm -rf libmnl
+
+rm -rf iptables
+
+rm -rf libnftnl
+
+rm -rf netfilter-full-cone-nat
+
 wget https://github.com/Chion82/netfilter-full-cone-nat/archive/master.zip -O netfilter-full-cone-nat.zip
 
 wget https://www.netfilter.org/pub/iptables/iptables-1.8.7.tar.bz2 -O iptables.tar.bz2
@@ -153,6 +161,14 @@ depmod
 echo "modprobe xt_FULLCONENAT" > /etc/sysconfig/modules/xt_FULLCONENAT.modules
 
 chmod 755 /etc/sysconfig/modules/xt_FULLCONENAT.modules
+
+rm -rf libmnl
+
+rm -rf iptables
+
+rm -rf libnftnl
+
+rm -rf netfilter-full-cone-nat
 
 echo 下方有输出则安装完成:
 
