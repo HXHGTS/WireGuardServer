@@ -2,13 +2,15 @@
 
 echo 正在安装编译所需依赖. . .
 
-yum install gcc gcc-c++ autoconf autogen libmnl libmnl-devel -y
+yum install gcc gcc-c++ autoconf autogen -y
 
 yum install libtool libtool-ltdl libtool-ltdl-devel bzip2 unzip -y
 
 yum install centos-release-scl -y
 
 yum install devtoolset-8-gcc* -y
+
+scl enable devtoolset-8 bash
 
 echo 正在下载项目文件. . .
 
@@ -17,6 +19,12 @@ wget https://github.com/Chion82/netfilter-full-cone-nat/archive/master.zip -O ne
 wget https://www.netfilter.org/pub/iptables/iptables-1.8.7.tar.bz2 -O iptables.tar.bz2
 
 wget https://www.netfilter.org/pub/libnftnl/libnftnl-1.1.9.tar.bz2 -O libnftnl.tar.bz2
+
+wget https://www.netfilter.org/pub/libmnl/libmnl-1.0.4.tar.bz2 -O libmnl.tar.bz2
+
+tar -jxvf libmnl.tar.bz2
+
+sleep 3
 
 tar -jxvf iptables.tar.bz2
 
@@ -30,11 +38,15 @@ tar -jxvf libnftnl.tar.bz2
 
 sleep 3
 
+cp -rf libmnl-1.0.4 libmnl
+
 cp -rf iptables-1.8.7 iptables
 
 cp -rf libnftnl-1.1.9 libnftnl
 
-cp -rf netfilter-full-cone-nat-master netfilter-full-cone
+cp -rf netfilter-full-cone-nat-master netfilter-full-cone-nat
+
+rm -rf libmnl-1.0.4
 
 rm -rf iptables-1.8.7
 
@@ -44,13 +56,35 @@ rm -rf netfilter-full-cone-nat-master
 
 sleep 3
 
-echo 开始编译libnftnl. . .
+echo 开始编译libmnl. . .
 
-cd libnftnl
+cd /root/libmnl
 
 ./configure
 
 sleep 3
+
+autoreconf -ivf
+
+make
+
+make install
+
+sleep 3
+
+echo 开始编译libnftnl. . .
+
+cd /root/libnftnl
+
+PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
+
+export PKG_CONFIG_PATH
+
+./configure
+
+sleep 3
+
+autoreconf -ivf
 
 make
 
@@ -80,11 +114,7 @@ ln -sfv /usr/sbin/xtables-multi /usr/bin/iptables-xml
 
 sleep 3
 
-PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
-
-export PKG_CONFIG_PATH
-
-./configure --disable-nftables
+./configure
 
 sleep 3
 
