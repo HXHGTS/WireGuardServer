@@ -10,8 +10,6 @@ yum install centos-release-scl -y
 
 yum install devtoolset-8-gcc* -y
 
-scl enable devtoolset-8 bash
-
 echo 正在下载项目文件. . .
 
 rm -rf /root/libmnl
