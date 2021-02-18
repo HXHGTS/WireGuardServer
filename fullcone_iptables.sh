@@ -30,17 +30,17 @@ tar -jxvf libnftnl.tar.bz2
 
 sleep 3
 
-cp -rf /iptables-1.8.7 /iptables
+cp -rf iptables-1.8.7 iptables
 
-cp -rf /libnftnl-1.1.9 /libnftnl
+cp -rf libnftnl-1.1.9 libnftnl
 
-cp -rf /netfilter-full-cone-nat-master /netfilter-full-cone
+cp -rf netfilter-full-cone-nat-master netfilter-full-cone
 
-rm -rf /iptables-1.8.7
+rm -rf iptables-1.8.7
 
-rm -rf /libnftnl-1.1.9
+rm -rf libnftnl-1.1.9
 
-rm -rf /netfilter-full-cone-nat-master
+rm -rf netfilter-full-cone-nat-master
 
 sleep 3
 
