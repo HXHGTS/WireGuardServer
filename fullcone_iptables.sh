@@ -12,6 +12,8 @@ yum install devtoolset-8-gcc* -y
 
 echo "source /opt/rh/devtoolset-8/enable" >>/etc/profile
 
+source /etc/profile
+
 echo 正在下载项目文件. . .
 
 rm -rf /root/libmnl
