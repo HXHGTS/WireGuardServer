@@ -12,16 +12,6 @@ WireGuard搭建(全部从官方源下载软件包，不做拦截规则等配置�
 
 2.游戏组建局域网联机（MonsterHunter MineCraft GTA5）
 
-### 已知问题:
-
-##### 1.中国移动4G网络会出现断流(当服务器搭建在国外)
-
-解决方案:UDP阻断机制，可以配合UDP2raw规避或者搭建国内跳转
-
-##### 2.DNS有关
-
-解决方案:默认使用服务器自动获取的DNS，可在/etc/wireguard/dns.info中修改
-
 ### 客户端下载:
 
 [Windows x64](https://download.wireguard.com/windows-client/wireguard-amd64-0.3.5.msi) [Windows x86](https://download.wireguard.com/windows-client/wireguard-x86-0.3.5.msi) [Android](https://f-droid.org/repo/com.wireguard.android_485.apk) [iOS](https://itunes.apple.com/us/app/wireguard/id1441195209?ls=1&mt=8)
