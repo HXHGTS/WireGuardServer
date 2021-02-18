@@ -14,13 +14,7 @@ source /opt/rh/devtoolset-8/enable
 
 echo 正在下载项目文件. . .
 
-rm -rf /root/libmnl
-
-rm -rf /root/iptables
-
-rm -rf /root/libnftnl
-
-rm -rf /root/netfilter-full-cone-nat
+rm -rf /root/libmnl /root/netfilter-full-cone-nat /root/iptables /root/libnftnl
 
 wget https://github.com/Chion82/netfilter-full-cone-nat/archive/master.zip -O netfilter-full-cone-nat.zip
 
@@ -46,13 +40,7 @@ cp -rf libnftnl-1.1.9 libnftnl
 
 cp -rf netfilter-full-cone-nat-master netfilter-full-cone-nat
 
-rm -rf libmnl-1.0.4
-
-rm -rf iptables-1.8.7
-
-rm -rf libnftnl-1.1.9
-
-rm -rf netfilter-full-cone-nat-master
+rm -rf libmnl-1.0.4 iptables-1.8.7 libnftnl-1.1.9 netfilter-full-cone-nat-master
 
 echo 开始编译libmnl. . .
 
@@ -128,8 +116,6 @@ cp -f /usr/local/sbin/iptables-restore /sbin/
 
 cp -f /usr/local/sbin/iptables-save /sbin/
 
-iptables -V
-
 kernel=`uname -r`
 
 cp -f /root/netfilter-full-cone-nat/xt_FULLCONENAT.ko  /lib/modules/$kernel/
@@ -140,13 +126,9 @@ echo "modprobe xt_FULLCONENAT" > /etc/sysconfig/modules/xt_FULLCONENAT.modules
 
 chmod 755 /etc/sysconfig/modules/xt_FULLCONENAT.modules
 
-rm -rf /root/libmnl
+rm -rf /root/libmnl /root/iptables /root/libnftnl /root/netfilter-full-cone-nat 
 
-rm -rf /root/iptables
-
-rm -rf /root/libnftnl
-
-rm -rf /root/netfilter-full-cone-nat
+rm -f netfilter-full-cone-nat.zip iptables.tar.bz2 libmnl.tar.bz2 libnftnl.tar.bz2
 
 echo 下方有输出则安装完成:
 
