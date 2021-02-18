@@ -132,8 +132,10 @@ int InstallWireGuard(){
     system("yum install iptables-services -y");
     system("curl -o /etc/yum.repos.d/jdoss-wireguard-epel-7.repo https://cdn.jsdelivr.net/gh/HXHGTS/WireGuardServer/jdoss-wireguard-epel-7.repo");
     system("yum install epel-release wireguard-dkms wireguard-tools qrencode -y");
+    system("pip install --upgrade pip");
+    system("pip install pystun3");
     printf("正在编译安装fullcone iptables. . . . . .\n");
-    system("wget https://cdn.jsdelivr.net/gh/HXHGTS/WireGuardServer/fullcone_iptables.sh -O fullcone_iptables.sh");
+    system("wget https://raw.githubusercontent.com/HXHGTS/WireGuardServer/master/fullcone_iptables.sh -O fullcone_iptables.sh");
     system("chmod +x fullcone_iptables.sh");
     system("bash fullcone_iptables.sh");
     printf("正在生成服务器配置. . . . . .\n");
