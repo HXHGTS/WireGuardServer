@@ -32,19 +32,11 @@ wget https://www.netfilter.org/pub/libmnl/libmnl-1.0.4.tar.bz2 -O libmnl.tar.bz2
 
 tar -jxvf libmnl.tar.bz2
 
-sleep 3
-
 tar -jxvf iptables.tar.bz2
-
-sleep 3
 
 unzip netfilter-full-cone-nat.zip
 
-sleep 3
-
 tar -jxvf libnftnl.tar.bz2
-
-sleep 3
 
 cp -rf libmnl-1.0.4 libmnl
 
@@ -61,8 +53,6 @@ rm -rf iptables-1.8.7
 rm -rf libnftnl-1.1.9
 
 rm -rf netfilter-full-cone-nat-master
-
-sleep 3
 
 echo 开始编译libmnl. . .
 
@@ -110,10 +100,6 @@ cd /root/iptables
 
 ln -sfv /usr/sbin/xtables-multi /usr/bin/iptables-xml
 
-PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
-
-export PKG_CONFIG_PATH
-
 ./autogen.sh
 
 ./configure
@@ -123,8 +109,6 @@ autoreconf -ivf
 make
 
 make install
-
-sleep 3
 
 echo 正在替换iptables. . .
 
