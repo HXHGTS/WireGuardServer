@@ -4,7 +4,7 @@
 FILE* server_config, * client_config,*usernum,*client_pubkey,*server_info;
 int mode,confirm,ListenPort, num;
 char username[10],command[200],pubkey[46],ServerName[35], dns_server[35];
-int ret;
+int ret,os_version;
 char FileName[36];
 
 int DNS(){
@@ -250,8 +250,14 @@ int AddUser() {
 
 int KernelUpdate() {
     if ((fopen("KernelUpdate.sh", "r")) == NULL) {
+        system("cat /etc/redhat-release|sed -r 's/.* ([0-9]+)\\..*/\\1/' > os_version.info");
+        server_config=fopen("os_version.info","r");
+        fscanf(server_config,"%d",os_version);
+        fclose(server_config);
         printf("正在升级新内核. . .\n");
-        system("wget https://cdn.jsdelivr.net/gh/HXHGTS/TCPOptimization/KernelUpdate.sh -O KernelUpdate.sh");
+        if(os_version==7){system("wget https://cdn.jsdelivr.net/gh/HXHGTS/TCPOptimization/KernelUpdate.sh -O KernelUpdate.sh");}
+        else if(os_version==8){system("wget https://cdn.jsdelivr.net/gh/HXHGTS/TCPOptimization/KernelUpdate8.sh -O KernelUpdate.sh");}
+        else{printf("不支持的操作系统版本!请更换操作系统为CentOS7/8后再试!");exit(0);}
         system("chmod +x KernelUpdate.sh");
         printf("正在升级，将自动触发重启以应用配置. . .\n");
         system("bash KernelUpdate.sh");
