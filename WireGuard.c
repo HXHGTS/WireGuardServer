@@ -73,19 +73,15 @@ Menu:UI();
     else if (mode == 7) {
         printf("请输入用户编号，如user1请输入1:");
         scanf("%d", &num);
-        sprintf(command,"vi /etc/wireguard/user%d.conf",num);
+        sprintf(username, "user%d", num);
+        sprintf(command,"wg set wg0 peer $(cat %s_publickey) remove",username);
         system(command);
-        printf("\n成功修改用户！\n");
-        system("wg-quick down wg0");
-        system("wg-quick up wg0");
-        printf("\n\n手机版WireGuard客户端建议扫描以下二维码添加:\n\n");
-        sprintf(command, "qrencode -t ansiutf8 < /etc/wireguard/user%d.conf", num);
+        system("wg-quick save wg0");
+        sprintf(command, "rm -f /etc/wireguard/%s_privatekey", username);
         system(command);
-        system("sleep 1");
-        printf("\n电脑版WireGuard客户端建议复制以下内容添加:\n\n");
-        sprintf(command, "cat /etc/wireguard/user%d.conf", num);
+        sprintf(command, "rm -f /etc/wireguard/%s_publickey", username);
         system(command);
-        printf("\n生成的配置文件请不要在本机上改名或删除，如确实需要，请删除文件中内容，避免修改文件名!\n");
+        printf("\n成功删除用户%d！\n",num);
         system("sleep 1");
     }
     else if (mode == 8) {
@@ -102,11 +98,14 @@ Menu:UI();
 }
 
 int UI() {
-    printf("----------WireGuard安装工具(CentOS7)----------\n");
+    printf("----------WireGuard安装工具(CentOS7/8)----------\n");
+    printf("---------------当前CentOS版本-----------------\n");
+    system("cat /etc/redhat-release|sed -r 's/.* ([0-9]+)\\..*/\\1/'");
+    printf("----------------------------------------------\n");
     printf("---------------当前Kernel版本-----------------\n");
     system("uname -sr");
     printf("----------------------------------------------\n");
-    printf("警告:Kernel版本低于5运行模式1会自动升级内核并重启，重启后点击键盘方向键上并回车选择模式1以继续执行代码\n1.安装或重装WireGuard(重装前必须先销毁服务器)\n2.添加用户\n3.关闭WireGuard\n4.重启WireGuard\n5.查看服务器信息\n6.修改服务器配置\n7.修改用户配置\n8.销毁服务器(用于重新配置服务器)\n0.退出\n");
+    printf("警告:Kernel版本低于5运行模式1会自动升级内核并重启，重启后点击键盘方向键上并回车选择模式1以继续执行代码\n1.安装或重装WireGuard(重装前必须先销毁服务器)\n2.添加用户\n3.关闭WireGuard\n4.重启WireGuard\n5.查看服务器信息\n6.修改服务器配置\n7.删除用户\n8.销毁服务器(用于重新配置服务器)\n0.退出\n");
     printf("----------------------------------------------\n");
     printf("请输入:");
     scanf("%d", &mode);
@@ -125,7 +124,6 @@ int InstallWireGuard(){
         goto re1;
     }
     printf("正在检测本机ip地址，请稍后. . . . . .\n");
-    system("yum install curl -y");
     system("curl -s ifconfig.me/ip > /etc/wireguard/servername.info");
     system("clear");
     printf("正在安装WireGuard. . . . . .\n");
@@ -231,10 +229,6 @@ int AddUser() {
     client_config = fopen(FileName, "a");
     fprintf(client_config, "\n");
     fclose(client_config); 
-    sprintf(command, "rm -f /etc/wireguard/%s_privatekey", username);
-    system(command);
-    sprintf(command, "rm -f /etc/wireguard/%s_publickey", username);
-    system(command);
     system("rm -f /etc/wireguard/psk");
     printf("\n成功添加用户！\n");
     printf("\n电脑版WireGuard客户端建议复制以下内容添加:\n\n");
