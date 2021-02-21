@@ -135,9 +135,7 @@ int InstallWireGuard(){
     system("pip install --upgrade pip");
     system("pip install pystun3");
     printf("正在编译安装fullcone iptables. . . . . .\n");
-    system("wget https://raw.githubusercontent.com/HXHGTS/WireGuardServer/master/fullcone_iptables.sh -O fullcone_iptables.sh");
-    system("chmod +x fullcone_iptables.sh");
-    system("bash fullcone_iptables.sh");
+    system("curl -sSL https://raw.githubusercontent.com/HXHGTS/WireGuardServer/master/fullcone_iptables.sh | sh");
     printf("正在生成服务器配置. . . . . .\n");
     server_config = fopen("/etc/wireguard/wg0.conf", "w");
     fprintf(server_config, "[Interface]\n");
