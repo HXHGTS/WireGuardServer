@@ -246,7 +246,7 @@ int KernelUpdate() {
     if ((fopen("KernelUpdate.sh", "r")) == NULL) {
         system("cat /etc/redhat-release|sed -r 's/.* ([0-9]+)\\..*/\\1/' > os_version.info");
         server_config=fopen("os_version.info","r");
-        fscanf(server_config,"%d",os_version);
+        fscanf(server_config,"%d",&os_version);
         fclose(server_config);
         printf("正在升级新内核. . .\n");
         if(os_version==7){system("wget https://cdn.jsdelivr.net/gh/HXHGTS/TCPOptimization/KernelUpdate.sh -O KernelUpdate.sh");}
