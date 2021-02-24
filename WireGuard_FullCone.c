@@ -3,36 +3,27 @@
 
 FILE* server_config, * client_config,*usernum,*client_pubkey,*server_info;
 int mode,confirm,ListenPort, num;
-char username[10],command[200],pubkey[46],ServerName[35], dns_server[35];
+char username[10],command[200],pubkey[46],ServerName[35];
 int ret,os_version;
 char FileName[36];
 
-int DNS(){
+int DNS() {
     system("mkdir -p /etc/wireguard");
     system("umask 077 /etc/wireguard");
     system("yum install bind-utils dnsmasq -y");
-    system("sleep 2");
-    system("nslookup localhost | grep Server > /etc/wireguard/dns.temp");
-    system("sleep 2");
-    server_info = fopen("/etc/wireguard/dns.temp", "r");
-    fscanf(server_info, "Server:		%s",dns_server);
-    fclose(server_info);
-    system("rm -rf /etc/wireguard/dns.temp");
     printf("正在配置DNS. . .\n");
     server_info = fopen("/etc/dnsmasq.conf", "w");
     fprintf(server_info, "resolv-file=/etc/resolv.dnsmasq.conf\n");
     fprintf(server_info, "strict-order\n");
     fprintf(server_info, "addn-hosts=/etc/dnsmasq.hosts\n");
     fclose(server_info);//使用系统默认DNS解析
-    server_info = fopen("/etc/resolv.dnsmasq.conf", "w");
-    fprintf(server_info, "nameserver %s\n",dns_server);
-    fclose(server_info);
+    system("cat /etc/resolv.conf | grep nameserver > /etc/resolv.dnsmasq.conf");
     server_info = fopen("/etc/dnsmasq.hosts", "w");
     fprintf(server_info, "addn-hosts=/etc/dnsmasq.hosts\n");
     fclose(server_info);
     system("systemctl start dnsmasq");
     system("systemctl enable dnsmasq");
-    system("clear"); 
+    system("clear");
     return 0;
 }
 
