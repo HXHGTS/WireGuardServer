@@ -14,9 +14,11 @@ WireGuard搭建(官方源下载软件包)
 
 ### 客户端下载:
 
-[Windows x64](https://download.wireguard.com/windows-client/wireguard-amd64-0.3.5.msi) [Windows x86](https://download.wireguard.com/windows-client/wireguard-x86-0.3.5.msi)
+[Windows](https://download.wireguard.com/windows-client/)
 
-[Android](https://f-droid.org/repo/com.wireguard.android_485.apk) [iOS](https://itunes.apple.com/us/app/wireguard/id1441195209?ls=1&mt=8)
+[Android](https://f-droid.org/en/packages/com.wireguard.android/)
+
+[iOS](https://itunes.apple.com/us/app/wireguard/id1441195209?ls=1&mt=8)
 
 ### 使用方法:
 
