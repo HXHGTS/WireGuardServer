@@ -128,7 +128,7 @@ chmod 755 /etc/sysconfig/modules/xt_FULLCONENAT.modules
 
 rm -rf /root/libmnl /root/iptables /root/libnftnl /root/netfilter-full-cone-nat 
 
-rm -f netfilter-full-cone-nat.zip iptables.tar.bz2 libmnl.tar.bz2 libnftnl.tar.bz2
+rm -rf /root/netfilter-full-cone-nat.zip /root/iptables.tar.bz2 /root/libmnl.tar.bz2 /root/libnftnl.tar.bz2
 
 echo 下方有输出则安装完成:
 
