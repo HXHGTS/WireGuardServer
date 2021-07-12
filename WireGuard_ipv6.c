@@ -132,7 +132,7 @@ int InstallWireGuard(){
     system("cat /etc/wireguard/server_privatekey >> /etc/wireguard/wg0.conf");//服务器私钥，不要修改
     server_config = fopen("/etc/wireguard/wg0.conf", "a");
     fprintf(server_config, "Address = 10.0.0.1/32, fd00:7::1/128\n");//服务器ip地址，修改需要同时修改客户端配置
-    fprintf(server_config, "MTU = 1280\n");
+    fprintf(server_config, "MTU = 1500\n");
     fprintf(server_config, "PostUp = iptables -A FORWARD -i wg0 -j ACCEPT; iptables -A FORWARD -o wg0 -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE;ip6tables -A FORWARD -i wg0 -j ACCEPT; ip6tables -A FORWARD -o wg0 -j ACCEPT; ip6tables -t nat -A POSTROUTING -o eth0 -j MASQUERADE; service iptables save; service ip6tables save\n");//服务器防火墙配置
     fprintf(server_config, "PostDown = iptables -D FORWARD -i wg0 -j ACCEPT; iptables -D FORWARD -o wg0 -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE;ip6tables -D FORWARD -i wg0 -j ACCEPT; ip6tables -D FORWARD -o wg0 -j ACCEPT; ip6tables -t nat -D POSTROUTING -o eth0 -j MASQUERADE; service iptables save; service ip6tables save\n");//服务器防火墙配置
     fprintf(server_config, "ListenPort = %d\n",ListenPort);//服务器监听端口
@@ -205,7 +205,7 @@ int AddUser() {
     system(command);
     client_config = fopen(FileName, "a");
     fprintf(client_config, "Address = 10.0.0.%d/32, fd00:7::%d/128\n",num,num);
-    fprintf(client_config, "MTU = 1280\n");//
+    fprintf(client_config, "MTU = 1500\n");//
     fprintf(client_config, "DNS = 10.0.0.1, fd00:7::1\n");
     fprintf(client_config, "\n[Peer]\n");
     fprintf(client_config, "AllowedIPs = 0.0.0.0/0,::/0\n");
