@@ -136,7 +136,6 @@ int InstallWireGuard(){
     system("cat /etc/wireguard/server_privatekey >> /etc/wireguard/wg0.conf");//服务器私钥，不要修改
     server_config = fopen("/etc/wireguard/wg0.conf", "a");
     fprintf(server_config, "Address = 10.0.0.1/32\n");//服务器ip地址，修改需要同时修改客户端配置
-    fprintf(server_config, "MTU = 1500\n");
     fprintf(server_config, "PostUp = iptables -t nat -A POSTROUTING -o eth0 -j FULLCONENAT; iptables -t nat -A PREROUTING -i eth0 -j FULLCONENAT;service iptables save\n");//服务器防火墙配置
     fprintf(server_config, "PostDown = iptables -D nat -A POSTROUTING -o eth0 -j FULLCONENAT; iptables -D nat -A PREROUTING -i eth0 -j FULLCONENAT;service iptables save\n");//服务器防火墙配置
     fprintf(server_config, "ListenPort = %d\n",ListenPort);//服务器监听端口
@@ -209,7 +208,6 @@ int AddUser() {
     system(command);
     client_config = fopen(FileName, "a");
     fprintf(client_config, "Address = 10.0.0.%d/32\n",num);
-    fprintf(client_config, "MTU = 1500\n");//
     fprintf(client_config, "DNS = 10.0.0.1\n");
     fprintf(client_config, "\n[Peer]\n");
     fprintf(client_config, "AllowedIPs = 0.0.0.0/0\n");
