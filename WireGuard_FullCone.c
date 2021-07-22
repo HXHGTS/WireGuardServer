@@ -137,7 +137,7 @@ int InstallWireGuard(){
     server_config = fopen("/etc/wireguard/wg0.conf", "a");
     fprintf(server_config, "Address = 10.0.0.1/32\n");//服务器ip地址，修改需要同时修改客户端配置
     fprintf(server_config, "PostUp = iptables -t nat -A POSTROUTING -o eth0 -j FULLCONENAT; iptables -t nat -A PREROUTING -i eth0 -j FULLCONENAT;service iptables save\n");//服务器防火墙配置
-    fprintf(server_config, "PostDown = iptables -D nat -A POSTROUTING -o eth0 -j FULLCONENAT; iptables -D nat -A PREROUTING -i eth0 -j FULLCONENAT;service iptables save\n");//服务器防火墙配置
+    fprintf(server_config, "PostDown = iptables -F; iptables -Z;service iptables save\n");//服务器防火墙配置
     fprintf(server_config, "ListenPort = %d\n",ListenPort);//服务器监听端口
     fclose(server_config);
     system("rm -f /etc/wireguard/server_privatekey");
