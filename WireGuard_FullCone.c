@@ -52,6 +52,10 @@ Menu:UI();
         system("clear");
         printf("服务器信息如下:\n");
         system("wg");
+        printf("--------------------------------------\n");
+        printf("---------------NAT类型----------------\n");
+        system("pystun3");
+        printf("--------------------------------------\n");
     }
     else if (mode == 6) {
         system("wg-quick down wg0");
@@ -146,6 +150,10 @@ int InstallWireGuard(){
     printf("服务器搭建完成！\n");
     printf("正在默认添加用户1. . .\n");
     AddUser();
+    printf("--------------------------------------\n");
+    printf("---------------NAT类型----------------\n");
+    system("pystun3");
+    printf("--------------------------------------\n");
     printf("需要添加更多用户请使用\"添加用户\"功能!\n");
     return 0;
 }
