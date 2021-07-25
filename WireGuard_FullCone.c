@@ -52,10 +52,6 @@ Menu:UI();
         system("clear");
         printf("服务器信息如下:\n");
         system("wg");
-        printf("--------------------------------------\n");
-        printf("---------------NAT类型----------------\n");
-        system("pystun3");
-        printf("--------------------------------------\n");
     }
     else if (mode == 6) {
         system("wg-quick down wg0");
@@ -126,9 +122,7 @@ int InstallWireGuard(){
     printf("正在安装WireGuard. . . . . .\n");
     system("yum install iptables-services -y");
     system("curl -o /etc/yum.repos.d/jdoss-wireguard-epel-7.repo https://cdn.jsdelivr.net/gh/HXHGTS/WireGuardServer/jdoss-wireguard-epel-7.repo");
-    system("yum install epel-release wireguard-dkms wireguard-tools qrencode python python-pip python3 -y");
-    system("pip3 install --upgrade pip");
-    system("pip3 install pystun3");
+    system("yum install epel-release wireguard-dkms wireguard-tools qrencode -y");
     printf("正在编译安装fullcone iptables. . . . . .\n");
     system("curl -sSL https://raw.githubusercontent.com/HXHGTS/WireGuardServer/master/fullcone_iptables.sh | sh");
     printf("正在生成服务器配置. . . . . .\n");
@@ -151,10 +145,6 @@ int InstallWireGuard(){
     printf("服务器搭建完成！\n");
     printf("正在默认添加用户1. . .\n");
     AddUser();
-    printf("--------------------------------------\n");
-    printf("---------------NAT类型----------------\n");
-    system("pystun3");
-    printf("--------------------------------------\n");
     printf("需要添加更多用户请使用\"添加用户\"功能!\n");
     return 0;
 }
