@@ -2,7 +2,9 @@
 
 echo 正在安装编译所需依赖. . .
 
-yum remove iptables firewalld -y
+yum remove firewalld -y
+
+yum install iptables iptables-services -y
 
 yum install gcc gcc-c++ autoconf autogen -y
 
