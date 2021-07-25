@@ -16,7 +16,7 @@ source /opt/rh/devtoolset-8/enable
 
 echo 正在下载项目文件. . .
 
-rm -rf /root/libmnl /root/netfilter-full-cone-nat /root/iptables /root/libnftnl
+cd root
 
 wget https://github.com/Chion82/netfilter-full-cone-nat/archive/master.zip -O netfilter-full-cone-nat.zip
 
