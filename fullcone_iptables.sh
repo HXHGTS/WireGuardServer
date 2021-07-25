@@ -22,7 +22,7 @@ wget https://github.com/Chion82/netfilter-full-cone-nat/archive/master.zip -O ne
 
 wget https://www.netfilter.org/pub/iptables/iptables-1.8.7.tar.bz2 -O iptables.tar.bz2
 
-wget https://www.netfilter.org/pub/libnftnl/libnftnl-1.1.9.tar.bz2 -O libnftnl.tar.bz2
+wget https://www.netfilter.org/pub/libnftnl/libnftnl-1.2.0.tar.bz2 -O libnftnl.tar.bz2
 
 wget https://www.netfilter.org/pub/libmnl/libmnl-1.0.4.tar.bz2 -O libmnl.tar.bz2
 
@@ -38,11 +38,11 @@ cp -rf libmnl-1.0.4 libmnl
 
 cp -rf iptables-1.8.7 iptables
 
-cp -rf libnftnl-1.1.9 libnftnl
+cp -rf libnftnl-1.2.0 libnftnl
 
 cp -rf netfilter-full-cone-nat-master netfilter-full-cone-nat
 
-rm -rf libmnl-1.0.4 iptables-1.8.7 libnftnl-1.1.9 netfilter-full-cone-nat-master
+rm -rf libmnl-1.0.4 iptables-1.8.7 libnftnl-1.2.0 netfilter-full-cone-nat-master
 
 echo 开始编译libmnl. . .
 
