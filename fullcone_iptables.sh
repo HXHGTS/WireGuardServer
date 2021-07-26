@@ -4,8 +4,6 @@ echo 正在安装编译所需依赖. . .
 
 yum remove firewalld -y
 
-yum install iptables iptables-services -y
-
 yum install gcc gcc-c++ autoconf autogen -y
 
 yum install libtool libtool-ltdl libtool-ltdl-devel bzip2 unzip -y
@@ -145,7 +143,5 @@ echo -----------------------------------------------------
 iptables -F
 
 iptables -Z
-
-service iptables save 
 
 exit 0
