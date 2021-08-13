@@ -19,7 +19,7 @@ echo 正在下载项目文件. . .
 cd root
 
 #原版fullcone NAT https://github.com/Chion82/netfilter-full-cone-nat/archive/refs/heads/master.zip
-wget https://github.com/Chion82/netfilter-full-cone-nat/archive/refs/heads/feature/ipv6.zip -O netfilter-full-cone-nat.zip
+wget https://github.com/Chion82/netfilter-full-cone-nat/archive/refs/heads/feature/ipv6.zip -O netfilter-full-cone-nat-feature-ipv6.zip
 #加入ipv6支持
 
 wget https://www.netfilter.org/pub/iptables/iptables-1.8.7.tar.bz2 -O iptables.tar.bz2
@@ -32,9 +32,9 @@ tar -jxvf libmnl.tar.bz2
 
 tar -jxvf iptables.tar.bz2
 
-unzip netfilter-full-cone-nat.zip
-
 tar -jxvf libnftnl.tar.bz2
+
+unzip netfilter-full-cone-nat-feature-ipv6.zip
 
 cp -rf libmnl-1.0.4 libmnl
 
@@ -42,9 +42,9 @@ cp -rf iptables-1.8.7 iptables
 
 cp -rf libnftnl-1.2.0 libnftnl
 
-cp -rf netfilter-full-cone-nat-master netfilter-full-cone-nat
+cp -rf netfilter-full-cone-nat-feature-ipv6 netfilter-full-cone-nat
 
-rm -rf libmnl-1.0.4 iptables-1.8.7 libnftnl-1.2.0 netfilter-full-cone-nat-master
+rm -rf libmnl-1.0.4 iptables-1.8.7 libnftnl-1.2.0 netfilter-full-cone-nat-feature-ipv6
 
 echo 开始编译libmnl. . .
 
