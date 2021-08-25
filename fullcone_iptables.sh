@@ -2,6 +2,8 @@
 
 echo 正在安装编译所需依赖. . .
 
+echo 92.243.18.11 www.netfilter.org >> /etc/hosts
+
 yum remove firewalld -y
 
 yum install gcc gcc-c++ autoconf autogen -y
