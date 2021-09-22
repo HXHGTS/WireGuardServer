@@ -21,7 +21,7 @@ echo 正在下载项目文件. . .
 cd root
 
 #原版fullcone NAT https://github.com/Chion82/netfilter-full-cone-nat/archive/refs/heads/master.zip
-git clone https://github.com/llccd/netfilter-full-cone-nat/ 
+git clone https://github.com/HXHGTS/netfilter-full-cone-nat/ netfilter-full-cone-nat
 #加入ipv6支持
 
 wget https://www.netfilter.org/pub/iptables/iptables-1.8.7.tar.bz2 -O iptables.tar.bz2
