@@ -88,6 +88,8 @@ insmod xt_FULLCONENAT.ko
 
 cp -f /root/netfilter-full-cone-nat/libipt_FULLCONENAT.c /root/iptables/extensions/
 
+cp -f /root/netfilter-full-cone-nat/libip6t_FULLCONENAT.c /root/iptables/extensions/
+
 echo 开始编译iptables. . .
 
 cd /root/iptables
