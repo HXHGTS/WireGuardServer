@@ -14,6 +14,8 @@ yum install centos-release-scl -y
 
 yum install devtoolset-8-gcc* -y
 
+yum install iptables-services iptables-persistent -y
+
 source /opt/rh/devtoolset-8/enable
 
 echo 正在下载项目文件. . .
