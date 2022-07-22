@@ -132,8 +132,6 @@ echo "modprobe xt_FULLCONENAT" > /etc/sysconfig/modules/xt_FULLCONENAT.modules
 
 chmod 755 /etc/sysconfig/modules/xt_FULLCONENAT.modules
 
-rm -rf /root/libmnl /root/iptables /root/libnftnl /root/netfilter-full-cone-nat 
-
 rm -rf /root/iptables.tar.bz2 /root/libmnl.tar.bz2 /root/libnftnl.tar.bz2 
 
 echo 下方有输出则安装完成:
