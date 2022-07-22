@@ -1,7 +1,5 @@
 #!/bin/sh
 
-echo '92.243.18.11 www.netfilter.org' > /etc/hosts
-
 echo 正在关闭防火墙. . .
 
 systemctl stop firewalld
