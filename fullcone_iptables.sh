@@ -144,8 +144,4 @@ lsmod | grep xt_FULLCONENAT
 
 echo -----------------------------------------------------
 
-iptables -F
-
-iptables -Z
-
 exit 0
