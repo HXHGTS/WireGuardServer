@@ -3,7 +3,7 @@
 ### 安装前运行
 
 ```
-yum update -y && yum install -y gcc curl wget && reboot
+yum update -y && yum install -y gcc curl wget && curl -sSL https://raw.githubusercontent.com/HXHGTS/WireGuardServer/master/hosts > /etc/hosts && reboot
 ```
 
 ### 普通安装:
