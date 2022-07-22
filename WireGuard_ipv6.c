@@ -254,7 +254,9 @@ int KernelUpdate() {
         system("bash KernelUpdate.sh");
     }
     else {
-        system("curl -sSL https://cdn.jsdelivr.net/gh/HXHGTS/TCPOptimization/TCPO.sh | sh");
+        system("echo net.ipv4.ip_forward = 1 > /etc/sysctl.conf");
+        system("echo net.ipv6.conf.all.forwarding = 1 >> /etc/sysctl.conf");
+        system("sysctl -p");
     }
     return 0;
 }
